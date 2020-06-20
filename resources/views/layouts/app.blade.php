@@ -8,7 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="#">Sách</a>
             <button
@@ -46,7 +46,7 @@
                             aria-haspopup="true"
                             aria-expanded="false"
                         >
-                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                            <i class="fas fa-user-circle"></i>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="#">Action</a>
