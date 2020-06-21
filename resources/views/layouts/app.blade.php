@@ -50,7 +50,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="#">Đăng nhập</a>
-                            <a class="dropdown-item" href="#">Đăng ký</a>
+                            <a class="dropdown-item" href="/register">Đăng ký</a>
                             <a class="dropdown-item" href="#">Thông tin cá nhân</a>
                             <a class="dropdown-item" href="#">Sách của bạn</a>
                             <div class="dropdown-divider"></div>

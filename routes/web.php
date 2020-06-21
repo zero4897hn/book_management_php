@@ -15,4 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController@index');
 
+Route::get('/register', 'RegisterController@index');
+
+Route::post('/register', 'RegisterController@create');
+
 Route::resource('/books', 'BookController');
