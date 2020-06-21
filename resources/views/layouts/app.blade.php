@@ -10,7 +10,7 @@
 <body>
     <nav class="navbar navbar-expand-sm navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="#">Sách</a>
+            <a class="navbar-brand" href="/">Sách</a>
             <button
                 class="navbar-toggler"
                 type="button"
@@ -26,13 +26,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Tất cả các sách</a>
+                        <a class="nav-link" href="/books">Tất cả các sách</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Giới thiệu sách</a>
+                        <a class="nav-link" href="/books/create">Giới thiệu sách</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Quản lý người dùng</a>
+                        <a class="nav-link" href="/users">Quản lý người dùng</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
@@ -49,10 +49,12 @@
                             <i class="fas fa-user-circle"></i>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Đăng nhập</a>
+                            <a class="dropdown-item" href="#">Đăng ký</a>
+                            <a class="dropdown-item" href="#">Thông tin cá nhân</a>
+                            <a class="dropdown-item" href="#">Sách của bạn</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            <a class="dropdown-item" href="#">Đăng xuất</a>
                         </div>
                     </li>
                 </ul>

@@ -25,8 +25,8 @@ class CreateBooksTable extends Migration
             $table->text('description');
             $table->bigInteger('user_id');
             $table->bigInteger('category_id');
-            $table->integer('rating')->unsigned();
-            $table->integer('comment_count')->unsigned();
+            $table->integer('rating')->default(0)->unsigned();
+            $table->integer('comment_count')->default(0)->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });
