@@ -36,6 +36,14 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
+                    @guest
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Đăng nhập</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">Đăng ký</a>
+                    </li>
+                    @else
                     <li class="nav-item dropdown">
                         <a
                             class="nav-link dropdown-toggle"
@@ -46,17 +54,28 @@
                             aria-haspopup="true"
                             aria-expanded="false"
                         >
-                            <i class="fas fa-user-circle"></i>
+                            {{ Auth::user()->first_name }} <i class="fas fa-user-circle"></i>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Đăng nhập</a>
-                            <a class="dropdown-item" href="/register">Đăng ký</a>
                             <a class="dropdown-item" href="#">Thông tin cá nhân</a>
                             <a class="dropdown-item" href="#">Sách của bạn</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Đăng xuất</a>
+                            <a
+                                class="dropdown-item"
+                                href="/logout"
+                                onclick="
+                                    event.preventDefault();
+                                    document.getElementById('logout-form').submit();
+                                "
+                            >
+                                Đăng xuất
+                            </a>
+                            <form id="logout-form" action="/logout" method="POST" style="display: none;">
+                                @csrf
+                            </form>
                         </div>
                     </li>
+                    @endguest
                 </ul>
             </div>
         </div>
