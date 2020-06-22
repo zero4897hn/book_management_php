@@ -26,3 +26,7 @@ Route::post('/login', 'LoginController@login');
 Route::post('/logout', 'LoginController@logout')->name('logout');
 
 Route::resource('/books', 'BookController');
+
+Route::resource('/users', 'UserController');
+
+Route::resource('/comments', 'CommentController');

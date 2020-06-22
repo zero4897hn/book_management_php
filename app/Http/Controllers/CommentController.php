@@ -2,19 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Book;
-use Facade\FlareClient\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class BookController extends Controller
+class CommentController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('auth')->except(['index', 'show']);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -22,8 +13,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::all();
-        return View('books.list', compact('books'));
+        //
     }
 
     /**
@@ -33,7 +23,7 @@ class BookController extends Controller
      */
     public function create()
     {
-        return View('books.create');
+        //
     }
 
     /**
@@ -44,18 +34,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $book = new Book();
-        $book->name = $request->input('name');
-        $book->isbn = $request->input('isbn');
-        $book->author = $request->input('author');
-        $book->publisher = $request->input('publisher');
-        $book->editor = $request->input('editor');
-        $book->description = $request->input('description');
-        $book->user_id = Auth::user()->id;
-        $book->category_id = 1;
-
-        $book->save();
-        return redirect('/books')->with('status', 'Tạo sách thành công.');
+        //
     }
 
     /**
