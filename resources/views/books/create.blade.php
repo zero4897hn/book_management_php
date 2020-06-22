@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<form action="/books" method="POST">
+<form action="/books" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="form-group">
         <label for="field_name">Tên cuốn sách</label>
@@ -36,6 +36,10 @@
     <div class="form-group">
         <label for="field_description">Mô tả cuốn sách</label>
         <textarea class="form-control" id="field_description" name="description" rows="5"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="field_cover">Bìa sách</label>
+        <input type="file" class="form-control-file" id="field_cover" name="coverFile">
     </div>
     <button type="submit" class="btn btn-primary">Giới thiệu</button>
 </form>

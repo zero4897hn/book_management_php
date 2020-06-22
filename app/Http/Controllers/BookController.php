@@ -54,6 +54,12 @@ class BookController extends Controller
         $book->user_id = Auth::user()->id;
         $book->category_id = 1;
 
+        if ($coverFile = $request->file('coverFile')) {
+            $coverFileName = $coverFile->getClientOriginalName();
+            $coverFile->move('file/cover', $coverFileName);
+            $book->cover = $coverFileName;
+        }
+
         $book->save();
         return redirect('/books')->with('status', 'Tạo sách thành công.');
     }
