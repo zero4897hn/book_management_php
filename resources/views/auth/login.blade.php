@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <title>Document</title>
-</head>
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
+@extends('layouts.app')
+
+@section('content')
+<div class="row justify-content-sm-center">
+    <div class="col-sm-4">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
                 @if (session('error'))
                 <div class="text-danger" role="alert">
                     {{session('error')}}
@@ -51,7 +45,5 @@
             </div>
         </div>
     </div>
-
-    <script src="{{ asset('js/app.js') }}" defer></script>
-</body>
-</html>
+</div>
+@endsection

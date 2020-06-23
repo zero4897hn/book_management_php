@@ -22,7 +22,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::all();
+        $books = Book::paginate(5);
         return View('books.list', compact('books'));
     }
 
@@ -72,7 +72,8 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        //
+        $book = Book::find($id);
+        return View('books.detail', compact('book'));
     }
 
     /**

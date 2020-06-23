@@ -54,7 +54,7 @@
                             aria-haspopup="true"
                             aria-expanded="false"
                         >
-                            {{ Auth::user()->first_name }} <i class="fas fa-user-circle"></i>
+                            {{ Auth::user()->username }} <i class="fas fa-user-circle"></i>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="#">Thông tin cá nhân</a>
