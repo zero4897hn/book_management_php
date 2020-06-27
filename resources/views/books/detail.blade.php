@@ -28,7 +28,7 @@
     </div>
     <div id="field_comment" class="col-sm-12">
         @foreach ($book->comments as $comment)
-        <div class="row">
+        <div class="row custom-comment">
             <div class="col-sm-2">
                 @if (isset($comment->user->avatar))
                     <img class="img-fluid img-thumbnail" src="{{ asset('files/avatars/' + $comment->user->avatar) }}" />
@@ -49,6 +49,9 @@
     </div>
     <div class="col-sm-12 mt-3">
         <div class="col-12">
+            @guest
+            <h6>Vui lòng <a style="text-decoration: none;" href="/login">đăng nhập</a> để đánh giá sản phẩm.</h6>
+            @else
             <form>
                 <input type="hidden" id="field_bookId" value="{{ $book->id }}" />
                 <fieldset class="form-group">
@@ -75,6 +78,7 @@
                 </fieldset>
                 <button type="submit" id="button_comment" style="float: right;" class="btn btn-primary">Bình luận</button>
             </form>
+            @endguest
         </div>
     </div>
 </div>
@@ -100,7 +104,7 @@ jQuery(document).ready(function() {
             success: function(response) {
                 var avatarUrl = '{{ URL::asset('files/avatars') }}';
                 var commentField = `
-                    <div class="row">
+                    <div class="row custom-comment">
                         <div class="col-sm-2">
                             <img class="img-fluid img-thumbnail" src="${
                                 response.user_avatar !== null?
