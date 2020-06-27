@@ -52,7 +52,6 @@ class BookController extends Controller
         $book->editor = $request->input('editor');
         $book->description = $request->input('description');
         $book->user_id = Auth::user()->id;
-        $book->category_id = 1;
 
         if ($coverFile = $request->file('coverFile')) {
             $coverFileName = $coverFile->getClientOriginalName();
@@ -61,7 +60,7 @@ class BookController extends Controller
         }
 
         $book->save();
-        return redirect('/books')->with('status', 'Tạo sách thành công.');
+        return redirect('/books/'.$book->id)->with('status', 'Tạo sách thành công.');
     }
 
     /**
@@ -84,7 +83,8 @@ class BookController extends Controller
      */
     public function edit($id)
     {
-        //
+        $book = Book::find($id);
+        return View('books.edit', compact('book'));
     }
 
     /**
@@ -96,7 +96,23 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $book = Book::find($id);
+        $book->name = $request->input('name');
+        $book->isbn = $request->input('isbn');
+        $book->author = $request->input('author');
+        $book->publisher = $request->input('publisher');
+        $book->editor = $request->input('editor');
+        $book->description = $request->input('description');
+        $book->user_id = Auth::user()->id;
+
+        if ($coverFile = $request->file('coverFile')) {
+            $coverFileName = $coverFile->getClientOriginalName();
+            $coverFile->move('files/covers', $coverFileName);
+            $book->cover = $coverFileName;
+        }
+
+        $book->save();
+        return redirect('/books/'.$book->id)->with('status', 'Cập nhật sách thành công.');
     }
 
     /**

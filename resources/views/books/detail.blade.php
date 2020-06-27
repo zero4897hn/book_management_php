@@ -12,7 +12,15 @@
     </div>
     <div class="col-10 p-0">
         <div class="card">
-            <h5 class="card-header">{{$book->name}}</h5>
+            <div class="card-header">
+                <span>{{$book->name}}</span>
+                <a
+                    class="btn btn-outline-secondary btn-sm float-right edit-comment"
+                    href="/books/{{$book->id}}/edit"
+                >
+                    <i class="fas fa-edit"></i>
+                </a>
+            </div>
             <div class="card-body">
                 <img class="img-fluid" src="{{asset('files/covers/'.$book->cover)}}" />
                 {{$book->description}}
