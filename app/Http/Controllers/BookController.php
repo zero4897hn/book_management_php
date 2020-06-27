@@ -56,7 +56,7 @@ class BookController extends Controller
 
         if ($coverFile = $request->file('coverFile')) {
             $coverFileName = $coverFile->getClientOriginalName();
-            $coverFile->move('file/cover', $coverFileName);
+            $coverFile->move('files/covers', $coverFileName);
             $book->cover = $coverFileName;
         }
 

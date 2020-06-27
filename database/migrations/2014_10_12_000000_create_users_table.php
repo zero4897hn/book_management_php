@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('last_name', 50)->nullable();
             $table->string('username', 50)->unique();
             $table->string('email', 50)->unique();
+            $table->string('avatar', 255)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 255);
             $table->boolean('banned')->default(false);

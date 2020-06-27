@@ -16,7 +16,7 @@
         @foreach ($books as $book)
         <tr>
             <th scope="row">{{ ($books->currentPage() - 1) * $books->perPage() + $index }}</th>
-            <td><img class="img-fluid" src="{{ asset('file/cover/' . $book->cover) }}" /></td>
+            <td><img class="img-fluid" src="{{ asset('files/covers/' . $book->cover) }}" /></td>
             <td><a href="/books/{{ $book->id }}">{{$book->name}}</a></td>
             <td>{{$book->author}}</td>
             <td>
