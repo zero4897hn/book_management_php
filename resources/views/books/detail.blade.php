@@ -120,7 +120,12 @@ jQuery(document).ready(function() {
                         <div class="col-sm-10">
                             <input type="hidden" value="${response.id}" />
                             <div class="card">
-                                <h5 class="card-header">${response.title}</h5>
+                                <div class="card-header">
+                                    <span>${response.title}</span>
+                                    <button class="btn btn-outline-secondary btn-sm float-right edit-comment">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
                                 <div class="card-body">${response.content}</div>
                             </div>
                         </div>
