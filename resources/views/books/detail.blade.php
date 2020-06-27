@@ -40,7 +40,12 @@
             <div class="col-sm-10">
                 <input type="hidden" value="{{$comment->id}}" />
                 <div class="card">
-                    <h5 class="card-header">{{$comment->title}}</h5>
+                    <div class="card-header">
+                        <span>{{$comment->title}}</span>
+                        <button class="btn btn-outline-secondary btn-sm float-right edit-comment">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
                     <div class="card-body">{{$comment->content}}</div>
                 </div>
             </div>
@@ -50,7 +55,7 @@
     <div class="col-sm-12 mt-3">
         <div class="col-12">
             @guest
-            <h6>Vui lòng <a style="text-decoration: none;" href="/login">đăng nhập</a> để đánh giá sản phẩm.</h6>
+            <h6>Vui lòng <a style="text-decoration: none;" href="/login">đăng nhập</a> để bình luận sách.</h6>
             @else
             <form>
                 <input type="hidden" id="field_bookId" value="{{ $book->id }}" />
@@ -76,7 +81,7 @@
                         required
                     ></textarea>
                 </fieldset>
-                <button type="submit" id="button_comment" style="float: right;" class="btn btn-primary">Bình luận</button>
+                <button type="submit" id="button_comment" class="btn btn-primary float-right">Bình luận</button>
             </form>
             @endguest
         </div>
