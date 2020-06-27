@@ -6,6 +6,7 @@ use App\Book;
 use Facade\FlareClient\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
@@ -22,7 +23,11 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::paginate(5);
+        // $books = Book::paginate(5);
+        $books = DB::table('books')
+            ->join('users', 'users.id', '=', 'books.user_id')
+            ->select('users.id as id', 'name', 'cover', 'author', 'rating', 'comment_count', 'username')
+            ->paginate(5);
         return View('books.list', compact('books'));
     }
 

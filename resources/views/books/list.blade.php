@@ -22,7 +22,7 @@
             <td>
                 <span>Lượt bình luận: {{$book->comment_count}}</span> <br />
                 <span>Đánh giá: {{$book->rating}}</span> <br />
-                <span>Người đăng: {{$book->user->username}}
+                <span>Người đăng: {{$book->username}}
             </td>
         </tr>
         <?php $index++; ?>
