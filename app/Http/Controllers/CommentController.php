@@ -59,7 +59,8 @@ class CommentController extends Controller
      */
     public function show($id)
     {
-        //
+        $comment = Comment::find($id);
+        return $comment;
     }
 
     /**

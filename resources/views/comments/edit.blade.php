@@ -15,6 +15,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" id="editField_bookId" value="{{ $book->id }}" />
                     <fieldset class="form-group">
                         <label for="editField_title">Tiêu đề:</label>
                         <input

@@ -46,7 +46,7 @@
                 <h5 class="text-center">{{$comment->user->username}}</h5>
             </div>
             <div class="col-sm-10">
-                <input type="hidden" value="{{$comment->id}}" />
+                <input class="comment-id" type="hidden" value="{{$comment->id}}" />
                 <div class="card">
                     <div class="card-header">
                         <span>{{$comment->title}}</span>
@@ -120,22 +120,22 @@ jQuery(document).ready(function() {
             headers: {
                 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
             },
-            success: function(response) {
+            success: function(data) {
                 var avatarUrl = '{{ URL::asset('files/avatars') }}';
                 var commentField = `
                     <div class="row custom-comment">
                         <div class="col-sm-2">
                             <img class="img-fluid img-thumbnail" src="${
-                                response.user_avatar !== null?
-                                avatarUrl + '/' + response.user_avatar : avatarUrl + '/' + 'anonymous_avatar.png'
+                                data.user_avatar !== null?
+                                avatarUrl + '/' + data.user_avatar : avatarUrl + '/' + 'anonymous_avatar.png'
                             }" />
-                            <h5 class="text-center">${response.username}</h5>
+                            <h5 class="text-center">${data.username}</h5>
                         </div>
                         <div class="col-sm-10">
-                            <input type="hidden" value="${response.id}" />
+                            <input class="comment-id" type="hidden" value="${data.id}" />
                             <div class="card">
                                 <div class="card-header">
-                                    <span>${response.title}</span>
+                                    <span>${data.title}</span>
                                     <button
                                         class="btn btn-outline-secondary btn-sm float-right edit-comment"
                                         data-toggle="modal"
@@ -144,7 +144,7 @@ jQuery(document).ready(function() {
                                         <i class="fas fa-edit"></i>
                                     </button>
                                 </div>
-                                <div class="card-body">${response.content}</div>
+                                <div class="card-body">${data.content}</div>
                             </div>
                         </div>
                     </div>
@@ -152,6 +152,34 @@ jQuery(document).ready(function() {
                 jQuery('div#field_comment').append(commentField);
                 jQuery('input#field_title').val('');
                 jQuery('textarea#field_content').val('');
+            }
+        });
+    });
+    jQuery('button.edit-comment').click(function(event) {
+        var modal = jQuery('div#modal-edit-comment');
+        var titleField = modal.find('input#editField_title');
+        var contentField = modal.find('textarea#editField_content');
+        var bookIdField = modal.find('input#editField_bookId');
+        var submitButton = modal.find('button#button_update');
+
+        titleField.val('');
+        contentField.val('');
+        bookIdField.val('');
+        submitButton.prop('disabled', true);
+
+        var parentElement = jQuery(this).closest('div.custom-comment');
+        var commentId = parentElement.find('input.comment-id').attr('value');
+        parentElement.addClass('comment-is-editing');
+
+        jQuery.ajax({
+            url: '/comments/' + commentId,
+            type: 'GET',
+            success: function(data) {
+                submitButton.prop('disabled', false);
+                var modal = jQuery('div#modal-edit-comment');
+                titleField.val(data.title);
+                contentField.val(data.content);
+                bookIdField.val(data.id);
             }
         });
     });
