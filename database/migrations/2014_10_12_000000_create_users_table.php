@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 255);
             $table->boolean('banned')->default(false);
-            $table->bigInteger('role_id')->default(1);
+            $table->boolean('admin')->default(false);
             $table->timestamp('ban_expired_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

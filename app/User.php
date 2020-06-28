@@ -37,10 +37,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function role() {
-        return $this->belongsTo('App\Role', 'role_id', 'id');
-    }
-
     public function rates() {
         return $this->hasMany('App\Rate', 'user_id', 'id');
     }

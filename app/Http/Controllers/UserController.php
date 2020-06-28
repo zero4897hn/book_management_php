@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Facade\FlareClient\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -14,7 +15,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        return View('users.list');
+        $users = DB::table('users')
+            ->select('id', 'avatar', 'username', 'email', 'admin', 'banned')
+            ->paginate(5);
+        // return $users;
+        return View('users.list', compact('users'));
     }
 
     /**
