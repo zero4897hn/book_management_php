@@ -23,7 +23,6 @@ class BookController extends Controller
      */
     public function index()
     {
-        // $books = Book::paginate(5);
         $books = DB::table('books')
             ->join('users', 'users.id', '=', 'books.user_id')
             ->select('users.id as id', 'name', 'cover', 'author', 'rating', 'comment_count', 'username')

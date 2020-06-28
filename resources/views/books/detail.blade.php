@@ -50,7 +50,11 @@
                 <div class="card">
                     <div class="card-header">
                         <span>{{$comment->title}}</span>
-                        <button class="btn btn-outline-secondary btn-sm float-right edit-comment">
+                        <button
+                            class="btn btn-outline-secondary btn-sm float-right edit-comment"
+                            data-toggle="modal"
+                            data-target="#modal-edit-comment"
+                        >
                             <i class="fas fa-edit"></i>
                         </button>
                     </div>
@@ -95,6 +99,8 @@
         </div>
     </div>
 </div>
+
+@include('comments.edit')
 @endsection
 
 @section('footer')
@@ -130,7 +136,11 @@ jQuery(document).ready(function() {
                             <div class="card">
                                 <div class="card-header">
                                     <span>${response.title}</span>
-                                    <button class="btn btn-outline-secondary btn-sm float-right edit-comment">
+                                    <button
+                                        class="btn btn-outline-secondary btn-sm float-right edit-comment"
+                                        data-toggle="modal"
+                                        data-target="#modal-edit-comment"
+                                    >
                                         <i class="fas fa-edit"></i>
                                     </button>
                                 </div>
