@@ -71,7 +71,7 @@ class CommentController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -83,7 +83,11 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $comment = Comment::find($id);
+        $comment->title = $request->input('title');
+        $comment->content = $request->input('content');
+        $comment->save();
+        return $comment;
     }
 
     /**

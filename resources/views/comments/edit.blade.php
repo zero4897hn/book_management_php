@@ -47,3 +47,40 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+jQuery(document).ready(function() {
+    jQuery('button#button_update').click(function(event) {
+        event.preventDefault();
+
+        var button = jQuery(this);
+        button.prop('disabled', true);
+
+        var bookId = jQuery('input#editField_bookId').val();
+
+        jQuery.ajax({
+            url: '/comments/' + bookId,
+            type: 'PUT',
+            dataType: 'json',
+            data: {
+                title: jQuery('input#editField_title').val(),
+                content: jQuery('textarea#editField_content').val(),
+            },
+            headers: {
+                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+                var editingElement = jQuery('.comment-is-editing');
+                editingElement.find('.comment-title').html(data.title);
+                editingElement.find('.comment-content').html(data.content);
+                editingElement.removeClass('comment-is-editing');
+                jQuery('#modal-edit-comment').modal('hide');
+            },
+            error: function(jqXHR, status) {
+                console.log(jqXHR, status)
+                button.prop('disabled', false);
+            }
+        });
+    });
+});
+</script>

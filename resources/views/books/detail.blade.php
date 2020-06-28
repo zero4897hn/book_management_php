@@ -49,7 +49,7 @@
                 <input class="comment-id" type="hidden" value="{{$comment->id}}" />
                 <div class="card">
                     <div class="card-header">
-                        <span>{{$comment->title}}</span>
+                        <span class="comment-title">{{$comment->title}}</span>
                         <button
                             class="btn btn-outline-secondary btn-sm float-right edit-comment"
                             data-toggle="modal"
@@ -58,7 +58,7 @@
                             <i class="fas fa-edit"></i>
                         </button>
                     </div>
-                    <div class="card-body">{{$comment->content}}</div>
+                    <div class="card-body comment-content">{{$comment->content}}</div>
                 </div>
             </div>
         </div>
@@ -99,11 +99,10 @@
         </div>
     </div>
 </div>
-
-@include('comments.edit')
 @endsection
 
 @section('footer')
+@include('comments.edit')
 <script type="text/javascript">
 jQuery(document).ready(function() {
     jQuery('button#button_comment').click(function(event) {
@@ -135,7 +134,7 @@ jQuery(document).ready(function() {
                             <input class="comment-id" type="hidden" value="${data.id}" />
                             <div class="card">
                                 <div class="card-header">
-                                    <span>${data.title}</span>
+                                    <span class="comment-title">${data.title}</span>
                                     <button
                                         class="btn btn-outline-secondary btn-sm float-right edit-comment"
                                         data-toggle="modal"
@@ -144,7 +143,7 @@ jQuery(document).ready(function() {
                                         <i class="fas fa-edit"></i>
                                     </button>
                                 </div>
-                                <div class="card-body">${data.content}</div>
+                                <div class="card-body comment-content">${data.content}</div>
                             </div>
                         </div>
                     </div>
@@ -165,16 +164,25 @@ jQuery(document).ready(function() {
         titleField.val('');
         contentField.val('');
         bookIdField.val('');
+        //  Disable the submit button until the data is gotten
         submitButton.prop('disabled', true);
 
+        var commentElements = jQuery('.custom-comment');
+
+        //  Get element planning to edit
         var parentElement = jQuery(this).closest('div.custom-comment');
+        //  Get id of comment
         var commentId = parentElement.find('input.comment-id').attr('value');
+        //  Flag that we are planning to edit this element
         parentElement.addClass('comment-is-editing');
+        //  Remove other flags
+        commentElements.not(parentElement).removeClass('comment-is-editing');
 
         jQuery.ajax({
             url: '/comments/' + commentId,
             type: 'GET',
             success: function(data) {
+                //  Now the data is gotten, enable the submit button.
                 submitButton.prop('disabled', false);
                 var modal = jQuery('div#modal-edit-comment');
                 titleField.val(data.title);
