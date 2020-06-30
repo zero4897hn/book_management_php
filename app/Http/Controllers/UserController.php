@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Facade\FlareClient\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,7 +30,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -51,7 +52,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+        return View('users.detail', compact('user'));
     }
 
     /**
@@ -86,5 +88,27 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function block(Request $request, $id)
+    {
+        $user = User::find($id);
+        $user->banned = true;
+        if (null != $request->input('ban_expired_at')) {
+            $user->ban_expired_at = $request->input('ban_expired_at');
+        } else if (null != $request->input('banned_period_day')) {
+
+        }
+        $user->save();
+        return $user;
+    }
+
+    public function unblock(Request $request, $id)
+    {
+        $user = User::find($id);
+        $user->banned = false;
+        $user->ban_expired_at = null;
+        $user->save();
+        return $user;
     }
 }

@@ -41,7 +41,14 @@
                     Đang mở
                 @endif
             </td>
-            <td></td>
+            <td>
+                <button class="btn btn-warning button_block" data-id="{{ $user->id }}">
+                    <i class="fas fa-lock"></i>
+                </button>
+                <button class="btn btn-warning button_unblock" data-id="{{ $user->id }}">
+                    <i class="fas fa-lock-open"></i>
+                </button>
+            </td>
         </tr>
         @endforeach
     </tbody>

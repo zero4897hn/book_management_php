@@ -29,4 +29,8 @@ Route::resource('/books', 'BookController');
 
 Route::resource('/users', 'UserController');
 
+Route::post('/users/block', 'UserController@block');
+
+Route::post('/users/unblock', 'UserController@unblock');
+
 Route::resource('/comments', 'CommentController');
