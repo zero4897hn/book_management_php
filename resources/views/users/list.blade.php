@@ -42,17 +42,43 @@
                 @endif
             </td>
             <td>
-                <button class="btn btn-warning button_block" data-id="{{ $user->id }}">
-                    <i class="fas fa-lock"></i>
-                </button>
-                <button class="btn btn-warning button_unblock" data-id="{{ $user->id }}">
-                    <i class="fas fa-lock-open"></i>
-                </button>
+                @if ($user->banned)
+                    <button
+                        class="btn btn-warning button_unblock"
+                        data-id="{{ $user->id }}"
+                        data-toggle="modal"
+                        data-target="#confirm-unblock-modal"
+                    >
+                        <i class="fas fa-lock-open"></i>
+                    </button>
+                @else
+                    <button
+                        class="btn btn-warning button_block"
+                        data-id="{{ $user->id }}"
+                        data-toggle="modal"
+                        data-target="#confirm-block-modal"
+                    >
+                        <i class="fas fa-lock"></i>
+                    </button>
+                @endif
             </td>
         </tr>
         @endforeach
     </tbody>
 </table>
 
+@include('users.block');
+@include('users.unblock');
 {{ $users->onEachSide(5)->links() }}
+@endsection
+
+@section('footer')
+<script type="text/javascript">
+    jQuery('#confirm-block-modal, #confirm-unblock-modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var userId = button.data('id');
+        var modal = $(this);
+        modal.find('#field_user_id').val(userId);
+    })
+</script>
 @endsection

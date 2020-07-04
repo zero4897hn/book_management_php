@@ -90,25 +90,23 @@ class UserController extends Controller
         //
     }
 
-    public function block(Request $request, $id)
+    public function block(Request $request)
     {
-        $user = User::find($id);
+        $user = User::find($request->input('user_id'));
         $user->banned = true;
         if (null != $request->input('ban_expired_at')) {
             $user->ban_expired_at = $request->input('ban_expired_at');
-        } else if (null != $request->input('banned_period_day')) {
-
         }
         $user->save();
-        return $user;
+        return redirect('users');
     }
 
-    public function unblock(Request $request, $id)
+    public function unblock(Request $request)
     {
-        $user = User::find($id);
+        $user = User::find($request->input('user_id'));
         $user->banned = false;
         $user->ban_expired_at = null;
         $user->save();
-        return $user;
+        return redirect('users');
     }
 }

@@ -22,8 +22,12 @@
                 </a>
             </div>
             <div class="card-body">
-                <img class="img-fluid" src="{{asset('files/covers/'.$book->cover)}}" />
-                {{$book->description}}
+                <div style="width: 100%; display: flex;">
+                    <img style="margin: auto;" class="img-fluid" src="{{asset('files/covers/'.$book->cover)}}" />
+                </div>
+                <div style="white-space: pre-line">
+                    {{$book->description}}
+                </div>
             </div>
         </div>
         <h3></h3>
