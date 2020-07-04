@@ -18,6 +18,12 @@
         <div class="card">
             <div class="card-header">
                 <span>Thông tin cá nhân</span>
+                <a
+                    class="btn btn-outline-secondary btn-sm float-right"
+                    href="/users/{{$user->id}}/edit"
+                >
+                    <i class="fas fa-edit"></i>
+                </a>
             </div>
             <div class="card-body">
                 <table class="table table-bordered">

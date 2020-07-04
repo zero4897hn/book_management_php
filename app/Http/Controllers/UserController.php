@@ -6,6 +6,7 @@ use App\User;
 use Facade\FlareClient\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -30,7 +31,7 @@ class UserController extends Controller
      */
     public function create()
     {
-
+        return View('users.create');
     }
 
     /**
@@ -41,7 +42,34 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|max:50',
+            'password' => 'required|max:50',
+            'email' => 'required|max:50|email',
+            'first_name' => 'max:50',
+            'last_name' => 'max:50'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('users/create')->withErrors($validator)->withInput();
+        }
+
+        $user = new User();
+        $user->first_name = $request->input('first_name');
+        $user->last_name = $request->input('last_name');
+        $user->username = $request->input('username');
+        $user->email = $request->input('email');
+        $user->admin = $request->input('admin');
+        $user->password = $request->input('password');
+
+        if ($avatarFile = $request->file('avatarFile')) {
+            $avatarFileName = $avatarFile->getClientOriginalName();
+            $avatarFile->move('files/avatars', $avatarFileName);
+            $user->avatar = $avatarFileName;
+        }
+
+        $user->save();
+        return redirect('users/'.$user->id)->with('status', 'Thêm mới tài khoản thành công.');
     }
 
     /**
@@ -64,7 +92,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+        return View('users.edit', compact('user'));
     }
 
     /**
@@ -76,7 +105,32 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|max:50',
+            'email' => 'required|max:50|email',
+            'first_name' => 'max:50',
+            'last_name' => 'max:50'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('users/'. $id .'/edit')->withErrors($validator)->withInput();
+        }
+
+        $user = User::find($id);
+        $user->first_name = $request->input('first_name');
+        $user->last_name = $request->input('last_name');
+        $user->username = $request->input('username');
+        $user->email = $request->input('email');
+        $user->admin = $request->input('admin');
+
+        if ($avatarFile = $request->file('avatarFile')) {
+            $avatarFileName = $avatarFile->getClientOriginalName();
+            $avatarFile->move('files/avatars', $avatarFileName);
+            $user->avatar = $avatarFileName;
+        }
+
+        $user->save();
+        return redirect('users/'.$user->id)->with('status', 'Cập nhật tài khoản thành công.');
     }
 
     /**
