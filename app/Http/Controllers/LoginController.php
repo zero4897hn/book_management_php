@@ -27,7 +27,7 @@ class LoginController extends Controller
             return redirect('/login')->withErrors($validator)->withInput();
         }
 
-        if (Auth::attempt(['username' => $username, 'password' => $password])) {
+        if (Auth::attempt(['username' => $username, 'password' => $password, 'banned' => false])) {
             return redirect('/');
         } else {
             return redirect('/login')->with('error', 'Sai tên đăng nhập hoặc mật khẩu.');

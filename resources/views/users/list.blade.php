@@ -9,7 +9,7 @@
             <th scope="col" style="width: 20%">Tên đăng nhập</th>
             <th scope="col" style="width: 25%">Email</th>
             <th scope="col" style="width: 15%">Vai trò</th>
-            <th scope="col" style="width: 10%;">Trạng thái</th>
+            <th scope="col" style="width: 10%">Trạng thái</th>
             <th scope="col" style="width: 15%"></th>
         </tr>
     </thead>
@@ -25,7 +25,7 @@
                     <img class="img-fluid" src="{{ asset('files/avatars/anonymous_avatar.png') }}" />
                 @endif
             </td>
-            <td>{{ $user->username }}</td>
+            <td><a href="users/{{$user->id}}">{{ $user->username }}</a></td>
             <td>{{ $user->email }}</td>
             <td>
                 @if ($user->admin)
@@ -67,18 +67,20 @@
     </tbody>
 </table>
 
-@include('users.block');
-@include('users.unblock');
+@include('users.block')
+@include('users.unblock')
 {{ $users->onEachSide(5)->links() }}
 @endsection
 
 @section('footer')
 <script type="text/javascript">
+jQuery(document).ready(function() {
     jQuery('#confirm-block-modal, #confirm-unblock-modal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var userId = button.data('id');
         var modal = $(this);
         modal.find('#field_user_id').val(userId);
-    })
+    });
+});
 </script>
 @endsection

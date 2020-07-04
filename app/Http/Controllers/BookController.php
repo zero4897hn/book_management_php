@@ -127,6 +127,6 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::delete('delete from books where id = ?', [$id]);
     }
 }

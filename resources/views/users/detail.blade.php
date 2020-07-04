@@ -54,11 +54,66 @@
         </div>
     </div>
 </div>
+<div class="row mt-3 mb-3 p-3 border border-secondary rounded">
+    <div class="col-12">
+        <h5>Sách của {{$user->username}}</h5>
+    </div>
+    <div class="col-12">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col" style="width: 5%">#</th>
+                    <th scope="col" style="width: 10%">Bìa sách</th>
+                    <th scope="col" style="width: 35%">Tên sách</th>
+                    <th scope="col" style="width: 20%">Tác giả</th>
+                    <th scope="col" style="width: 20%"></th>
+                    <th scope="col" style="width: 10%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $index = 1; ?>
+                @foreach ($user->books as $book)
+                <tr>
+                    <th scope="row">{{ $index }}</th>
+                    <td><img class="img-fluid" src="{{ asset('files/covers/' . $book->cover) }}" /></td>
+                    <td><a href="/books/{{ $book->id }}">{{$book->name}}</a></td>
+                    <td>{{$book->author}}</td>
+                    <td>
+                        <span>Lượt bình luận: {{$book->comment_count}}</span> <br />
+                        <span>Đánh giá: {{$book->rating}}</span> <br />
+                    </td>
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="/books/{{$book->id}}/edit">
+                            <i class="far fa-edit"></i>
+                        </a>
+                        <button
+                            class="btn btn-danger btn-sm"
+                            data-id="{{$book->id}}"
+                            data-toggle="modal"
+                            data-target="#confirm-delete-book-modal"
+                        >
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+                <?php $index++; ?>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
 @endsection
 
 @section('footer')
-@include('comments.edit')
+@include('books.delete')
 <script type="text/javascript">
-
+jQuery(document).ready(function() {
+    jQuery('#confirm-delete-book-modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var bookId = button.data('id');
+        var modal = $(this);
+        modal.find('#field_book_id').val(bookId);
+    });
+});
 </script>
 @endsection
