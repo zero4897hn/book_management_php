@@ -24,6 +24,12 @@
 
 <script type="text/javascript">
 jQuery(document).ready(function() {
+    jQuery('#confirm-delete-book-modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var bookId = button.data('id');
+        var modal = $(this);
+        modal.find('#field_book_id').val(bookId);
+    });
     jQuery('button#button_delete_book').click(function(event) {
         event.preventDefault();
 
