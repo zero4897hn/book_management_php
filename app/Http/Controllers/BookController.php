@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Comment;
+use App\Rate;
 use Facade\FlareClient\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -115,7 +117,8 @@ class BookController extends Controller
     {
         $data = [
             'book' => Book::find($id),
-            'currentUserId' => Auth::id()
+            'currentUserId' => Auth::id(),
+            'currentUserRating' => Rate::where(['book_id' => $id, 'user_id' => Auth::id()])->first()
         ];
         return View('books.detail', $data);
     }

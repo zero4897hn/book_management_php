@@ -36,6 +36,62 @@
     </div>
 </div>
 
+@if ($book->user_id != $currentUserId)
+<style>
+    i.button-rating.checked {
+        color: orange;
+    }
+</style>
+<div class="row mt-3 mb-3 p-3 border border-secondary rounded">
+    <div class="col-sm-12">
+        <h2>Đánh giá</h2>
+    </div>
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-md-2">Bản thân:</div>
+            <div class="col-md-10">
+                @if (null !== $currentUserRating)
+                    @for ($i = 0; $i < $currentUserRating->rating; $i++)
+                    <i class="fas fa-star checked button-rating" style="cursor: pointer" data-value="{{ $i + 1 }}"></i>
+                    @endfor
+                    @for ($i = 0; $i < 5 - $currentUserRating->rating; $i++)
+                    <i
+                        class="fas fa-star button-rating"
+                        style="cursor: pointer"
+                        data-value="{{ $i + $currentUserRating->rating + 1 }}"
+                    ></i>
+                    @endfor
+                    <form action="/rating" method="POST" style="display: inline;">
+                        @csrf
+                        <input type="hidden" name="id" value="{{$currentUserRating->id}}" />
+                        <input type="hidden" name="book_id" value="{{$book->id}}" />
+                        <input type="hidden" name="rating" id="field_rating" value="{{$currentUserRating->rating}}" />
+                        <button class="btn btn-primary">Đánh giá</button>
+                    </form>
+                @else
+                <i class="fas fa-star button-rating" style="cursor: pointer" data-value="1"></i>
+                <i class="fas fa-star button-rating" style="cursor: pointer" data-value="2"></i>
+                <i class="fas fa-star button-rating" style="cursor: pointer" data-value="3"></i>
+                <i class="fas fa-star button-rating" style="cursor: pointer" data-value="4"></i>
+                <i class="fas fa-star button-rating" style="cursor: pointer" data-value="5"></i>
+                <form action="/rating" method="POST" style="display: inline;">
+                    @csrf
+                    <input type="hidden" name="book_id" value="{{$book->id}}" />
+                    <input type="hidden" name="rating" id="field_rating" value="0" />
+                    <button class="btn btn-primary">Đánh giá</button>
+                </form>
+                @endif
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">Tổng đánh giá:</div>
+            <div class="col-md-10">{{ $book->rating }}</div>
+        </div>
+        <form action=""></form>
+    </div>
+</div>
+@endif
+
 <div class="row mt-3 mb-3 p-3 border border-secondary rounded">
     <div class="col-sm-12">
         <h2>Bình luận</h2>
@@ -132,4 +188,5 @@
 @include('comments.delete')
 @include('script.book-comment')
 @include('script.edit-comment')
+@include('script.rating');
 @endsection

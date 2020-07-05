@@ -38,3 +38,5 @@ Route::resource('/comments', 'CommentController');
 Route::get('/user/non-admin', function () {
     return View('auth.non-admin');
 });
+
+Route::post('/rating', 'RateController@save');
