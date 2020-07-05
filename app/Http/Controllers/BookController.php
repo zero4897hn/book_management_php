@@ -117,7 +117,7 @@ class BookController extends Controller
     {
         $data = [
             'book' => Book::find($id),
-            'currentUserId' => Auth::id(),
+            'currentUser' => Auth::user(),
             'currentUserRating' => Rate::where(['book_id' => $id, 'user_id' => Auth::id()])->first()
         ];
         return View('books.detail', $data);

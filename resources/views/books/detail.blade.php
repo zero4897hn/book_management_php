@@ -14,7 +14,7 @@
         <div class="card">
             <div class="card-header">
                 <span>{{$book->name}}</span>
-                @if ($book->user_id == $currentUserId)
+                @if (null !== $currentUser && ($currentUser->admin || $book->user_id == $currentUser->id))
                 <a
                     class="btn btn-outline-secondary btn-sm float-right edit-comment"
                     href="/books/{{$book->id}}/edit"
@@ -36,7 +36,7 @@
     </div>
 </div>
 
-@if ($book->user_id != $currentUserId)
+@if (null !== $currentUser && ($book->user_id != $currentUser->id))
 <style>
     i.button-rating.checked {
         color: orange;
@@ -112,7 +112,7 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="comment-title">{{$comment->title}}</span>
-                        @if ($comment->user_id == $currentUserId)
+                        @if (null !== $currentUser && ($currentUser->admin || $comment->user_id == $currentUser->id))
                         <div class="float-right">
                             <button
                                 class="btn btn-outline-secondary btn-sm edit-comment"
@@ -149,7 +149,7 @@
             @guest
             <h6>Vui lòng <a style="text-decoration: none;" href="/login">đăng nhập</a> để bình luận sách.</h6>
             @else
-                @if ($book->user_id != $currentUserId)
+                @if ($book->user_id != $currentUser->id)
                 <form>
                     <input type="hidden" id="field_bookId" value="{{ $book->id }}" />
                     <fieldset class="form-group">
