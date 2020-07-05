@@ -34,3 +34,7 @@ Route::post('/users/block', 'UserController@block');
 Route::post('/users/unblock', 'UserController@unblock');
 
 Route::resource('/comments', 'CommentController');
+
+Route::get('/user/non-admin', function () {
+    return View('auth.non-admin');
+});
