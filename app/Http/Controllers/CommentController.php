@@ -40,10 +40,15 @@ class CommentController extends Controller
         $comment->title = $request->input('title');
         $comment->content = $request->input('content');
         $comment->book_id = $request->input('bookId');
-        $comment->user_id = Auth::user()->id;
-        $comment->save();
 
         $user = Auth::user();
+
+        $comment->user_id = $user->id;
+        $comment->save();
+
+        $book = $comment->book;
+        $book->comment_count = $book->comment_count + 1;
+        $book->save();
 
         $comment->username = $user->username;
         $comment->user_avatar = $user->avatar;

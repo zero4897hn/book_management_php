@@ -14,7 +14,7 @@
         <div class="card">
             <div class="card-header">
                 <span>{{$book->name}}</span>
-                @if ($book->own)
+                @if ($book->user_id == $currentUserId)
                 <a
                     class="btn btn-outline-secondary btn-sm float-right edit-comment"
                     href="/books/{{$book->id}}/edit"
@@ -56,6 +56,7 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="comment-title">{{$comment->title}}</span>
+                        @if ($comment->user_id == $currentUserId)
                         <button
                             class="btn btn-outline-secondary btn-sm float-right edit-comment"
                             data-toggle="modal"
@@ -63,6 +64,7 @@
                         >
                             <i class="fas fa-edit"></i>
                         </button>
+                        @endif
                     </div>
                     <div class="card-body comment-content">{{$comment->content}}</div>
                 </div>

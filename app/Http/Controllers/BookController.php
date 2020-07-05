@@ -27,6 +27,7 @@ class BookController extends Controller
         $books = DB::table('books')
             ->join('users', 'users.id', '=', 'books.user_id')
             ->select('users.id as id', 'name', 'cover', 'author', 'rating', 'comment_count', 'username')
+            ->whereNull('deleted_at')
             ->paginate(5);
         return View('books.list', compact('books'));
     }
@@ -90,9 +91,11 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        $book = Book::find($id);
-        $book->own = $book->user_id == Auth::id();
-        return View('books.detail', compact('book'));
+        $data = [
+            'book' => Book::find($id),
+            'currentUserId' => Auth::id()
+        ];
+        return View('books.detail', $data);
     }
 
     /**
