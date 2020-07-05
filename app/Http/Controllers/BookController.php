@@ -68,7 +68,7 @@ class BookController extends Controller
         $book->publisher = $request->input('publisher');
         $book->editor = $request->input('editor');
         $book->description = $request->input('description');
-        $book->user_id = Auth::user()->id;
+        $book->user_id = Auth::id();
 
         if ($coverFile = $request->file('coverFile')) {
             $coverFileName = $coverFile->getClientOriginalName();
@@ -91,6 +91,7 @@ class BookController extends Controller
     public function show($id)
     {
         $book = Book::find($id);
+        $book->own = $book->user_id == Auth::id();
         return View('books.detail', compact('book'));
     }
 
@@ -134,7 +135,7 @@ class BookController extends Controller
         $book->publisher = $request->input('publisher');
         $book->editor = $request->input('editor');
         $book->description = $request->input('description');
-        $book->user_id = Auth::user()->id;
+        $book->user_id = Auth::id();
 
         if ($coverFile = $request->file('coverFile')) {
             $coverFileName = $coverFile->getClientOriginalName();
