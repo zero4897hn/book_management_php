@@ -78,7 +78,12 @@
                     <option value="0" selected>Người dùng</option>
                     @endif
                 </select>
-              </div>
+                @if (session('adminError'))
+                <div class="text-danger" role="alert">
+                    {{session('adminError')}}
+                </div>
+                @endif
+            </div>
             <div class="form-group">
                 <label for="field_avatar">Avatar</label>
                 <img class="img-fluid" style="max-width: 200px;" src="{{ asset('files/avatars/'.$user->avatar) }}" />

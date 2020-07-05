@@ -122,12 +122,24 @@ class UserController extends Controller
             return redirect('users/'. $id .'/edit')->withErrors($validator)->withInput();
         }
 
+        $isAdmin = $request->input('admin');
+
         $user = User::find($id);
         $user->first_name = $request->input('first_name');
         $user->last_name = $request->input('last_name');
         $user->username = $request->input('username');
         $user->email = $request->input('email');
-        $user->admin = $request->input('admin');
+
+
+        if ($user->admin && !$isAdmin) {
+            $adminCount = DB::table('users')->where('admin', '=', true)->count();
+            if ($adminCount < 2) {
+                return redirect('users/'. $id .'/edit')
+                    ->with('adminError', 'Còn duy nhất 1 tài khoản quản trị, không thể đổi.');
+            }
+        }
+
+        $user->admin = $isAdmin;
 
         if ($avatarFile = $request->file('avatarFile')) {
             $avatarFileName = $avatarFile->getClientOriginalName();

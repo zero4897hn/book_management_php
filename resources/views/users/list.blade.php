@@ -47,25 +47,28 @@
                         @endif
                     </td>
                     <td>
-                        @if ($user->banned)
-                            <button
-                                class="btn btn-warning button_unblock"
-                                data-id="{{ $user->id }}"
-                                data-toggle="modal"
-                                data-target="#confirm-unblock-modal"
-                            >
-                                <i class="fas fa-lock-open"></i>
-                            </button>
-                        @else
-                            <button
-                                class="btn btn-warning button_block"
-                                data-id="{{ $user->id }}"
-                                data-toggle="modal"
-                                data-target="#confirm-block-modal"
-                            >
-                                <i class="fas fa-lock"></i>
-                            </button>
+                        @if (Auth::id() !== $user->id)
+                            @if ($user->banned)
+                                <button
+                                    class="btn btn-warning button_unblock"
+                                    data-id="{{ $user->id }}"
+                                    data-toggle="modal"
+                                    data-target="#confirm-unblock-modal"
+                                >
+                                    <i class="fas fa-lock-open"></i>
+                                </button>
+                            @else
+                                <button
+                                    class="btn btn-warning button_block"
+                                    data-id="{{ $user->id }}"
+                                    data-toggle="modal"
+                                    data-target="#confirm-block-modal"
+                                >
+                                    <i class="fas fa-lock"></i>
+                                </button>
+                            @endif
                         @endif
+
                         <a
                             class="btn btn-primary"
                             href="/users/{{$user->id}}/edit"

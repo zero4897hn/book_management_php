@@ -40,6 +40,12 @@ class RegisterController extends Controller
         $user->username = $username;
         $user->password = Hash::make($request->input('password'));
         $user->email = $request->input('email');
+
+        $adminCount = DB::table('users')->where('admin', '=', true)->count();
+        if ($adminCount < 1) {
+            $user->admin = true;
+        }
+
         $user->save();
 
         return View('auth.register-success');
