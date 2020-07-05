@@ -4,6 +4,8 @@
 
 <?php
     $sort = app('request')->input('sort');
+    $sortField = '';
+    $sortType = '';
     if (isset($sort)) {
         $sortData = explode(',', $sort);
         $sortField = $sortData[0];
