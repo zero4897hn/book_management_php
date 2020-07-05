@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Facade\FlareClient\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -28,8 +29,15 @@ class RegisterController extends Controller
             return redirect('/register')->withErrors($validator)->withInput();
         }
 
+        $username = $request->input('username');
+
+        $usernameCount = DB::table('users')->where('username', '=', $username)->count();
+        if ($usernameCount > 0) {
+            return redirect('/register')->with('usernameError', 'Tên đăng nhập đã tồn tại');
+        }
+
         $user = new User();
-        $user->username = $request->input('username');
+        $user->username = $username;
         $user->password = Hash::make($request->input('password'));
         $user->email = $request->input('email');
         $user->save();

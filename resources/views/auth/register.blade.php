@@ -13,6 +13,11 @@
                     id="field_username"
                     name="username"
                 >
+                @if (session('usernameError'))
+                <div class="text-danger" role="alert">
+                    {{session('usernameError')}}
+                </div>
+                @endif
                 @error('username')
                 <div class="text-danger" role="alert">
                     {{$message}}
