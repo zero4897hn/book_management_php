@@ -22,12 +22,21 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $name = $request->input('name');
+        $author = $request->input('author');
+
         $books = DB::table('books')
             ->join('users', 'users.id', '=', 'books.user_id')
             ->select('books.id as id', 'name', 'cover', 'author', 'rating', 'comment_count', 'username')
             ->whereNull('deleted_at')
+            ->when($name, function ($query, $name) {
+                return $query->where('name', 'like', '%'. $name  .'%');
+            })
+            ->when($author, function($query, $author) {
+                return $query->where('author', 'like', '%'. $author  .'%');
+            })
             ->paginate(5);
         return View('books.list', compact('books'));
     }
