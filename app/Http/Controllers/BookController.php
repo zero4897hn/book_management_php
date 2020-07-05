@@ -7,6 +7,7 @@ use Facade\FlareClient\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
@@ -48,6 +49,18 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:50',
+            'isbn' => 'required|max:50',
+            'author' => 'required|max:50',
+            'publisher' => 'required|max:50',
+            'editor' => 'max:50',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('/books/create')->withErrors($validator)->withInput();
+        }
+
         $book = new Book();
         $book->name = $request->input('name');
         $book->isbn = $request->input('isbn');
@@ -61,6 +74,8 @@ class BookController extends Controller
             $coverFileName = $coverFile->getClientOriginalName();
             $coverFile->move('files/covers', $coverFileName);
             $book->cover = $coverFileName;
+        } else {
+            return redirect('/books/create')->with('fileRequireError', 'Sách phải có ảnh bìa.');
         }
 
         $book->save();
@@ -100,6 +115,18 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:50',
+            'isbn' => 'required|max:50',
+            'author' => 'required|max:50',
+            'publisher' => 'required|max:50',
+            'editor' => 'max:50',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('/books/create')->withErrors($validator)->withInput();
+        }
+
         $book = Book::find($id);
         $book->name = $request->input('name');
         $book->isbn = $request->input('isbn');
@@ -127,6 +154,6 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        DB::delete('delete from books where id = ?', [$id]);
+        Book::find($id)->delete();
     }
 }
