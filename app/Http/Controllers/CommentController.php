@@ -107,6 +107,12 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        Comment::find($id)->delete();
+        $comment = Comment::find($id);
+
+        $book = $comment->book;
+        $book->comment_count = $book->comment_count - 1;
+        $book->save();
+
+        $comment->delete();
     }
 }
