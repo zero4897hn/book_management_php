@@ -86,9 +86,16 @@ class BookController extends Controller
             return redirect('/books/create')->withErrors($validator)->withInput();
         }
 
+        $isbn = $request->input('isbn');
+
+        $countIsbn = DB::table('books')->where('isbn', '=', $isbn)->count();
+        if ($countIsbn > 0) {
+            return redirect('/books/create')->with('isbnError', 'Mã cuốn sách đã tồn tại.');
+        }
+
         $book = new Book();
         $book->name = $request->input('name');
-        $book->isbn = $request->input('isbn');
+        $book->isbn = $isbn;
         $book->author = $request->input('author');
         $book->publisher = $request->input('publisher');
         $book->editor = $request->input('editor');

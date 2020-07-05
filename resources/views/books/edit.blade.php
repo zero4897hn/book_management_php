@@ -37,6 +37,11 @@
                     {{$message}}
                 </div>
                 @enderror
+                @if (session('isbnError'))
+                <div class="text-danger" role="alert">
+                    {{session('isbnError')}}
+                </div>
+                @endif
             </div>
             <div class="form-group">
                 <label for="field_author">Tác giả</label>
