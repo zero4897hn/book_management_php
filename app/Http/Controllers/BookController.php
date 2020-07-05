@@ -26,6 +26,7 @@ class BookController extends Controller
     {
         $name = $request->input('name');
         $author = $request->input('author');
+        $sort = $request->input('sort');
 
         $books = DB::table('books')
             ->join('users', 'users.id', '=', 'books.user_id')
@@ -36,6 +37,18 @@ class BookController extends Controller
             })
             ->when($author, function($query, $author) {
                 return $query->where('author', 'like', '%'. $author  .'%');
+            })
+            ->when($sort, function($query, $sort) {
+                $sortData = explode(',', $sort);
+                if (count($sortData) < 2) {
+                    return $query->orderBy('id', 'asc');
+                } else {
+                    if ($sortData[1] == 'desc') {
+                        return $query->orderBy($sortData[0], 'desc');
+                    } else {
+                        return $query->orderBy($sortData[0], 'asc');
+                    }
+                }
             })
             ->paginate(5);
         return View('books.list', compact('books'));
