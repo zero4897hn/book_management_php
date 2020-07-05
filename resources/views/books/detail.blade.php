@@ -41,7 +41,7 @@
         <h2>Bình luận</h2>
     </div>
     <div id="field_comment" class="col-sm-12">
-        @foreach ($book->comments as $comment)
+        @forelse ($book->comments as $comment)
         <div class="row custom-comment">
             <div class="col-sm-2">
                 @if (isset($comment->user->avatar))
@@ -70,39 +70,47 @@
                 </div>
             </div>
         </div>
-        @endforeach
+        @empty
+        <div class="row">
+            <div class="col-12">
+                <h4 class="text-center">Hiện tại chưa có bình luận</h4>
+            </div>
+        </div>
+        @endforelse
     </div>
     <div class="col-sm-12 mt-3">
         <div class="col-12">
             @guest
             <h6>Vui lòng <a style="text-decoration: none;" href="/login">đăng nhập</a> để bình luận sách.</h6>
             @else
-            <form>
-                <input type="hidden" id="field_bookId" value="{{ $book->id }}" />
-                <fieldset class="form-group">
-                    <label for="field_title">Tiêu đề:</label>
-                    <input
-                        id="field_title"
-                        type="text"
-                        class="form-control"
-                        placeholder="Nhập tiêu đề"
-                        name="title"
-                        required
-                    />
-                </fieldset>
-                <fieldset class="form-group">
-                    <label for="field_content">Nội dung:</label>
-                    <textarea
-                        class="form-control"
-                        rows="3"
-                        placeholder="Nhập Nội dung"
-                        id="field_content"
-                        name="content"
-                        required
-                    ></textarea>
-                </fieldset>
-                <button type="submit" id="button_comment" class="btn btn-primary float-right">Bình luận</button>
-            </form>
+                @if ($book->user_id != $currentUserId)
+                <form>
+                    <input type="hidden" id="field_bookId" value="{{ $book->id }}" />
+                    <fieldset class="form-group">
+                        <label for="field_title">Tiêu đề:</label>
+                        <input
+                            id="field_title"
+                            type="text"
+                            class="form-control"
+                            placeholder="Nhập tiêu đề"
+                            name="title"
+                            required
+                        />
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label for="field_content">Nội dung:</label>
+                        <textarea
+                            class="form-control"
+                            rows="3"
+                            placeholder="Nhập Nội dung"
+                            id="field_content"
+                            name="content"
+                            required
+                        ></textarea>
+                    </fieldset>
+                    <button type="submit" id="button_comment" class="btn btn-primary float-right">Bình luận</button>
+                </form>
+                @endif
             @endguest
         </div>
     </div>

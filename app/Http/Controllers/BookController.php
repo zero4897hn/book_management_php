@@ -26,7 +26,7 @@ class BookController extends Controller
     {
         $books = DB::table('books')
             ->join('users', 'users.id', '=', 'books.user_id')
-            ->select('users.id as id', 'name', 'cover', 'author', 'rating', 'comment_count', 'username')
+            ->select('books.id as id', 'name', 'cover', 'author', 'rating', 'comment_count', 'username')
             ->whereNull('deleted_at')
             ->paginate(5);
         return View('books.list', compact('books'));
