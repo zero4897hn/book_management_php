@@ -20,6 +20,7 @@ class CreateCommentsTable extends Migration
             $table->string('title', 50);
             $table->string('content', 1000);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

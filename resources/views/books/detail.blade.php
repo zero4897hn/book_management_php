@@ -57,13 +57,23 @@
                     <div class="card-header">
                         <span class="comment-title">{{$comment->title}}</span>
                         @if ($comment->user_id == $currentUserId)
-                        <button
-                            class="btn btn-outline-secondary btn-sm float-right edit-comment"
-                            data-toggle="modal"
-                            data-target="#modal-edit-comment"
-                        >
-                            <i class="fas fa-edit"></i>
-                        </button>
+                        <div class="float-right">
+                            <button
+                                class="btn btn-outline-secondary btn-sm edit-comment"
+                                data-toggle="modal"
+                                data-target="#modal-edit-comment"
+                            >
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button
+                                class="btn btn-outline-danger btn-sm"
+                                data-id="{{$comment->id}}"
+                                data-toggle="modal"
+                                data-target="#confirm-delete-comment-modal"
+                            >
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+                        </div>
                         @endif
                     </div>
                     <div class="card-body comment-content">{{$comment->content}}</div>
@@ -71,9 +81,9 @@
             </div>
         </div>
         @empty
-        <div class="row">
+        <div class="row custom-comment no-one-comment">
             <div class="col-12">
-                <h4 class="text-center">Hiện tại chưa có bình luận</h4>
+                <h4 class="text-center no-one-comment">Hiện tại chưa có bình luận</h4>
             </div>
         </div>
         @endforelse
@@ -119,6 +129,7 @@
 
 @section('footer')
 @include('comments.edit')
+@include('comments.delete')
 <script type="text/javascript">
 jQuery(document).ready(function() {
     jQuery('button#button_comment').click(function(event) {
@@ -136,6 +147,7 @@ jQuery(document).ready(function() {
                 'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
             },
             success: function(data) {
+                jQuery('.no-one-comment').remove();
                 var avatarUrl = '{{ URL::asset('files/avatars') }}';
                 var commentField = `
                     <div class="row custom-comment">
@@ -151,13 +163,23 @@ jQuery(document).ready(function() {
                             <div class="card">
                                 <div class="card-header">
                                     <span class="comment-title">${data.title}</span>
-                                    <button
-                                        class="btn btn-outline-secondary btn-sm float-right edit-comment"
-                                        data-toggle="modal"
-                                        data-target="#modal-edit-comment"
-                                    >
-                                        <i class="fas fa-edit"></i>
-                                    </button>
+                                    <div class="float-right">
+                                        <button
+                                            class="btn btn-outline-secondary btn-sm edit-comment"
+                                            data-toggle="modal"
+                                            data-target="#modal-edit-comment"
+                                        >
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button
+                                            class="btn btn-outline-danger btn-sm"
+                                            data-id="${data.id}"
+                                            data-toggle="modal"
+                                            data-target="#confirm-delete-comment-modal"
+                                        >
+                                            <i class="far fa-trash-alt"></i>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="card-body comment-content">${data.content}</div>
                             </div>
