@@ -35,10 +35,10 @@ class BookController extends Controller
             ->select('books.id as id', 'name', 'cover', 'author', 'rating', 'comment_count', 'username')
             ->whereNull('deleted_at')
             ->when($name, function ($query, $name) {
-                return $query->where('name', 'like', '%'. $name  .'%');
+                return $query->whereRaw("UPPER(name) LIKE '%" . strtoupper($name) . "%'");
             })
             ->when($author, function($query, $author) {
-                return $query->where('author', 'like', '%'. $author  .'%');
+                return $query->whereRaw("UPPER(author) LIKE '%" . strtoupper($author) . "%'");
             })
             ->when($sort, function($query, $sort) {
                 $sortData = explode(',', $sort);
