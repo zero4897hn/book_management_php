@@ -12,6 +12,7 @@
                     class="form-control"
                     id="field_first_name"
                     name="first_name"
+                    value="{{ old('first_name') }}"
                 >
                 @error('first_name')
                 <div class="text-danger" role="alert">
@@ -26,6 +27,7 @@
                     class="form-control"
                     id="field_last_name"
                     name="last_name"
+                    value="{{ old('last_name') }}"
                 >
                 @error('last_name')
                 <div class="text-danger" role="alert">
@@ -40,6 +42,7 @@
                     class="form-control"
                     id="field_username"
                     name="username"
+                    value="{{ old('username') }}"
                 >
                 @error('username')
                 <div class="text-danger" role="alert">
@@ -68,6 +71,7 @@
                     class="form-control"
                     id="field_email"
                     name="email"
+                    value="{{ old('email') }}"
                 >
                 @error('email')
                 <div class="text-danger" role="alert">

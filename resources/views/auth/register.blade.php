@@ -12,6 +12,7 @@
                     class="form-control"
                     id="field_username"
                     name="username"
+                    value="{{ old('username') }}"
                 >
                 @if (session('usernameError'))
                 <div class="text-danger" role="alert">
@@ -59,6 +60,7 @@
                     class="form-control"
                     id="field_email"
                     name="email"
+                    value="{{ old('email') }}"
                 >
                 @if (session('emailError'))
                 <div class="text-danger" role="alert">
