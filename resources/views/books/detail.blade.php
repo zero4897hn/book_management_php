@@ -187,6 +187,5 @@
 @include('comments.edit')
 @include('comments.delete')
 @include('script.book-comment')
-@include('script.edit-comment')
 @include('script.rating');
 @endsection
