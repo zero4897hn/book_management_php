@@ -60,6 +60,11 @@
                     id="field_email"
                     name="email"
                 >
+                @if (session('emailError'))
+                <div class="text-danger" role="alert">
+                    {{session('emailError')}}
+                </div>
+                @endif
                 @error('email')
                 <div class="text-danger" role="alert">
                     {{$message}}

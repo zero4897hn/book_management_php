@@ -30,16 +30,22 @@ class RegisterController extends Controller
         }
 
         $username = $request->input('username');
+        $email = $request->input('email');
 
         $usernameCount = DB::table('users')->where('username', '=', $username)->count();
         if ($usernameCount > 0) {
             return redirect('/register')->with('usernameError', 'Tên đăng nhập đã tồn tại');
         }
 
+        $emailCount = DB::table('users')->where('email', '=', $email)->count();
+        if ($emailCount > 0) {
+            return redirect('/register')->with('emailError', 'Email đã tồn tại');
+        }
+
         $user = new User();
         $user->username = $username;
         $user->password = Hash::make($request->input('password'));
-        $user->email = $request->input('email');
+        $user->email = $email;
 
         $adminCount = DB::table('users')->where('admin', '=', true)->count();
         if ($adminCount < 1) {
