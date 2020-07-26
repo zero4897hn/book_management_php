@@ -24,7 +24,7 @@ const Menu = () => {
                             <Link className="nav-link" to="/books">Tất cả các sách</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/books/create">Giới thiệu sách</Link>
+                            <Link className="nav-link" to="/create-book">Giới thiệu sách</Link>
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link" to="/users">Quản lý người dùng</Link>

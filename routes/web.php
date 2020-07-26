@@ -39,4 +39,6 @@ Route::get('/user/non-admin', function () {
     return View('auth.non-admin');
 });
 
+Route::view('/{path?}', 'home');
+
 Route::post('/rating', 'RateController@save');

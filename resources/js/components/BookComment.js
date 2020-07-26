@@ -44,7 +44,7 @@ const BookComment = () => {
             </div>
             <div className="col-sm-12 mt-3">
                 <div className="col-12">
-                    <h6>Vui lòng <a style="text-decoration: none;" href="/login">đăng nhập</a> để bình luận sách.</h6>
+                    <h6>Vui lòng <a style={{textDecoration: 'none'}} href="/login">đăng nhập</a> để bình luận sách.</h6>
                     <form>
                         <input type="hidden" id="field_bookId" value="{{ $book->id }}" />
                         <fieldset className="form-group">
