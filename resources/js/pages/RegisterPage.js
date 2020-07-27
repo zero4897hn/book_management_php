@@ -1,11 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import authenticationActions from '../actions/authenticationActions';
+import { useHistory } from 'react-router-dom';
 
-const RegisterPage = () => {
+const RegisterPage = (props) => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [errors, setErrors] = useState(null);
+    const [isSaving, setIsSaving] = useState(false);
+
+    const { authenticationReducer, register } = props;
+    const { registerStatus } = authenticationReducer;
+
+    const history = useHistory();
+
+    useEffect(() => {
+        const { success, errors } = registerStatus;
+        if (success) {
+            history.push('/');
+        } else if (success === false) {
+            setErrors(errors);
+        }
+        setIsSaving(false);
+    }, [registerStatus])
+
+    const onSubmitRegister = (event) => {
+        setIsSaving(true);
+        event.preventDefault();
+        setErrors(null);
+        register({ username, password, email, 'password_confirmation': confirmPassword });
+    }
+
     return (
-        <div>
+        <div className="container">
             <div className="row justify-content-sm-center">
                 <div className="col-sm-6">
-                    <form>
+                    <form onSubmit={(event) => onSubmitRegister(event)}>
                         <div className="form-group">
                             <label htmlFor="field_username">Tên đăng nhập</label>
                             <input
@@ -13,8 +45,12 @@ const RegisterPage = () => {
                                 className="form-control"
                                 id="field_username"
                                 name="username"
-                                value="{{ old('username') }}"
+                                value={username}
+                                onChange={(event) => {setUsername(event.target.value)}}
                             />
+                            <div className="text-danger" role="alert">
+                                {errors && errors.username && errors.username[0]}
+                            </div>
                         </div>
                         <div className="form-group">
                             <label htmlFor="field_password">Mật khẩu</label>
@@ -23,7 +59,12 @@ const RegisterPage = () => {
                                 className="form-control"
                                 id="field_password"
                                 name="password"
+                                value={password}
+                                onChange={(event) => {setPassword(event.target.value)}}
                             />
+                            <div className="text-danger" role="alert">
+                                {errors && errors.password && errors.password[0]}
+                            </div>
                         </div>
                         <div className="form-group">
                             <label htmlFor="field_password_confirmation">Xác nhận mật khẩu</label>
@@ -32,7 +73,12 @@ const RegisterPage = () => {
                                 className="form-control"
                                 id="field_password_confirmation"
                                 name="password_confirmation"
+                                value={confirmPassword}
+                                onChange={(event) => {setConfirmPassword(event.target.value)}}
                             />
+                            <div className="text-danger" role="alert">
+                                {errors && errors.password_confirmation && errors.password_confirmation[0]}
+                            </div>
                         </div>
                         <div className="form-group">
                             <label htmlFor="field_email">Email</label>
@@ -41,10 +87,14 @@ const RegisterPage = () => {
                                 className="form-control"
                                 id="field_email"
                                 name="email"
-                                value="{{ old('email') }}"
+                                value={email}
+                                onChange={(event) => {setEmail(event.target.value)}}
                             />
+                            <div className="text-danger" role="alert">
+                                {errors && errors.email && errors.email[0]}
+                            </div>
                         </div>
-                        <button type="submit" className="btn btn-primary">Đăng ký</button>
+                        <button type="submit" disabled={isSaving} className="btn btn-primary">Đăng ký</button>
                     </form>
                 </div>
             </div>
@@ -52,4 +102,12 @@ const RegisterPage = () => {
     );
 }
 
-export default RegisterPage;
+const mapStateToProps = (state) => ({
+    authenticationReducer: state.authenticationReducer
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    register: (data) => dispatch(authenticationActions.register(data)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterPage);

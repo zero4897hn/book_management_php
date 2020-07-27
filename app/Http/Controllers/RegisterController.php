@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\User;
 use Facade\FlareClient\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class RegisterController extends Controller
 {
@@ -25,26 +27,28 @@ class RegisterController extends Controller
             'email' => 'required|max:50|email'
         ]);
 
-        if ($validator->fails()) {
-            return redirect('/register')->withErrors($validator)->withInput();
-        }
-
         $username = $request->input('username');
         $email = $request->input('email');
 
-        $usernameCount = DB::table('users')->where('username', '=', $username)->count();
-        if ($usernameCount > 0) {
-            return redirect('/register')->with('usernameError', 'Tên đăng nhập đã tồn tại');
-        }
+        $validator->after(function($validator) use($request) {
+            $usernameCount = DB::table('users')->where('username', '=', $request->input('username'))->count();
+            if ($usernameCount > 0) {
+                $validator->errors()->add('username', 'Tên đăng nhập đã tồn tại.');
+            }
 
-        $emailCount = DB::table('users')->where('email', '=', $email)->count();
-        if ($emailCount > 0) {
-            return redirect('/register')->with('emailError', 'Email đã tồn tại');
+            $emailCount = DB::table('users')->where('email', '=', $request->input('email'))->count();
+            if ($emailCount > 0) {
+                $validator->errors()->add('email', 'Email đã tồn tại.');
+            }
+        });
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
 
         $user = new User();
         $user->username = $username;
-        $user->password = Hash::make($request->input('password'));
+        $user->password = bcrypt($request->input('password'));
         $user->email = $email;
 
         $adminCount = DB::table('users')->where('admin', '=', true)->count();
@@ -54,6 +58,6 @@ class RegisterController extends Controller
 
         $user->save();
 
-        return View('auth.register-success');
+        return response($user, Response::HTTP_OK);;
     }
 }
