@@ -1,9 +1,10 @@
-import { REGISTER, LOGIN } from "../utils/actions";
+import { REGISTER, LOGIN, RESET_AUTHENTICATION_STATE, LOGOUT } from "../utils/actions";
 
 const initialState = {
     loginResponse: { success: null, errors: null },
-    isLogin: null,
-    registerResponse: { success: null, errors: null }
+    registerResponse: { success: null, errors: null },
+    userData: null,
+    isLogin: null
 }
 
 const authenticationReducer = (state = initialState, action) => {
@@ -12,15 +13,21 @@ const authenticationReducer = (state = initialState, action) => {
         case REGISTER: {
             const { success, errors } = payload;
             return {
-                ...initialState,
+                ...state,
                 registerResponse: { success, errors }
             }
         }
         case LOGIN: {
             const { success, errors } = payload;
             return {
-                ...initialState,
-                loginResponse: { success, errors }
+                ...state,
+                loginResponse: { success, errors },
+            }
+        }
+        case RESET_AUTHENTICATION_STATE:
+        case LOGOUT: {
+            return {
+                ...initialState
             }
         }
         default: {

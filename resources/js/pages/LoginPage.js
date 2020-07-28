@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import authenticationActions from '../actions/authenticationActions';
+import { useHistory } from 'react-router-dom';
 
-const LoginPage = () => {
+const LoginPage = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState(null);
     const [isLogingIn, setIsLogingIn] = useState(false);
 
-    const { authenticationReducer, login } = props;
+    const { authenticationReducer, login, getUserData } = props;
     const { loginResponse } = authenticationReducer;
+
+    const history = useHistory();
 
     useEffect(() => {
         const { success, errors } = loginResponse;

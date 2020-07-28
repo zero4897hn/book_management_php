@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import authenticationActions from '../actions/authenticationActions';
 import { useHistory } from 'react-router-dom';
+import authenticationActions from '../actions/authenticationActions';
+import toastActions from '../actions/toastActions';
 
 const RegisterPage = (props) => {
     const [username, setUsername] = useState('');
@@ -11,7 +12,7 @@ const RegisterPage = (props) => {
     const [errors, setErrors] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
 
-    const { authenticationReducer, register } = props;
+    const { authenticationReducer, register, resetState, showSuccessToast } = props;
     const { registerResponse } = authenticationReducer;
 
     const history = useHistory();
@@ -19,7 +20,9 @@ const RegisterPage = (props) => {
     useEffect(() => {
         const { success, errors } = registerResponse;
         if (success) {
+            showSuccessToast('Đăng ký thành công.');
             history.push('/');
+            resetState();
         } else if (success === false) {
             setErrors(errors);
         }
@@ -103,11 +106,12 @@ const RegisterPage = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    authenticationReducer: state.authenticationReducer
+    authenticationReducer: state.authenticationReducer,
 })
 
 const mapDispatchToProps = (dispatch) => ({
     register: (data) => dispatch(authenticationActions.register(data)),
+    showSuccessToast: (data) => dispatch(toastActions.showSuccessToast(data)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterPage);

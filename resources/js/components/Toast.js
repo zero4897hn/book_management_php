@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 
 const Toast = (props) => {
     const [open, setOpen] = React.useState(false);
+    const [message, setMessage] = React.useState('');
+
+    const { toastReducer } = props;
+    const { successResponse } = toastReducer;
+
+    useEffect(() => {
+        if (successResponse) {
+            setMessage(successResponse.message);
+            setOpen(true);
+        }
+    }, [successResponse])
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -12,11 +24,13 @@ const Toast = (props) => {
 
     return (
         <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="success">
-            This is a success message!
-            </Alert>
+            <Alert onClose={handleClose} severity="success">{message}</Alert>
         </Snackbar>
     )
 }
 
-export default Toast;
+const mapStateToProps = (state) => ({
+    toastReducer: state.toastReducer
+})
+
+export default connect(mapStateToProps)(Toast);

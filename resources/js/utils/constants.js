@@ -1,0 +1,1 @@
+export const LOGIN_TOKEN_STORAGE = 'LOGIN_TOKEN'

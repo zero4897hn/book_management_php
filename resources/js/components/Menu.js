@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { LOGIN_TOKEN_STORAGE } from '../utils/constants';
+import authenticationActions from '../actions/authenticationActions';
 
-const Menu = () => {
+const Menu = (props) => {
+    const { logout } = props;
+    const auth = localStorage.getItem(LOGIN_TOKEN_STORAGE);
+
+    useEffect(() => {
+        console.log(auth);
+    }, [auth])
+
+    const onClickLogout = () => {
+        logout();
+    }
+
     return (
         <nav className="navbar navbar-expand-sm navbar-light bg-light">
             <div className="container">
@@ -30,14 +44,9 @@ const Menu = () => {
                             <Link className="nav-link" to="/users">Quản lý người dùng</Link>
                         </li>
                     </ul>
+                    {auth?
                     <ul className="navbar-nav ml-auto">
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/login">Đăng nhập</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/register">Đăng ký</Link>
-                        </li>
-                        {/* <li className="nav-item dropdown">
+                        <li className="nav-item dropdown">
                             <Link
                                 className="nav-link dropdown-toggle"
                                 to="#"
@@ -53,19 +62,28 @@ const Menu = () => {
                                 <Link className="dropdown-item" to="#">Thông tin cá nhân</Link>
                                 <Link className="dropdown-item" to="#">Sách của bạn</Link>
                                 <div className="dropdown-divider"></div>
-                                <Link
-                                    className="dropdown-item"
-                                    to="/logout"
-                                >
-                                    Đăng xuất
-                                </Link>
+                                <div className="dropdown-item" onClick={(event) => onClickLogout(event)}>Đăng xuất</div>
                             </div>
-                        </li> */}
+                        </li>
                     </ul>
+                    :
+                    <ul className="navbar-nav ml-auto">
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/login">Đăng nhập</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/register">Đăng ký</Link>
+                        </li>
+                    </ul>
+                    }
                 </div>
             </div>
         </nav>
     );
 }
 
-export default Menu;
+const mapDispatchToProps = (dispatch) => ({
+    logout: () => dispatch(authenticationActions.logout()),
+})
+
+export default connect(null, mapDispatchToProps)(Menu);
