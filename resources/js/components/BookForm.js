@@ -8,6 +8,7 @@ const BookForm = (props) => {
     const [editor, setEditor] = useState('');
     const [description, setDescription] = useState('');
     const [coverFile, setCoverFile] = useState(null);
+    const [errors, setErrors] = useState(null);
 
     const fileInput = useRef(null);
 
@@ -38,6 +39,9 @@ const BookForm = (props) => {
                             value={name}
                             onChange={event => setName(event.target.value)}
                         />
+                        <div className="text-danger" role="alert">
+                            {errors && errors.name && errors.name[0]}
+                        </div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="field_isbn">Mã cuốn sách</label>
@@ -50,6 +54,9 @@ const BookForm = (props) => {
                             value={isbn}
                             onChange={event => setIsbn(event.target.value)}
                         />
+                        <div className="text-danger" role="alert">
+                            {errors && errors.isbn && errors.isbn[0]}
+                        </div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="field_author">Tác giả</label>
@@ -62,6 +69,9 @@ const BookForm = (props) => {
                             value={author}
                             onChange={event => setAuthor(event.target.value)}
                         />
+                        <div className="text-danger" role="alert">
+                            {errors && errors.author && errors.author[0]}
+                        </div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="field_publisher">Nhà xuất bản</label>
@@ -74,6 +84,9 @@ const BookForm = (props) => {
                             value={publisher}
                             onChange={event => setPublisher(event.target.value)}
                         />
+                        <div className="text-danger" role="alert">
+                            {errors && errors.publisher && errors.publisher[0]}
+                        </div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="field_editor">Nhà biên tập</label>
@@ -86,6 +99,9 @@ const BookForm = (props) => {
                             value={editor}
                             onChange={event => setEditor(event.target.value)}
                         />
+                        <div className="text-danger" role="alert">
+                            {errors && errors.editor && errors.editor[0]}
+                        </div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="field_description">Mô tả cuốn sách</label>
@@ -97,10 +113,16 @@ const BookForm = (props) => {
                             value={description}
                             onChange={event => setDescription(event.target.value)}
                         ></textarea>
+                        <div className="text-danger" role="alert">
+                            {errors && errors.description && errors.description[0]}
+                        </div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="field_cover">Bìa sách</label>
                         <input type="file" className="form-control-file" id="field_cover" name="coverFile" multiple ref={fileInput} />
+                        <div className="text-danger" role="alert">
+                            {errors && errors.cover && errors.cover[0]}
+                        </div>
                     </div>
                     <button type="submit" className="btn btn-primary">Giới thiệu</button>
                 </form>

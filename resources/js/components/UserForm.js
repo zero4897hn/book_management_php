@@ -7,6 +7,7 @@ const UserForm = (props) => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [admin, setAdmin] = useState('0');
+    const [errors, setErrors] = useState(null);
 
     const { entity = {} } = props
 
@@ -35,6 +36,9 @@ const UserForm = (props) => {
                             value={firstName}
                             onChange={event => setFirstName(event.target.value)}
                         />
+                        <div className="text-danger" role="alert">
+                            {errors && errors.first_name && errors.first_name[0]}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="field_last_name">Họ</label>
@@ -46,6 +50,9 @@ const UserForm = (props) => {
                             value={lastName}
                             onChange={event => setLastName(event.target.value)}
                         />
+                        <div className="text-danger" role="alert">
+                            {errors && errors.last_name && errors.last_name[0]}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="field_username">Tên đăng nhập</label>
@@ -57,6 +64,9 @@ const UserForm = (props) => {
                             value={username}
                             onChange={event => setUsername(event.target.value)}
                         />
+                        <div className="text-danger" role="alert">
+                            {errors && errors.username && errors.username[0]}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="field_password">Mật khẩu</label>
@@ -68,6 +78,9 @@ const UserForm = (props) => {
                             value={password}
                             onChange={event => setPassword(event.target.value)}
                         />
+                        <div className="text-danger" role="alert">
+                            {errors && errors.password && errors.password[0]}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="field_email">Email</label>
@@ -79,6 +92,9 @@ const UserForm = (props) => {
                             value={email}
                             onChange={event => setEmail(event.target.value)}
                         />
+                        <div className="text-danger" role="alert">
+                            {errors && errors.email && errors.email[0]}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="field_admin">Vai trò</label>
@@ -92,10 +108,16 @@ const UserForm = (props) => {
                             <option value="1">Quản trị</option>
                             <option value="0" selected>Người dùng</option>
                         </select>
+                        <div className="text-danger" role="alert">
+                            {errors && errors.admin && errors.admin[0]}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="field_avatar">Avatar</label>
                         <input type="file" class="form-control-file" id="field_avatar" name="avatarFile" multiple ref={fileInput} />
+                        <div className="text-danger" role="alert">
+                            {errors && errors.avatar && errors.avatar[0]}
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Thêm mới</button>
                 </form>
