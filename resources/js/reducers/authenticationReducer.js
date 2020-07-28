@@ -1,9 +1,9 @@
-import { REGISTER } from "../utils/actions";
+import { REGISTER, LOGIN } from "../utils/actions";
 
 const initialState = {
-    loginErrors: null,
+    loginResponse: { success: null, errors: null },
     isLogin: null,
-    registerStatus: { success: null, errors: null }
+    registerResponse: { success: null, errors: null }
 }
 
 const authenticationReducer = (state = initialState, action) => {
@@ -13,7 +13,14 @@ const authenticationReducer = (state = initialState, action) => {
             const { success, errors } = payload;
             return {
                 ...initialState,
-                registerStatus: { success, errors }
+                registerResponse: { success, errors }
+            }
+        }
+        case LOGIN: {
+            const { success, errors } = payload;
+            return {
+                ...initialState,
+                loginResponse: { success, errors }
             }
         }
         default: {

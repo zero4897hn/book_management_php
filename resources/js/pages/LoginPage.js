@@ -3,6 +3,28 @@ import React, { useState } from 'react';
 const LoginPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState(null);
+    const [isLogingIn, setIsLogingIn] = useState(false);
+
+    const { authenticationReducer, login } = props;
+    const { loginResponse } = authenticationReducer;
+
+    useEffect(() => {
+        const { success, errors } = loginResponse;
+        if (success) {
+            history.push('/');
+        } else if (success === false) {
+            setErrors(errors);
+        }
+        setIsLogingIn(false);
+    }, [loginResponse])
+
+    const onSubmitLogin = (event) => {
+        setIsLogingIn(true);
+        event.preventDefault();
+        setErrors(null);
+        login({ username, password });
+    }
 
     return (
         <div className="container">
@@ -10,7 +32,7 @@ const LoginPage = () => {
                 <div className="col-sm-4">
                     <div className="card" style={{ width: '18rem' }}>
                         <div className="card-body">
-                            <form>
+                            <form onSubmit={(event) => onSubmitLogin(event)}>
                                 <div className="form-group">
                                     <label htmlFor="field_username">Tên đăng nhập</label>
                                     <input
@@ -21,6 +43,9 @@ const LoginPage = () => {
                                         value={username}
                                         onChange={(event) => { setUsername(event.target.value) }}
                                     />
+                                    <div className="text-danger" role="alert">
+                                        {errors && errors.username && errors.username[0]}
+                                    </div>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="field_password">Mật khẩu</label>
@@ -32,8 +57,11 @@ const LoginPage = () => {
                                         value={password}
                                         onChange={(event) => { setPassword(event.target.value) }}
                                     />
+                                    <div className="text-danger" role="alert">
+                                        {errors && errors.password && errors.password[0]}
+                                    </div>
                                 </div>
-                                <button type="submit" className="btn btn-primary">Đăng nhập</button>
+                                <button type="submit" className="btn btn-primary" disabled={isLogingIn}>Đăng nhập</button>
                             </form>
                         </div>
                     </div>
@@ -43,4 +71,12 @@ const LoginPage = () => {
     );
 }
 
-export default LoginPage;
+const mapStateToProps = (state) => ({
+    authenticationReducer: state.authenticationReducer
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    login: (data) => dispatch(authenticationActions.login(data)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)

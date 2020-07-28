@@ -12,19 +12,19 @@ const RegisterPage = (props) => {
     const [isSaving, setIsSaving] = useState(false);
 
     const { authenticationReducer, register } = props;
-    const { registerStatus } = authenticationReducer;
+    const { registerResponse } = authenticationReducer;
 
     const history = useHistory();
 
     useEffect(() => {
-        const { success, errors } = registerStatus;
+        const { success, errors } = registerResponse;
         if (success) {
             history.push('/');
         } else if (success === false) {
             setErrors(errors);
         }
         setIsSaving(false);
-    }, [registerStatus])
+    }, [registerResponse])
 
     const onSubmitRegister = (event) => {
         setIsSaving(true);
