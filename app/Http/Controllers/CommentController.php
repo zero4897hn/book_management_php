@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
@@ -57,7 +58,7 @@ class CommentController extends Controller
         $comment->username = $user->username;
         $comment->user_avatar = $user->avatar;
 
-        return $comment;
+        return response($comment, Response::HTTP_OK);
     }
 
     /**
@@ -69,7 +70,7 @@ class CommentController extends Controller
     public function show($id)
     {
         $comment = Comment::find($id);
-        return $comment;
+        return response($comment, Response::HTTP_OK);
     }
 
     /**
@@ -96,7 +97,7 @@ class CommentController extends Controller
         $comment->title = $request->input('title');
         $comment->content = $request->input('content');
         $comment->save();
-        return $comment;
+        return response($comment, Response::HTTP_OK);
     }
 
     /**
@@ -114,5 +115,7 @@ class CommentController extends Controller
         $book->save();
 
         $comment->delete();
+
+        return response(null, Response::HTTP_OK);
     }
 }

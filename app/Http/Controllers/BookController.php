@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class BookController extends Controller
 {
@@ -82,20 +83,23 @@ class BookController extends Controller
             'editor' => 'max:50',
         ]);
 
+        $validator->after(function($validator) use($request) {
+            $countIsbn = DB::table('books')->where('isbn', '=', $request->input('isbn'))->count();
+            if ($countIsbn > 0) {
+                $validator->errors()->add('isbn', 'Mã cuốn sách đã tồn tại.');
+            }
+            if (!$request->file('coverFile')) {
+                $validator->errors()->add('coverFile', 'Sách phải có ảnh bìa.');
+            }
+        });
+
         if ($validator->fails()) {
-            return redirect('/books/create')->withErrors($validator)->withInput();
-        }
-
-        $isbn = $request->input('isbn');
-
-        $countIsbn = DB::table('books')->where('isbn', '=', $isbn)->count();
-        if ($countIsbn > 0) {
-            return redirect('/books/create')->with('isbnError', 'Mã cuốn sách đã tồn tại.');
+            throw new ValidationException($validator);
         }
 
         $book = new Book();
         $book->name = $request->input('name');
-        $book->isbn = $isbn;
+        $book->isbn = $request->input('isbn');
         $book->author = $request->input('author');
         $book->publisher = $request->input('publisher');
         $book->editor = $request->input('editor');
@@ -106,12 +110,10 @@ class BookController extends Controller
             $coverFileName = $coverFile->getClientOriginalName();
             $coverFile->move('files/covers', $coverFileName);
             $book->cover = $coverFileName;
-        } else {
-            return redirect('/books/create')->with('fileRequireError', 'Sách phải có ảnh bìa.');
         }
 
         $book->save();
-        return redirect('/books/'.$book->id)->with('status', 'Tạo sách thành công.');
+        return response($book, Response::HTTP_OK);
     }
 
     /**
@@ -159,9 +161,12 @@ class BookController extends Controller
             'editor' => 'max:50',
         ]);
 
-        if ($validator->fails()) {
-            return redirect('/books/create')->withErrors($validator)->withInput();
-        }
+        $validator->after(function($validator) use($request) {
+            $countIsbn = DB::table('books')->where('isbn', '=', $request->input('isbn'))->count();
+            if ($countIsbn > 0) {
+                $validator->errors()->add('isbn', 'Mã cuốn sách đã tồn tại.');
+            }
+        });
 
         $book = Book::find($id);
         $book->name = $request->input('name');
@@ -179,7 +184,7 @@ class BookController extends Controller
         }
 
         $book->save();
-        return redirect('/books/'.$book->id)->with('status', 'Cập nhật sách thành công.');
+        return response($book, Response::HTTP_OK);
     }
 
     /**
@@ -191,5 +196,6 @@ class BookController extends Controller
     public function destroy($id)
     {
         Book::find($id)->delete();
+        return response(null, Response::HTTP_OK);
     }
 }

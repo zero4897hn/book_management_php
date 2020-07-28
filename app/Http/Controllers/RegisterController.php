@@ -27,9 +27,6 @@ class RegisterController extends Controller
             'email' => 'required|max:50|email'
         ]);
 
-        $username = $request->input('username');
-        $email = $request->input('email');
-
         $validator->after(function($validator) use($request) {
             $usernameCount = DB::table('users')->where('username', '=', $request->input('username'))->count();
             if ($usernameCount > 0) {
@@ -47,9 +44,9 @@ class RegisterController extends Controller
         }
 
         $user = new User();
-        $user->username = $username;
+        $user->username = $request->input('username');
         $user->password = bcrypt($request->input('password'));
-        $user->email = $email;
+        $user->email = $request->input('email');
 
         $adminCount = DB::table('users')->where('admin', '=', true)->count();
         if ($adminCount < 1) {
@@ -58,6 +55,6 @@ class RegisterController extends Controller
 
         $user->save();
 
-        return response($user, Response::HTTP_OK);;
+        return response($user, Response::HTTP_OK);
     }
 }

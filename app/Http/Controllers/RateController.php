@@ -39,6 +39,6 @@ class RateController extends Controller
         $book->rating = $sum / count($rates);
         $book->save();
 
-        return redirect('/books/' . $rate->book_id)->with('status', 'Lưu thành công');
+        return response($rate, Response::HTTP_OK);
     }
 }

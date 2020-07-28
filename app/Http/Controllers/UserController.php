@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\User;
 use Facade\FlareClient\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -56,8 +58,20 @@ class UserController extends Controller
             'last_name' => 'max:50'
         ]);
 
+        $validator->after(function($validator) use($request) {
+            $usernameCount = DB::table('users')->where('username', '=', $request->input('username'))->count();
+            if ($usernameCount > 0) {
+                $validator->errors()->add('username', 'Tên đăng nhập đã tồn tại.');
+            }
+
+            $emailCount = DB::table('users')->where('email', '=', $request->input('email'))->count();
+            if ($emailCount > 0) {
+                $validator->errors()->add('email', 'Email đã tồn tại.');
+            }
+        });
+
         if ($validator->fails()) {
-            return redirect('users/create')->withErrors($validator)->withInput();
+            throw new ValidationException($validator);
         }
 
         $user = new User();
@@ -75,7 +89,7 @@ class UserController extends Controller
         }
 
         $user->save();
-        return redirect('users/'.$user->id)->with('status', 'Thêm mới tài khoản thành công.');
+        return response($user, Response::HTTP_OK);
     }
 
     /**
@@ -118,28 +132,36 @@ class UserController extends Controller
             'last_name' => 'max:50'
         ]);
 
+        $user = User::find($id);
+
+        $validator->after(function($validator) use($request, $user) {
+            $usernameCount = DB::table('users')->where('username', '=', $request->input('username'))->count();
+            if ($usernameCount > 0) {
+                $validator->errors()->add('username', 'Tên đăng nhập đã tồn tại.');
+            }
+
+            $emailCount = DB::table('users')->where('email', '=', $request->input('email'))->count();
+            if ($emailCount > 0) {
+                $validator->errors()->add('email', 'Email đã tồn tại.');
+            }
+
+            if ($user->admin && !$request->input('admin')) {
+                $adminCount = DB::table('users')->where('admin', '=', true)->count();
+                if ($adminCount < 2) {
+                    $validator->errors()->add('admin', 'Còn duy nhất 1 tài khoản quản trị, không thể đổi.');
+                }
+            }
+        });
+
         if ($validator->fails()) {
-            return redirect('users/'. $id .'/edit')->withErrors($validator)->withInput();
+            throw new ValidationException($validator);
         }
 
-        $isAdmin = $request->input('admin');
-
-        $user = User::find($id);
         $user->first_name = $request->input('first_name');
         $user->last_name = $request->input('last_name');
         $user->username = $request->input('username');
         $user->email = $request->input('email');
-
-
-        if ($user->admin && !$isAdmin) {
-            $adminCount = DB::table('users')->where('admin', '=', true)->count();
-            if ($adminCount < 2) {
-                return redirect('users/'. $id .'/edit')
-                    ->with('adminError', 'Còn duy nhất 1 tài khoản quản trị, không thể đổi.');
-            }
-        }
-
-        $user->admin = $isAdmin;
+        $user->admin = $request->input('admin');
 
         if ($avatarFile = $request->file('avatarFile')) {
             $avatarFileName = $avatarFile->getClientOriginalName();
@@ -148,7 +170,7 @@ class UserController extends Controller
         }
 
         $user->save();
-        return redirect('users/'.$user->id)->with('status', 'Cập nhật tài khoản thành công.');
+        return response($user, Response::HTTP_OK);
     }
 
     /**
@@ -170,7 +192,7 @@ class UserController extends Controller
             $user->ban_expired_at = $request->input('ban_expired_at');
         }
         $user->save();
-        return redirect('users');
+        return response($user, Response::HTTP_OK);
     }
 
     public function unblock(Request $request)
@@ -179,6 +201,6 @@ class UserController extends Controller
         $user->banned = false;
         $user->ban_expired_at = null;
         $user->save();
-        return redirect('users');
+        return response($user, Response::HTTP_OK);
     }
 }
