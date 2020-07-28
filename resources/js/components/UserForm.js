@@ -1,6 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-const UserForm = () => {
+const UserForm = (props) => {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [admin, setAdmin] = useState('0');
+
+    const { entity = {} } = props
+
+    const fileInput = useRef(null);
+
+    useEffect(() => {
+        const { firstName, lastName, username, email, admin } = entity;
+        setFirstName(firstName);
+        setLastName(lastName);
+        setUsername(username);
+        setEmail(email);
+        setAdmin(admin);
+    }, [entity])
+
     return (
         <div class="row justify-content-sm-center">
             <div class="col-sm-6">
@@ -12,7 +32,8 @@ const UserForm = () => {
                             class="form-control"
                             id="field_first_name"
                             name="first_name"
-                            value="{{ old('first_name') }}"
+                            value={firstName}
+                            onChange={event => setFirstName(event.target.value)}
                         />
                     </div>
                     <div class="form-group">
@@ -22,7 +43,8 @@ const UserForm = () => {
                             class="form-control"
                             id="field_last_name"
                             name="last_name"
-                            value="{{ old('last_name') }}"
+                            value={lastName}
+                            onChange={event => setLastName(event.target.value)}
                         />
                     </div>
                     <div class="form-group">
@@ -32,7 +54,8 @@ const UserForm = () => {
                             class="form-control"
                             id="field_username"
                             name="username"
-                            value="{{ old('username') }}"
+                            value={username}
+                            onChange={event => setUsername(event.target.value)}
                         />
                     </div>
                     <div class="form-group">
@@ -42,6 +65,8 @@ const UserForm = () => {
                             class="form-control"
                             id="field_password"
                             name="password"
+                            value={password}
+                            onChange={event => setPassword(event.target.value)}
                         />
                     </div>
                     <div class="form-group">
@@ -51,19 +76,26 @@ const UserForm = () => {
                             class="form-control"
                             id="field_email"
                             name="email"
-                            value="{{ old('email') }}"
+                            value={email}
+                            onChange={event => setEmail(event.target.value)}
                         />
                     </div>
                     <div class="form-group">
                         <label for="field_admin">Vai trò</label>
-                        <select class="form-control" id="field_admin" name="admin">
+                        <select
+                            class="form-control"
+                            id="field_admin"
+                            name="admin"
+                            value={admin}
+                            onChange={event => setAdmin(event.target.value)}
+                        >
                             <option value="1">Quản trị</option>
                             <option value="0" selected>Người dùng</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="field_avatar">Avatar</label>
-                        <input type="file" class="form-control-file" id="field_avatar" name="avatarFile"/>
+                        <input type="file" class="form-control-file" id="field_avatar" name="avatarFile" multiple ref={fileInput} />
                     </div>
                     <button type="submit" class="btn btn-primary">Thêm mới</button>
                 </form>

@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const LoginPage = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
     return (
         <div className="container">
             <div className="row justify-content-sm-center">
@@ -15,6 +18,8 @@ const LoginPage = () => {
                                         className="form-control"
                                         id="field_username"
                                         name="username"
+                                        value={username}
+                                        onChange={(event) => { setUsername(event.target.value) }}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -24,6 +29,8 @@ const LoginPage = () => {
                                         className="form-control"
                                         id="field_password"
                                         name="password"
+                                        value={password}
+                                        onChange={(event) => { setPassword(event.target.value) }}
                                     />
                                 </div>
                                 <button type="submit" className="btn btn-primary">Đăng nhập</button>
