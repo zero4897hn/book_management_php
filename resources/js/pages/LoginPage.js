@@ -17,6 +17,7 @@ const LoginPage = (props) => {
     useEffect(() => {
         const { success, errors } = loginResponse;
         if (success) {
+            getUserData();
             history.push('/');
         } else if (success === false) {
             setErrors(errors);
@@ -82,6 +83,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     login: (data) => dispatch(authenticationActions.login(data)),
+    getUserData: () => dispatch(authenticationActions.getUserData()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)

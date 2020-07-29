@@ -2,8 +2,7 @@ import { LOGIN, LOGOUT } from "../utils/actions";
 
 const initialState = {
     loginResponse: { success: null, errors: null },
-    userData: null,
-    isLogin: null
+    userData: null
 }
 
 const authenticationReducer = (state = initialState, action) => {

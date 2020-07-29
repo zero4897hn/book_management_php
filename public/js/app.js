@@ -77144,14 +77144,6 @@ authenticationActions.login = function (data) {
   };
 };
 
-authenticationActions.resetState = function (data) {
-  return function (dispatch) {
-    dispatch({
-      type: _utils_actions__WEBPACK_IMPORTED_MODULE_1__["RESET_AUTHENTICATION_STATE"]
-    });
-  };
-};
-
 authenticationActions.getUserData = function () {
   return function (dispatch) {
     _utils_requests__WEBPACK_IMPORTED_MODULE_0__["default"].get('auth', {}, function (response) {
@@ -78624,6 +78616,7 @@ var LoginPage = function LoginPage(props) {
         errors = loginResponse.errors;
 
     if (success) {
+      getUserData();
       history.push('/');
     } else if (success === false) {
       setErrors(errors);
@@ -78708,6 +78701,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     login: function login(data) {
       return dispatch(_actions_authenticationActions__WEBPACK_IMPORTED_MODULE_2__["default"].login(data));
+    },
+    getUserData: function getUserData() {
+      return dispatch(_actions_authenticationActions__WEBPACK_IMPORTED_MODULE_2__["default"].getUserData());
     }
   };
 };
@@ -78791,8 +78787,7 @@ var RegisterPage = function RegisterPage(props) {
       isSaving = _useState12[0],
       setIsSaving = _useState12[1];
 
-  var register = props.register,
-      showSuccessToast = props.showSuccessToast;
+  var register = props.register;
   var history = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["useHistory"])();
 
   var onSubmitRegister = /*#__PURE__*/function () {
@@ -79045,8 +79040,7 @@ var initialState = {
     success: null,
     errors: null
   },
-  userData: null,
-  isLogin: null
+  userData: null
 };
 
 var authenticationReducer = function authenticationReducer() {
@@ -79068,7 +79062,6 @@ var authenticationReducer = function authenticationReducer() {
         });
       }
 
-    case _utils_actions__WEBPACK_IMPORTED_MODULE_0__["RESET_AUTHENTICATION_STATE"]:
     case _utils_actions__WEBPACK_IMPORTED_MODULE_0__["LOGOUT"]:
       {
         return _objectSpread({}, initialState);
@@ -79108,7 +79101,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!***************************************!*\
   !*** ./resources/js/utils/actions.js ***!
   \***************************************/
-/*! exports provided: GET_USERS, LOGIN, LOGOUT, SHOW_SUCCESS_TOAST, RESET_AUTHENTICATION_STATE */
+/*! exports provided: GET_USERS, LOGIN, LOGOUT, SHOW_SUCCESS_TOAST */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -79117,12 +79110,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOGIN", function() { return LOGIN; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOGOUT", function() { return LOGOUT; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SHOW_SUCCESS_TOAST", function() { return SHOW_SUCCESS_TOAST; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RESET_AUTHENTICATION_STATE", function() { return RESET_AUTHENTICATION_STATE; });
 var GET_USERS = 'GET_USERS';
 var LOGIN = 'LOGIN';
 var LOGOUT = 'LOGOUT';
 var SHOW_SUCCESS_TOAST = 'SHOW_SUCCESS_TOAST';
-var RESET_AUTHENTICATION_STATE = 'RESET_AUTHENTICATION_STATE';
 
 /***/ }),
 
@@ -79163,7 +79154,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var request = {};
 
 var getHeaders = function getHeaders() {
-  return {};
+  return {
+    'Authorization': "Bearer ".concat(getToken()),
+    'Accept': 'application/json'
+  };
 };
 
 var getToken = function getToken() {

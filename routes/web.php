@@ -19,13 +19,11 @@ Route::get('/register', 'RegisterController@index');
 
 Route::post('/register', 'RegisterController@create');
 
-Route::post('/api/register', 'AuthController@register');
-
-Route::get('/login', 'LoginController@index')->name('login');
-
 Route::post('/login', 'LoginController@login');
 
-Route::post('/logout', 'LoginController@logout')->name('logout');
+Route::post('/logout', 'AuthController@logout');
+
+Route::get('/auth', 'AuthController@user');
 
 Route::resource('/books', 'BookController');
 

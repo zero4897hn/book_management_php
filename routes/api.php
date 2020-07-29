@@ -18,10 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('login', 'AuthController@login');
+// Route::group(['middleware' => 'jwt.auth'], function () { Route::get('auth', 'AuthController@user');
 
-Route::group(['middleware' => 'jwt.auth'], function () { Route::get('auth', 'AuthController@user');
-
-Route::post('logout', 'AuthController@logout'); });
+// Route::post('logout', 'AuthController@logout'); });
 
 Route::middleware('jwt.refresh')->get('/token/refresh', 'AuthController@refresh');
