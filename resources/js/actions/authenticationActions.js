@@ -1,5 +1,5 @@
 import request from '../utils/requests'
-import { LOGIN, RESET_AUTHENTICATION_STATE, LOGOUT } from '../utils/actions';
+import { LOGIN, LOGOUT } from '../utils/actions';
 import { LOGIN_TOKEN_STORAGE } from '../utils/constants';
 
 const authenticationActions = {};
@@ -16,10 +16,6 @@ authenticationActions.login = (data) => (dispatch) => {
         const errors = error && error.response && error.response.data && error.response.data.errors;
         dispatch({ type: LOGIN, payload: { success: false, errors } })
     });
-}
-
-authenticationActions.resetState = (data) => (dispatch) => {
-    dispatch({ type: RESET_AUTHENTICATION_STATE })
 }
 
 authenticationActions.getUserData = () => (dispatch) => {

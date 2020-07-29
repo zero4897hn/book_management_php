@@ -1,4 +1,4 @@
-import { LOGIN, RESET_AUTHENTICATION_STATE, LOGOUT } from "../utils/actions";
+import { LOGIN, LOGOUT } from "../utils/actions";
 
 const initialState = {
     loginResponse: { success: null, errors: null },
@@ -16,7 +16,6 @@ const authenticationReducer = (state = initialState, action) => {
                 loginResponse: { success, errors },
             }
         }
-        case RESET_AUTHENTICATION_STATE:
         case LOGOUT: {
             return {
                 ...initialState
