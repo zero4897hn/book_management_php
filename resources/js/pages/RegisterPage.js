@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import authenticationActions from '../actions/authenticationActions';
-import toastActions from '../actions/toastActions';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const RegisterPage = (props) => {
     const [username, setUsername] = useState('');
@@ -12,28 +13,24 @@ const RegisterPage = (props) => {
     const [errors, setErrors] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
 
-    const { authenticationReducer, register, resetState, showSuccessToast } = props;
-    const { registerResponse } = authenticationReducer;
+    const { register, showSuccessToast } = props;
 
     const history = useHistory();
 
-    useEffect(() => {
-        const { success, errors } = registerResponse;
-        if (success) {
-            showSuccessToast('Đăng ký thành công.');
-            history.push('/');
-            resetState();
-        } else if (success === false) {
-            setErrors(errors);
-        }
-        setIsSaving(false);
-    }, [registerResponse])
-
-    const onSubmitRegister = (event) => {
+    const onSubmitRegister = async (event) => {
         setIsSaving(true);
         event.preventDefault();
         setErrors(null);
-        register({ username, password, email, 'password_confirmation': confirmPassword });
+        try {
+            await register({ username, password, email, 'password_confirmation': confirmPassword });
+            toast.success('Đăng ký thành công.');
+            history.push('/');
+        } catch (error) {
+            const errorFields = error && error.response && error.response.data && error.response.data.errors;
+            setErrors(errorFields);
+        } finally {
+            setIsSaving(false);
+        }
     }
 
     return (
@@ -105,13 +102,8 @@ const RegisterPage = (props) => {
     );
 }
 
-const mapStateToProps = (state) => ({
-    authenticationReducer: state.authenticationReducer,
-})
-
 const mapDispatchToProps = (dispatch) => ({
     register: (data) => dispatch(authenticationActions.register(data)),
-    showSuccessToast: (data) => dispatch(toastActions.showSuccessToast(data)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterPage);
+export default connect(null, mapDispatchToProps)(RegisterPage);

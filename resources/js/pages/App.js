@@ -15,11 +15,22 @@ import BookCreatingPage from './BookCreatingPage';
 import BookDetailPage from './BookDetailPage';
 import UserCreatingPage from './UserCreatingPage';
 import UserDetailPage from './UserDetailPage';
+import { ToastContainer } from 'react-toastify';
 
 
 const App = () => {
     return (
         <div>
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar
+                newestOnTop
+                closeOnClick={false}
+                rtl={false}
+                draggable={false}
+                pauseOnHover={false}
+            />
             <BrowserRouter>
                 <div>
                     <Menu />
