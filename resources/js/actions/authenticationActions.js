@@ -4,7 +4,7 @@ import { LOGIN_TOKEN_STORAGE } from '../utils/constants';
 
 const authenticationActions = {};
 
-authenticationActions.register = (data) => (dispatch) => {
+authenticationActions.register = (data) => () => {
     return request.postApi('/register', data)
 }
 
