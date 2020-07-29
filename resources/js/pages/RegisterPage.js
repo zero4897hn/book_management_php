@@ -13,7 +13,7 @@ const RegisterPage = (props) => {
     const [errors, setErrors] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
 
-    const { register, showSuccessToast } = props;
+    const { register } = props;
 
     const history = useHistory();
 
