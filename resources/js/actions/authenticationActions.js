@@ -1,5 +1,5 @@
 import request from '../utils/requests'
-import { REGISTER, LOGIN, RESET_AUTHENTICATION_STATE, LOGOUT } from '../utils/actions';
+import { LOGIN, RESET_AUTHENTICATION_STATE, LOGOUT } from '../utils/actions';
 import { LOGIN_TOKEN_STORAGE } from '../utils/constants';
 
 const authenticationActions = {};
