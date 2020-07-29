@@ -6,12 +6,6 @@ const authenticationActions = {};
 
 authenticationActions.register = (data) => (dispatch) => {
     return request.postApi('/register', data)
-    // , () => {
-    //     dispatch({ type: REGISTER, payload: { success: true } })
-    // }, (error) => {
-    //     const errors = error && error.response && error.response.data && error.response.data.errors;
-    //     dispatch({ type: REGISTER, payload: { success: false, errors } })
-    // });
 }
 
 authenticationActions.login = (data) => (dispatch) => {
