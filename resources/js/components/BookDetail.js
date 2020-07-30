@@ -1,8 +1,10 @@
 import React from 'react';
 import Border from './Border';
+import { connect } from 'react-redux';
 
 const BookDetail = (props) => {
-    const { book = {} } = props;
+    const { bookReducer } = props;
+    const { book } = bookReducer;
 
     return (
         <Border>
@@ -38,4 +40,8 @@ const BookDetail = (props) => {
     );
 }
 
-export default BookDetail;
+const mapStateToProps = state => ({
+    bookReducer: state.bookReducer
+})
+
+export default connect(mapStateToProps)(BookDetail);

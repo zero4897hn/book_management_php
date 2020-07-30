@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('jwt.auth')->only(['user', 'logout', 'refresh']);
+        $this->middleware('jwt.auth');
     }
 
     public function user(Request $request)

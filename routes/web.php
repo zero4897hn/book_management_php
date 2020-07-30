@@ -42,3 +42,5 @@ Route::view('/{path?}', 'home');
 Route::view('/{path?}/{name?}', 'home');
 
 Route::post('api/rating', 'RateController@save');
+
+Route::get('api/rate/book/{id}', 'RateController@getOne');

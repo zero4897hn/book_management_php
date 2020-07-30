@@ -4,8 +4,6 @@ import authenticationActions from '../actions/authenticationActions';
 import { useHistory } from 'react-router-dom';
 
 const LoginPage = (props) => {
-    console.log(props)
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState(null);

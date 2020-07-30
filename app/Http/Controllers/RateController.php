@@ -7,12 +7,13 @@ use App\Rate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class RateController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('jwt.auth');
     }
 
     public function save(Request $request)
@@ -40,6 +41,9 @@ class RateController extends Controller
         $book->rating = $sum / count($rates);
         $book->save();
 
-        return response($rate, Response::HTTP_OK);
+        return response([
+            'rate' => $rate,
+            'totalRating' => $book->rating
+        ], Response::HTTP_OK);
     }
 }

@@ -1,5 +1,5 @@
 import request from "../utils/requests";
-import { GET_BOOKS, SET_BOOKS_PAGE } from "../utils/actions";
+import { GET_BOOKS, SET_BOOKS_PAGE, GET_BOOK, RATE_BOOK } from "../utils/actions";
 
 const bookActions = {};
 
@@ -7,7 +7,7 @@ bookActions.getBooks = () => (dispatch, getState) => {
     const { bookReducer } = getState();
     const { page, pageSize } = bookReducer;
 
-    request.get('api/books', { page, pageSize }, (response) => {
+    request.get('/api/books', { page, pageSize }, (response) => {
         const { data } = response;
         dispatch({
             type: GET_BOOKS,
@@ -20,6 +20,12 @@ bookActions.getBooks = () => (dispatch, getState) => {
         })
     }, (error) => {
         console.log(error);
+        dispatch({
+            type: GET_BOOKS,
+            payload: {
+                books: [],
+            }
+        })
     })
 }
 
@@ -27,8 +33,21 @@ bookActions.setPage = page => dispatch => {
     dispatch({ type: SET_BOOKS_PAGE, payload: page });
 }
 
-bookActions.getBook = id => async () => {
-    return request.getApi(`/api/books/${id}`, {});
+bookActions.rateBook = (data) => dispatch => {
+    request.post('/api/rating', data, response => {
+        dispatch({ type: RATE_BOOK, payload: { success: true, data: response.data } });
+    }, error => {
+        console.log(error);
+        dispatch({ type: RATE_BOOK, payload: { success: false, data: null } });
+    });
+}
+
+bookActions.getBook = id => (dispatch) => {
+    request.get(`/api/books/${id}`, {}, response => {
+        dispatch({ type: GET_BOOK, payload: response.data })
+    }, error => {
+        dispatch({ type: GET_BOOK, payload: null })
+    });
 }
 
 export default bookActions;

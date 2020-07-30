@@ -1,17 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Border from './Border';
 import { isEmpty } from 'lodash';
 import Rating from 'react-rating';
+import bookActions from '../actions/bookActions';
+import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const BookRate = (props) => {
     const [starValue, setStarValue] = useState(0);
 
-    const { book } = props
+    const { bookReducer, rateBook } = props;
+    const { book, rateResponse } = bookReducer;
 
-    if (isEmpty(book)) return null;
+    useEffect(() => {
+        if (book && book.current_rate && book.current_rate.rating) {
+            console.log(book);
+            setStarValue(book.current_rate.rating)
+        } else {
+            setStarValue(0);
+        }
+    }, [book])
 
-    const onClickRating = (event) => {
-        console.log(starValue);
+    useEffect(() => {
+        const { success } = rateResponse;
+        if (success) {
+            toast.success('Đánh giá thành công');
+        }
+    }, [rateResponse]);
+
+    const onClickRating = () => {
+        let rate = null;
+        if (book.current_rate) {
+            rate = { ...book.current_rate };
+            rate.rating = starValue;
+        } else {
+            rate = {
+                rating: starValue,
+                book_id: book.id
+            }
+        }
+        rateBook(rate);
     }
 
     return (
@@ -29,8 +57,8 @@ const BookRate = (props) => {
                             step={1}
                             initialRating={starValue}
                             onChange={(value) => setStarValue(value)}
-                            // emptySymbol={() => <FaStarAndCrescent />}
-                            // fullSymbol={() => <FaStar />}
+                        // emptySymbol={() => <FaStarAndCrescent />}
+                        // fullSymbol={() => <FaStar />}
                         />
                         <button
                             className="btn btn-primary"
@@ -47,4 +75,12 @@ const BookRate = (props) => {
     );
 }
 
-export default BookRate;
+const mapStateToProps = state => ({
+    bookReducer: state.bookReducer
+})
+
+const mapDispatchToProps = dispatch => ({
+    rateBook: data => dispatch(bookActions.rateBook(data)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookRate);

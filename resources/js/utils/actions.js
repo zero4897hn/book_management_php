@@ -5,3 +5,5 @@ export const SHOW_SUCCESS_TOAST = 'SHOW_SUCCESS_TOAST';
 export const GET_CURRENT_USER = 'GET_CURRENT_USER';
 export const GET_BOOKS = 'GET_BOOKS';
 export const SET_BOOKS_PAGE = 'SET_BOOK_PAGE';
+export const GET_BOOK = 'GET_BOOK';
+export const RATE_BOOK = 'RATE_BOOK';

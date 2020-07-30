@@ -6,29 +6,18 @@ import { connect } from 'react-redux';
 import bookActions from '../actions/bookActions';
 
 const BookDetailPage = (props) => {
-    const [book, setBook] = useState({});
-
     const { getBook } = props;
 
     useEffect(() => {
-        fetchData();
+        const params = props.match.params;
+        getBook(params.id)
     }, [])
-
-    const fetchData = async () => {
-        try {
-            const params = props.match.params;
-            const response = await getBook(params.id);
-            setBook(response.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     return (
         <div className="container">
-            <BookDetail book={book} />
-            <BookRate book={book} />
-            <BookComment book={book} />
+            <BookDetail />
+            <BookRate />
+            <BookComment />
         </div>
     );
 }
