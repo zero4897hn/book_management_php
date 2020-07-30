@@ -15,35 +15,35 @@ const getToken = () => {
 }
 
 request.get = (url, params, onSuccess = () => { }, onError = () => { }) => {
-    axios.get(url, { params: { ...params, token: getToken() }, headers: getHeaders() }).then(onSuccess, onError);
+    axios.get(url, { params: { ...params }, headers: getHeaders() }).then(onSuccess, onError);
 }
 
 request.post = (url, data, onSuccess = () => { }, onError = () => { }) => {
-    axios.post(url, data, { params: { token: getToken() }, headers: getHeaders() }).then(onSuccess, onError);
+    axios.post(url, data, { headers: getHeaders() }).then(onSuccess, onError);
 }
 
 request.put = (url, data, onSuccess = () => { }, onError = () => { }) => {
-    axios.put(url, data, { params: { token: getToken() }, headers: getHeaders() }).then(onSuccess, onError);
+    axios.put(url, data, { headers: getHeaders() }).then(onSuccess, onError);
 }
 
 request.delete = (url, params, onSuccess = () => { }, onError = () => { }) => {
-    axios.delete(url, { params: { ...params, token: getToken() }, headers: getHeaders() }).then(onSuccess, onError);
+    axios.delete(url, { params: { ...params }, headers: getHeaders() }).then(onSuccess, onError);
 }
 
 request.getApi = (url, params) => {
-    return axios.get(url, { params: { ...params, token: getToken() }, headers: getHeaders() });
+    return axios.get(url, { params: { ...params }, headers: getHeaders() });
 }
 
 request.postApi = (url, data) => {
-    return axios.post(url, data, { params: { token: getToken() }, headers: getHeaders() });
+    return axios.post(url, data, { headers: getHeaders() });
 }
 
 request.putApi = (url, data) => {
-    return axios.put(url, data, { params: { token: getToken() }, headers: getHeaders() });
+    return axios.put(url, data, { headers: getHeaders() });
 }
 
 request.deleteApi = (url, params) => {
-    return axios.delete(url, { params: { ...params, token: getToken() }, headers: getHeaders() });
+    return axios.delete(url, { params: { ...params }, headers: getHeaders() });
 }
 
 export default request;

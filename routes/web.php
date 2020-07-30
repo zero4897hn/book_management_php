@@ -15,25 +15,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController@index');
 
-Route::get('/register', 'RegisterController@index');
+Route::post('api/register', 'RegisterController@create');
 
-Route::post('/register', 'RegisterController@create');
+Route::post('api/login', 'LoginController@login');
 
-Route::post('/login', 'LoginController@login');
+Route::post('api/logout', 'AuthController@logout');
 
-Route::post('/logout', 'AuthController@logout');
+Route::get('api/auth', 'AuthController@user');
 
-Route::get('/auth', 'AuthController@user');
+Route::resource('api/books', 'BookController');
 
-Route::resource('/books', 'BookController');
+Route::resource('api/users', 'UserController');
 
-Route::resource('/users', 'UserController');
+Route::post('api/users/block', 'UserController@block');
 
-Route::post('/users/block', 'UserController@block');
+Route::post('api/users/unblock', 'UserController@unblock');
 
-Route::post('/users/unblock', 'UserController@unblock');
-
-Route::resource('/comments', 'CommentController');
+Route::resource('api/comments', 'CommentController');
 
 Route::get('/user/non-admin', function () {
     return View('auth.non-admin');
@@ -41,4 +39,6 @@ Route::get('/user/non-admin', function () {
 
 Route::view('/{path?}', 'home');
 
-Route::post('/rating', 'RateController@save');
+Route::view('/{path?}/{name?}', 'home');
+
+Route::post('api/rating', 'RateController@save');

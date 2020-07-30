@@ -13,9 +13,16 @@ const RegisterPage = (props) => {
     const [errors, setErrors] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
 
-    const { register } = props;
+    const { authenticationReducer, register } = props;
+    const { isLogin } = authenticationReducer
 
     const history = useHistory();
+
+    useEffect(() => {
+        if (isLogin) {
+            history.push('/');
+        }
+    }, [isLogin])
 
     const onSubmitRegister = async (event) => {
         setIsSaving(true);
@@ -102,8 +109,12 @@ const RegisterPage = (props) => {
     );
 }
 
+const mapStateToProps = (state) => ({
+    authenticationReducer: state.authenticationReducer
+})
+
 const mapDispatchToProps = (dispatch) => ({
     register: (data) => dispatch(authenticationActions.register(data)),
 })
 
-export default connect(null, mapDispatchToProps)(RegisterPage);
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterPage);

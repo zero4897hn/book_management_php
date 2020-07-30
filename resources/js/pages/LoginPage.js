@@ -4,22 +4,24 @@ import authenticationActions from '../actions/authenticationActions';
 import { useHistory } from 'react-router-dom';
 
 const LoginPage = (props) => {
+    console.log(props)
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState(null);
     const [isLogingIn, setIsLogingIn] = useState(false);
 
     const { authenticationReducer, login, getUserData } = props;
-    const { loginResponse } = authenticationReducer;
+    const { loginResponse, isLogin, userData } = authenticationReducer;
 
     const history = useHistory();
 
     useEffect(() => {
-        const { success, errors } = loginResponse;
-        if (success) {
-            getUserData();
-            history.push('/');
-        } else if (success === false) {
+        const { errors } = loginResponse;
+        if (isLogin) {
+            if (!userData) getUserData();
+            history.goBack();
+        } else if (isLogin === false) {
             setErrors(errors);
         }
         setIsLogingIn(false);

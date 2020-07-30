@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Response;
 
 class BookController extends Controller
 {
@@ -38,10 +39,10 @@ class BookController extends Controller
             ->when($name, function ($query, $name) {
                 return $query->whereRaw("UPPER(name) LIKE '%" . strtoupper($name) . "%'");
             })
-            ->when($author, function($query, $author) {
+            ->when($author, function ($query, $author) {
                 return $query->whereRaw("UPPER(author) LIKE '%" . strtoupper($author) . "%'");
             })
-            ->when($sort, function($query, $sort) {
+            ->when($sort, function ($query, $sort) {
                 $sortData = explode(',', $sort);
                 if (count($sortData) < 2) {
                     return $query->orderBy('id', 'asc');
@@ -54,7 +55,7 @@ class BookController extends Controller
                 }
             })
             ->paginate(5);
-        return View('books.list', compact('books'));
+        return response($books, Response::HTTP_OK);
     }
 
     /**
@@ -64,7 +65,6 @@ class BookController extends Controller
      */
     public function create()
     {
-        return View('books.create');
     }
 
     /**
@@ -83,7 +83,7 @@ class BookController extends Controller
             'editor' => 'max:50',
         ]);
 
-        $validator->after(function($validator) use($request) {
+        $validator->after(function ($validator) use ($request) {
             $countIsbn = DB::table('books')->where('isbn', '=', $request->input('isbn'))->count();
             if ($countIsbn > 0) {
                 $validator->errors()->add('isbn', 'Mã cuốn sách đã tồn tại.');
@@ -124,12 +124,8 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        $data = [
-            'book' => Book::find($id),
-            'currentUser' => Auth::user(),
-            'currentUserRating' => Rate::where(['book_id' => $id, 'user_id' => Auth::id()])->first()
-        ];
-        return View('books.detail', $data);
+        $book = Book::find($id);
+        return response($book, Response::HTTP_OK);
     }
 
     /**
@@ -140,8 +136,6 @@ class BookController extends Controller
      */
     public function edit($id)
     {
-        $book = Book::find($id);
-        return View('books.edit', compact('book'));
     }
 
     /**
@@ -161,7 +155,7 @@ class BookController extends Controller
             'editor' => 'max:50',
         ]);
 
-        $validator->after(function($validator) use($request) {
+        $validator->after(function ($validator) use ($request) {
             $countIsbn = DB::table('books')->where('isbn', '=', $request->input('isbn'))->count();
             if ($countIsbn > 0) {
                 $validator->errors()->add('isbn', 'Mã cuốn sách đã tồn tại.');

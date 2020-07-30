@@ -15,7 +15,6 @@ class RegisterController extends Controller
 {
     public function index()
     {
-        return View('auth.register');
     }
 
     public function create(Request $request)

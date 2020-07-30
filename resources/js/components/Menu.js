@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { LOGIN_TOKEN_STORAGE } from '../utils/constants';
 import authenticationActions from '../actions/authenticationActions';
 
 const Menu = (props) => {
-    const { logout } = props;
-    const auth = localStorage.getItem(LOGIN_TOKEN_STORAGE);
+    const { logout, getUserData, authenticationReducer } = props;
+    const { isLogin } = authenticationReducer
 
     useEffect(() => {
-        console.log(auth);
-    }, [auth])
+        getUserData();
+    }, [])
 
     const onClickLogout = () => {
         logout();
@@ -44,7 +43,7 @@ const Menu = (props) => {
                             <Link className="nav-link" to="/users">Quản lý người dùng</Link>
                         </li>
                     </ul>
-                    {auth?
+                    {isLogin?
                     <ul className="navbar-nav ml-auto">
                         <li className="nav-item dropdown">
                             <Link
@@ -82,8 +81,13 @@ const Menu = (props) => {
     );
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    logout: () => dispatch(authenticationActions.logout()),
+const mapStateToProps = (state) => ({
+    authenticationReducer: state.authenticationReducer
 })
 
-export default connect(null, mapDispatchToProps)(Menu);
+const mapDispatchToProps = (dispatch) => ({
+    logout: () => dispatch(authenticationActions.logout()),
+    getUserData: () => dispatch(authenticationActions.getUserData())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);

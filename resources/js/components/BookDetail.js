@@ -1,7 +1,9 @@
 import React from 'react';
 import Border from './Border';
 
-const BookDetail = () => {
+const BookDetail = (props) => {
+    const { book = {} } = props;
+
     return (
         <Border>
             <div className="col-2">
@@ -15,7 +17,7 @@ const BookDetail = () => {
             <div className="col-10 p-0">
                 <div className="card">
                     <div className="card-header">
-                        <span></span>
+                        <span>{book.name}</span>
                         <a
                             className="btn btn-outline-secondary btn-sm float-right edit-comment"
                             href="/books/{{$book->id}}/edit"
@@ -27,8 +29,7 @@ const BookDetail = () => {
                         <div style={{ width: '100%', display: 'flex' }}>
                             <img style={{ margin: 'auto' }} className="img-fluid" src="{{asset('files/covers/'.$book->cover)}}" />
                         </div>
-                        <div style={{ whiteSpace: 'pre-line' }}>
-                        </div>
+                        <div style={{ whiteSpace: 'pre-line' }}>{book.description}</div>
                     </div>
                 </div>
                 <h3></h3>

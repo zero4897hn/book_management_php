@@ -1,8 +1,9 @@
-import { LOGIN, LOGOUT } from "../utils/actions";
+import { LOGIN, LOGOUT, GET_CURRENT_USER } from "../utils/actions";
 
 const initialState = {
     loginResponse: { success: null, errors: null },
-    userData: null
+    userData: null,
+    isLogin: null
 }
 
 const authenticationReducer = (state = initialState, action) => {
@@ -12,16 +13,25 @@ const authenticationReducer = (state = initialState, action) => {
             const { success, errors } = payload;
             return {
                 ...state,
-                loginResponse: { success, errors },
+                loginResponse: { errors },
+                isLogin: success
+            }
+        }
+        case GET_CURRENT_USER: {
+            return {
+                ...state,
+                isLogin: true,
+                userData: payload
             }
         }
         case LOGOUT: {
             return {
+                ...state,
                 ...initialState
             }
         }
         default: {
-            return initialState;
+            return state;
         }
     }
 }

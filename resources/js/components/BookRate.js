@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Border from './Border';
+import { isEmpty } from 'lodash';
+import Rating from 'react-rating';
 
-const BookRate = () => {
+const BookRate = (props) => {
+    const [starValue, setStarValue] = useState(0);
+
+    const { book } = props
+
+    if (isEmpty(book)) return null;
+
+    const onClickRating = (event) => {
+        console.log(starValue);
+    }
+
     return (
         <Border>
             <div className="col-sm-12">
@@ -11,33 +23,24 @@ const BookRate = () => {
                 <div className="row">
                     <div className="col-md-2">Bản thân:</div>
                     <div className="col-md-10">
-                        <i className="fas fa-star checked button-rating" style={{ cursor: 'pointer' }} data-value="{{ $i + 1 }}"></i>
-                        <i
-                            className="fas fa-star button-rating"
-                            style={{ cursor: 'pointer' }}
-                            data-value="{{ $i + $currentUserRating->rating + 1 }}"
-                        ></i>
-                        <form style={{ display: 'inline' }}>
-                            <input type="hidden" name="id" value="{{$currentUserRating->id}}" />
-                            <input type="hidden" name="book_id" value="{{$book->id}}" />
-                            <input type="hidden" name="rating" id="field_rating" value="{{$currentUserRating->rating}}" />
-                            <button className="btn btn-primary">Đánh giá</button>
-                        </form>
-                        <i className="fas fa-star button-rating" style={{ cursor: 'pointer' }} data-value="1"></i>
-                        <i className="fas fa-star button-rating" style={{ cursor: 'pointer' }} data-value="2"></i>
-                        <i className="fas fa-star button-rating" style={{ cursor: 'pointer' }} data-value="3"></i>
-                        <i className="fas fa-star button-rating" style={{ cursor: 'pointer' }} data-value="4"></i>
-                        <i className="fas fa-star button-rating" style={{ cursor: 'pointer' }} data-value="5"></i>
-                        <form style={{ display: 'inline' }}>
-                            <input type="hidden" name="book_id" value="{{$book->id}}" />
-                            <input type="hidden" name="rating" id="field_rating" value="0" />
-                            <button className="btn btn-primary">Đánh giá</button>
-                        </form>
+                        <Rating
+                            start={0}
+                            stop={5}
+                            step={1}
+                            initialRating={starValue}
+                            onChange={(value) => setStarValue(value)}
+                            // emptySymbol={() => <FaStarAndCrescent />}
+                            // fullSymbol={() => <FaStar />}
+                        />
+                        <button
+                            className="btn btn-primary"
+                            onClick={(event) => onClickRating(event)}
+                        >Đánh giá</button>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-2">Tổng đánh giá:</div>
-                    <div className="col-md-10"></div>
+                    <div className="col-md-10">{book.rating}</div>
                 </div>
             </div>
         </Border>

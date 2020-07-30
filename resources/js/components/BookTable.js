@@ -1,6 +1,23 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Table = (props) => {
+const BookTable = (props) => {
+    const { data = [], page = 1, pageSize = 0 } = props;
+
+    const renderedBooks = data.map((book, index) => {
+        return (
+            <tr key={book.id}>
+                <th scope="row">{(page - 1) * pageSize + index + 1}</th>
+                <td><img src={book.cover} /></td>
+                <td><Link to={`/detail-book/${book.id}`}>{book.name}</Link></td>
+                <td>{book.author}</td>
+                <td>{book.username}</td>
+                <td>{book.comment_count}</td>
+                <td>{book.rating}</td>
+            </tr>
+        );
+    });
+
     return (
         <div className="row mt-3">
             <div className="col-12">
@@ -30,21 +47,11 @@ const Table = (props) => {
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row"></th>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
+                    <tbody>{renderedBooks}</tbody>
                 </table>
             </div>
         </div>
     );
 }
 
-export default Table;
+export default BookTable;

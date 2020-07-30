@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Book;
 use App\Rate;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class RateController extends Controller

@@ -1,15 +1,15 @@
 import request from '../utils/requests'
-import { LOGIN, LOGOUT } from '../utils/actions';
+import { LOGIN, LOGOUT, GET_CURRENT_USER } from '../utils/actions';
 import { LOGIN_TOKEN_STORAGE } from '../utils/constants';
 
 const authenticationActions = {};
 
 authenticationActions.register = (data) => () => {
-    return request.postApi('/register', data)
+    return request.postApi('api/register', data)
 }
 
 authenticationActions.login = (data) => (dispatch) => {
-    request.post('/login', data, (response) => {
+    request.post('api/login', data, (response) => {
         localStorage.setItem(LOGIN_TOKEN_STORAGE, response.data.token);
         dispatch({ type: LOGIN, payload: { success: true } })
     }, (error) => {
@@ -19,21 +19,18 @@ authenticationActions.login = (data) => (dispatch) => {
 }
 
 authenticationActions.getUserData = () => (dispatch) => {
-    request.get('auth', {}, (response) => {
-        console.log(response);
+    request.get('api/auth', {}, (response) => {
+        dispatch({ type: GET_CURRENT_USER, payload: response.data })
     }, (error) => {
         console.log(error);
     })
 }
 
 authenticationActions.logout = () => (dispatch) => {
-    request.post('logout', {}, (response) => {
-        console.log(response);
+    request.post('api/logout', {}, () => {
         localStorage.removeItem(LOGIN_TOKEN_STORAGE);
         dispatch({ type: LOGOUT, payload: { success: true } });
-    }, (error) => {
-        console.log(error);
-        localStorage.removeItem(LOGIN_TOKEN_STORAGE);
+    }, () => {
         dispatch({ type: LOGOUT, payload: { success: false } });
     })
 }
