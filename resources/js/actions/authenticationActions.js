@@ -21,8 +21,7 @@ authenticationActions.login = (data) => (dispatch) => {
 authenticationActions.getUserData = () => (dispatch) => {
     request.get('/api/auth', {}, (response) => {
         dispatch({ type: GET_CURRENT_USER, payload: response.data });
-    }, (error) => {
-        console.log(error);
+    }, () => {
         dispatch({ type: GET_CURRENT_USER, payload: null });
     })
 }
@@ -31,8 +30,7 @@ authenticationActions.logout = () => (dispatch) => {
     request.post('/api/logout', {}, () => {
         localStorage.removeItem(LOGIN_TOKEN_STORAGE);
         dispatch({ type: LOGOUT, payload: { success: true } });
-    }, (error) => {
-        console.log(error);
+    }, () => {
         dispatch({ type: LOGOUT, payload: { success: false } });
     })
 }

@@ -21,7 +21,7 @@ class VerifyJWTToken
             JWTAuth::toUser($request->bearerToken());
         } catch (JWTException $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-                return response()->json(['token_expired']);
+                return response()->json(['message' => 'Token has expired']);
             } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
                 return response()->json(['token_invalid']);
             } else {

@@ -18,8 +18,7 @@ bookActions.getBooks = () => (dispatch, getState) => {
                 pageSize: data.per_page
             }
         })
-    }, (error) => {
-        console.log(error);
+    }, () => {
         dispatch({
             type: GET_BOOKS,
             payload: {
@@ -36,17 +35,15 @@ bookActions.setPage = page => dispatch => {
 bookActions.rateBook = (data) => dispatch => {
     request.post('/api/rating', data, response => {
         dispatch({ type: RATE_BOOK, payload: { success: true, data: response.data } });
-    }, error => {
-        console.log(error);
-        dispatch({ type: RATE_BOOK, payload: { success: false, data: null } });
+    }, () => {
+        dispatch({ type: RATE_BOOK, payload: { success: false, data: {} } });
     });
 }
 
 bookActions.getBook = id => (dispatch) => {
     request.get(`/api/books/${id}`, {}, response => {
         dispatch({ type: GET_BOOK, payload: response.data })
-    }, (error) => {
-        console.log(error);
+    }, () => {
         dispatch({ type: GET_BOOK, payload: {} })
     });
 }

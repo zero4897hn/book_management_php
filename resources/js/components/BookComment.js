@@ -16,9 +16,18 @@ const BookComment = (props) => {
         return (
             <div className="row" key={index}>
                 <div className="col-sm-2">
-                    {/* <img className="img-fluid img-thumbnail" src="{{ asset('files/avatars/' + $comment->user->avatar) }}" /> */}
-                    <img className="img-fluid img-thumbnail" src="{{ asset('files/avatars/anonymous_avatar.png') }}" />
-                    <h5 className="text-center"></h5>
+                    {comment.userAvatar ?
+                        <img
+                            src={`/files/avatars/${comment.userAvatar}`}
+                            className="img-fluid img-thumbnail"
+                        />
+                        :
+                        <img
+                            src="/files/avatars/anonymous_avatar.png"
+                            className="img-fluid img-thumbnail"
+                        />
+                    }
+                    <h5 className="text-center">{comment.username}</h5>
                 </div>
                 <div className="col-sm-10">
                     <div className="card">

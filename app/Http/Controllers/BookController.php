@@ -127,7 +127,7 @@ class BookController extends Controller
     {
         $book = Book::find($id);
         $token = $request->bearerToken();
-        if ($token != 'null') {
+        if ($token != null) {
             JWTAuth::setToken($token);
             $user = JWTAuth::toUser();
             $book->current_rate = DB::table('rates')
@@ -136,7 +136,13 @@ class BookController extends Controller
                 ['user_id', '=', $user->id],
             ])->first();
         }
-        $book->comments = $book->comments;
+        $book->comments = DB::table('comments')
+            ->join('users', 'users.id', '=', 'comments.user_id')
+            ->select('comments.id as id', 'book_id', 'user_id',
+                'title', 'content', 'users.username as username', 'users.avatar as userAvatar')
+                ->whereNull('deleted_at')
+                ->where('book_id', '=', $id)
+                ->get();
         $book->user = $book->user;
         return response($book, Response::HTTP_OK);
     }

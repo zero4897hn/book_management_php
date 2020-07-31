@@ -1,10 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import reducers from '../reducers';
-import thunk from 'redux-thunk'
 
 import Menu from '../components/Menu';
 import LoginPage from './LoginPage';
@@ -16,7 +13,7 @@ import BookDetailPage from './BookDetailPage';
 import UserCreatingPage from './UserCreatingPage';
 import UserDetailPage from './UserDetailPage';
 import { ToastContainer } from 'react-toastify';
-
+import store from '../utils/store';
 
 const App = () => {
     return (
@@ -49,8 +46,6 @@ const App = () => {
         </div>
     )
 }
-
-const store = createStore(reducers, applyMiddleware(thunk));
 
 ReactDOM.render(
     <Provider store={store}>

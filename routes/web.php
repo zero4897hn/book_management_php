@@ -43,4 +43,6 @@ Route::view('/{path?}/{name?}', 'home');
 
 Route::post('api/rating', 'RateController@save');
 
+Route::post('api/token/refresh', 'AuthController@refresh');
+
 Route::get('api/rate/book/{id}', 'RateController@getOne');

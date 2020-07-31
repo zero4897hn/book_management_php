@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Border from './Border';
 import { connect } from 'react-redux';
 import { FaEdit } from 'react-icons/fa'
@@ -6,10 +6,6 @@ import { FaEdit } from 'react-icons/fa'
 const BookDetail = (props) => {
     const { bookReducer } = props;
     const { book } = bookReducer;
-
-    useEffect(() => {
-        console.log(book);
-    }, [book]);
 
     return (
         <Border>
