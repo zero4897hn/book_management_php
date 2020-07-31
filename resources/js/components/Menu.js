@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import authenticationActions from '../actions/authenticationActions';
+import { FaUserCircle } from 'react-icons/fa';
 
 const Menu = (props) => {
     const { logout, getUserData, authenticationReducer } = props;
-    const { isLogin } = authenticationReducer
+    const { isLogin, userData } = authenticationReducer
 
     useEffect(() => {
         getUserData();
@@ -13,6 +14,47 @@ const Menu = (props) => {
 
     const onClickLogout = () => {
         logout();
+    }
+
+    const renderedLogin = () => {
+        if (isLogin) {
+            return (
+                <ul className="navbar-nav ml-auto">
+                    <li className="nav-item dropdown">
+                        <Link
+                            className="nav-link dropdown-toggle"
+                            to="#"
+                            id="navbarDropdown"
+                            role="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                        >
+                            {userData.username} <FaUserCircle />
+                        </Link>
+                        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <Link className="dropdown-item" to="#">Thông tin cá nhân</Link>
+                            <Link className="dropdown-item" to="#">Sách của bạn</Link>
+                            <div className="dropdown-divider"></div>
+                            <div className="dropdown-item" onClick={(event) => onClickLogout(event)}>Đăng xuất</div>
+                        </div>
+                    </li>
+                </ul>
+            )
+        } else if (isLogin === false) {
+            return (
+                <ul className="navbar-nav ml-auto">
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/login">Đăng nhập</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/register">Đăng ký</Link>
+                    </li>
+                </ul>
+            )
+        } else {
+            return null;
+        }
     }
 
     return (
@@ -43,38 +85,7 @@ const Menu = (props) => {
                             <Link className="nav-link" to="/users">Quản lý người dùng</Link>
                         </li>
                     </ul>
-                    {isLogin?
-                    <ul className="navbar-nav ml-auto">
-                        <li className="nav-item dropdown">
-                            <Link
-                                className="nav-link dropdown-toggle"
-                                to="#"
-                                id="navbarDropdown"
-                                role="button"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                            >
-                                <i className="fas fa-user-circle"></i>
-                            </Link>
-                            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <Link className="dropdown-item" to="#">Thông tin cá nhân</Link>
-                                <Link className="dropdown-item" to="#">Sách của bạn</Link>
-                                <div className="dropdown-divider"></div>
-                                <div className="dropdown-item" onClick={(event) => onClickLogout(event)}>Đăng xuất</div>
-                            </div>
-                        </li>
-                    </ul>
-                    :
-                    <ul className="navbar-nav ml-auto">
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/login">Đăng nhập</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/register">Đăng ký</Link>
-                        </li>
-                    </ul>
-                    }
+                    {renderedLogin()}
                 </div>
             </div>
         </nav>

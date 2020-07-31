@@ -20,14 +20,16 @@ const authenticationReducer = (state = initialState, action) => {
         case GET_CURRENT_USER: {
             return {
                 ...state,
-                isLogin: true,
+                isLogin: !!payload,
                 userData: payload
             }
         }
         case LOGOUT: {
+            const { success } = payload;
             return {
                 ...state,
-                ...initialState
+                ...initialState,
+                isLogin: !success
             }
         }
         default: {
