@@ -30,7 +30,7 @@ const Menu = (props) => {
                             aria-haspopup="true"
                             aria-expanded="false"
                         >
-                            {userData.username} <FaUserCircle />
+                            {userData.username} <FaUserCircle style={{ fontSize: '20px' }} />
                         </Link>
                         <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                             <Link className="dropdown-item" to="#">Thông tin cá nhân</Link>
