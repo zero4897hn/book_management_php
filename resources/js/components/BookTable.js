@@ -8,7 +8,7 @@ const BookTable = (props) => {
         return (
             <tr key={book.id}>
                 <th scope="row">{(page - 1) * pageSize + index + 1}</th>
-                <td><img src={book.cover} /></td>
+                <td><img className="img-fluid" src={`/files/covers/${book.cover}`} /></td>
                 <td><Link to={`/detail-book/${book.id}`}>{book.name}</Link></td>
                 <td>{book.author}</td>
                 <td>{book.username}</td>
