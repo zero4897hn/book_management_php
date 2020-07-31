@@ -1,5 +1,5 @@
 import request from "../utils/requests";
-import { GET_BOOKS, SET_BOOKS_PAGE, GET_BOOK, RATE_BOOK } from "../utils/actions";
+import { GET_BOOKS, SET_BOOKS_PAGE, GET_BOOK, RATE_BOOK, GET_COMMENT, EDIT_COMMENT } from "../utils/actions";
 
 const bookActions = {};
 
@@ -42,10 +42,26 @@ bookActions.rateBook = (data) => dispatch => {
 
 bookActions.getBook = id => (dispatch) => {
     request.get(`/api/books/${id}`, {}, response => {
-        dispatch({ type: GET_BOOK, payload: response.data })
+        dispatch({ type: GET_BOOK, payload: response.data });
     }, () => {
-        dispatch({ type: GET_BOOK, payload: {} })
+        dispatch({ type: GET_BOOK, payload: {} });
     });
+}
+
+bookActions.getComment = id => dispatch => {
+    request.get(`/api/comments/${id}`, {}, response => {
+        dispatch({ type: GET_COMMENT, payload: response.data });
+    }, () => {
+        dispatch({ type: GET_COMMENT, payload: {} });
+    })
+}
+
+bookActions.editComment = data => dispatch => {
+    request.put(`/api/comments/${data.id}`, data, response => {
+        dispatch({ type: EDIT_COMMENT, payload: { success: true, data: response.data } });
+    }, () => {
+        dispatch({ type: EDIT_COMMENT, payload: { success: false } });
+    })
 }
 
 export default bookActions;

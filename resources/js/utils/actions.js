@@ -7,3 +7,5 @@ export const GET_BOOKS = 'GET_BOOKS';
 export const SET_BOOKS_PAGE = 'SET_BOOK_PAGE';
 export const GET_BOOK = 'GET_BOOK';
 export const RATE_BOOK = 'RATE_BOOK';
+export const GET_COMMENT = 'GET_COMMENT';
+export const EDIT_COMMENT = 'EDIT_COMMENT';

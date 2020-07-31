@@ -28,9 +28,11 @@ const onErrorHandler = async (error, method, url, params, onSuccess, onError) =>
             request[method](url, params, onSuccess, onError);
         } else {
             onError();
+            localStorage.removeItem(LOGIN_TOKEN_STORAGE);
         }
     } catch (error) {
         onError();
+        localStorage.removeItem(LOGIN_TOKEN_STORAGE);
     }
 }
 
@@ -44,14 +46,14 @@ request.get = (url, params = {}, onSuccess = () => { }, onError = () => { }) => 
 request.post = (url, data = {}, onSuccess = () => { }, onError = () => { }) => {
     axios.post(url, data, { headers: getHeaders() }).then(
         onSuccess,
-        (error) => onErrorHandler(error, 'post', url, params, onSuccess, onError)
+        (error) => onErrorHandler(error, 'post', url, data, onSuccess, onError)
     );
 }
 
 request.put = (url, data = {}, onSuccess = () => { }, onError = () => { }) => {
     axios.put(url, data, { headers: getHeaders() }).then(
         onSuccess,
-        (error) => onErrorHandler(error, 'put', url, params, onSuccess, onError)
+        (error) => onErrorHandler(error, 'put', url, data, onSuccess, onError)
     );
 }
 

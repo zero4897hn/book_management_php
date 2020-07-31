@@ -11,7 +11,7 @@ class CommentController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('jwt.auth')->except(['index', 'show']);
     }
     /**
      * Display a listing of the resource.
@@ -44,7 +44,7 @@ class CommentController extends Controller
         $comment = new Comment();
         $comment->title = $request->input('title');
         $comment->content = $request->input('content');
-        $comment->book_id = $request->input('bookId');
+        $comment->book_id = $request->input('book_id');
 
         $user = Auth::user();
 
@@ -97,6 +97,11 @@ class CommentController extends Controller
         $comment->title = $request->input('title');
         $comment->content = $request->input('content');
         $comment->save();
+
+        $user = $comment->user;
+        $comment->username = $user->username;
+        $comment->userAvatar = $user->avatar;
+
         return response($comment, Response::HTTP_OK);
     }
 
