@@ -18,7 +18,7 @@ class BookController extends Controller
 
     public function __construct()
     {
-        $this->middleware('jwt.auth')->except(['index']);
+        $this->middleware('jwt.auth')->except(['index', 'show']);
     }
 
     /**
@@ -125,11 +125,13 @@ class BookController extends Controller
     public function show($id)
     {
         $book = Book::find($id);
-        $book->current_rate = DB::table('rates')
+        if (Auth::check()) {
+            $book->current_rate = DB::table('rates')
             ->where([
                 ['book_id', '=', $id],
                 ['user_id', '=', Auth::id()],
             ])->first();
+        }
         $book->comments = $book->comments;
         return response($book, Response::HTTP_OK);
     }

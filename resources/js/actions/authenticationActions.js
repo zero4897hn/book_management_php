@@ -5,11 +5,11 @@ import { LOGIN_TOKEN_STORAGE } from '../utils/constants';
 const authenticationActions = {};
 
 authenticationActions.register = (data) => () => {
-    return request.postApi('api/register', data)
+    return request.postApi('/api/register', data)
 }
 
 authenticationActions.login = (data) => (dispatch) => {
-    request.post('api/login', data, (response) => {
+    request.post('/api/login', data, (response) => {
         localStorage.setItem(LOGIN_TOKEN_STORAGE, response.data.token);
         dispatch({ type: LOGIN, payload: { success: true } })
     }, (error) => {
@@ -19,7 +19,7 @@ authenticationActions.login = (data) => (dispatch) => {
 }
 
 authenticationActions.getUserData = () => (dispatch) => {
-    request.get('api/auth', {}, (response) => {
+    request.get('/api/auth', {}, (response) => {
         dispatch({ type: GET_CURRENT_USER, payload: response.data })
     }, (error) => {
         console.log(error);
@@ -27,7 +27,7 @@ authenticationActions.getUserData = () => (dispatch) => {
 }
 
 authenticationActions.logout = () => (dispatch) => {
-    request.post('api/logout', {}, () => {
+    request.post('/api/logout', {}, () => {
         localStorage.removeItem(LOGIN_TOKEN_STORAGE);
         dispatch({ type: LOGOUT, payload: { success: true } });
     }, () => {

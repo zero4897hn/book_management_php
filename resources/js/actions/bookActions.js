@@ -45,8 +45,8 @@ bookActions.rateBook = (data) => dispatch => {
 bookActions.getBook = id => (dispatch) => {
     request.get(`/api/books/${id}`, {}, response => {
         dispatch({ type: GET_BOOK, payload: response.data })
-    }, error => {
-        dispatch({ type: GET_BOOK, payload: null })
+    }, () => {
+        dispatch({ type: GET_BOOK, payload: {} })
     });
 }
 
