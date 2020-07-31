@@ -137,6 +137,7 @@ class BookController extends Controller
             ])->first();
         }
         $book->comments = $book->comments;
+        $book->user = $book->user;
         return response($book, Response::HTTP_OK);
     }
 

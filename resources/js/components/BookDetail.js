@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Border from './Border';
 import { connect } from 'react-redux';
 import { FaEdit } from 'react-icons/fa'
@@ -7,15 +7,25 @@ const BookDetail = (props) => {
     const { bookReducer } = props;
     const { book } = bookReducer;
 
+    useEffect(() => {
+        console.log(book);
+    }, [book]);
+
     return (
         <Border>
             <div className="col-2">
-                <img
-                    src="{{asset('files/avatars/' . $book->user->avatar)}}"
-                    className="img-fluid img-thumbnail"
-                    onError="this.onerror=null;this.src='{{asset('files/avatars/anonymous_avatar.png')}}';"
-                />
-                <h3 className="text-center"></h3>
+                {book.user && book.user.avatar?
+                    <img
+                        src={`/files/avatars/${book.user.avatar}`}
+                        className="img-fluid img-thumbnail"
+                    />
+                    :
+                    <img
+                        src="/files/avatars/anonymous_avatar.png"
+                        className="img-fluid img-thumbnail"
+                    />
+                }
+                <h3 className="text-center">{book.user && book.user.username}</h3>
             </div>
             <div className="col-10 p-0">
                 <div className="card">
@@ -30,7 +40,10 @@ const BookDetail = (props) => {
                     </div>
                     <div className="card-body">
                         <div style={{ width: '100%', display: 'flex' }}>
-                            <img style={{ margin: 'auto' }} className="img-fluid" src="{{asset('files/covers/'.$book->cover)}}" />
+                            <img
+                                style={{ margin: 'auto' }}
+                                className="img-fluid"
+                                src={`/files/covers/${book.cover}`} />
                         </div>
                         <div style={{ whiteSpace: 'pre-line' }}>{book.description}</div>
                     </div>
