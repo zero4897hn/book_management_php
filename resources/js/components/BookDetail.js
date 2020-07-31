@@ -1,6 +1,7 @@
 import React from 'react';
 import Border from './Border';
 import { connect } from 'react-redux';
+import { FaEdit } from 'react-icons/fa'
 
 const BookDetail = (props) => {
     const { bookReducer } = props;
@@ -24,7 +25,7 @@ const BookDetail = (props) => {
                             className="btn btn-outline-secondary btn-sm float-right edit-comment"
                             href="/books/{{$book->id}}/edit"
                         >
-                            <i className="fas fa-edit"></i>
+                            <FaEdit />
                         </a>
                     </div>
                     <div className="card-body">

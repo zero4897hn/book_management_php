@@ -32,7 +32,6 @@ const bookReducer = (state = initialState, action) => {
         }
         case RATE_BOOK: {
             const { success, data } = payload;
-            console.log(data);
             return {
                 ...state,
                 rateResponse: { success },

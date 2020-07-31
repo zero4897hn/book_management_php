@@ -17,7 +17,7 @@ const Menu = (props) => {
     }
 
     const renderedLogin = () => {
-        if (isLogin) {
+        if (isLogin && userData) {
             return (
                 <ul className="navbar-nav ml-auto">
                     <li className="nav-item dropdown">

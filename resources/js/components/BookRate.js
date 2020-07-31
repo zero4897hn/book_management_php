@@ -9,12 +9,12 @@ import { toast } from 'react-toastify';
 const BookRate = (props) => {
     const [starValue, setStarValue] = useState(0);
 
-    const { bookReducer, rateBook } = props;
+    const { bookReducer, authenticationReducer, rateBook } = props;
     const { book, rateResponse } = bookReducer;
+    const { isLogin } = authenticationReducer;
 
     useEffect(() => {
         if (book && book.current_rate && book.current_rate.rating) {
-            console.log(book);
             setStarValue(book.current_rate.rating)
         } else {
             setStarValue(0);
@@ -60,10 +60,12 @@ const BookRate = (props) => {
                         // emptySymbol={() => <FaStarAndCrescent />}
                         // fullSymbol={() => <FaStar />}
                         />
-                        <button
-                            className="btn btn-primary"
-                            onClick={(event) => onClickRating(event)}
-                        >Đánh giá</button>
+                        {isLogin &&
+                            <button
+                                className="btn btn-primary"
+                                onClick={(event) => onClickRating(event)}
+                            >Đánh giá</button>
+                        }
                     </div>
                 </div>
                 <div className="row">
@@ -76,7 +78,8 @@ const BookRate = (props) => {
 }
 
 const mapStateToProps = state => ({
-    bookReducer: state.bookReducer
+    bookReducer: state.bookReducer,
+    authenticationReducer: state.authenticationReducer,
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -4,10 +4,15 @@ import { LOGIN_TOKEN_STORAGE } from './constants';
 const request = {}
 
 const getHeaders = () => {
-    return {
-        'Authorization': `Bearer ${getToken()}`,
-        'Accept': 'application/json',
+    const headers = {};
+
+    if (getToken()) {
+        headers['Authorization'] = `Bearer ${getToken()}`;
     }
+
+    headers['Accept'] = 'application/json';
+
+    return headers;
 }
 
 const getToken = () => {

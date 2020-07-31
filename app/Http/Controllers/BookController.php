@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Response;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class BookController extends Controller
 {
@@ -122,14 +123,17 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $book = Book::find($id);
-        if (Auth::check()) {
+        $token = $request->bearerToken();
+        if ($token != 'null') {
+            JWTAuth::setToken($token);
+            $user = JWTAuth::toUser();
             $book->current_rate = DB::table('rates')
             ->where([
                 ['book_id', '=', $id],
-                ['user_id', '=', Auth::id()],
+                ['user_id', '=', $user->id],
             ])->first();
         }
         $book->comments = $book->comments;

@@ -18,12 +18,18 @@ const LoginPage = (props) => {
         const { errors } = loginResponse;
         if (isLogin) {
             if (!userData) getUserData();
-            history.goBack();
         } else if (isLogin === false) {
             setErrors(errors);
+            setIsLogingIn(false);
         }
-        setIsLogingIn(false);
     }, [loginResponse])
+
+    useEffect(() => {
+        if (userData) {
+            setIsLogingIn(false);
+            history.goBack();
+        }
+    }, [userData])
 
     const onSubmitLogin = (event) => {
         setIsLogingIn(true);
