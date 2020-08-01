@@ -31,7 +31,7 @@ class BookController extends Controller
     {
         $name = $request->name;
         $author = $request->author;
-        $sort = $request->input('sort');
+        $sort = $request->sort;
 
         $books = DB::table('books')
             ->join('users', 'users.id', '=', 'books.user_id')

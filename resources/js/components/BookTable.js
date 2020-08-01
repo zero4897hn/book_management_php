@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa';
+import { SORT_ASC, SORT_DESC } from '../utils/constants';
+import bookActions from '../actions/bookActions';
 
 const BookTable = (props) => {
-    const { bookReducer } = props;
-    const { books, page, pageSize } = bookReducer;
+    const { bookReducer, setSort, getBooks } = props;
+    const { books, page, pageSize, sort } = bookReducer;
+
+    const [sortField, setSortField] = useState('');
+    const [sortType, setSortType] = useState('');
+
+    useEffect(() => {
+        const sortData = sort.split(',');
+        setSortField(sortData[0]);
+        setSortType(sortData[1] ? sortData[1] : '');
+    }, [sort])
+
+    const sortBook = (field, type) => {
+        setSort(`${field},${type}`);
+        getBooks();
+    }
 
     const renderedBooks = books.map((book, index) => {
         return (
@@ -26,26 +43,68 @@ const BookTable = (props) => {
                 <table className="table">
                     <thead className="thead-light">
                         <tr>
-                            <th scope="col" style={{width: '5%'}}>#</th>
-                            <th scope="col" style={{width: '10%'}}>Bìa sách</th>
-                            <th scope="col" style={{width: '30%'}}>Tên sách</th>
-                            <th scope="col" style={{width: '18%'}}>Tác giả</th>
-                            <th scope="col" style={{width: '10%'}}>Người đăng</th>
-                            <th scope="col" style={{width: '15%'}}>
+                            <th scope="col" style={{ width: '5%' }}>#</th>
+                            <th scope="col" style={{ width: '10%' }}>Bìa sách</th>
+                            <th scope="col" style={{ width: '30%' }}>Tên sách</th>
+                            <th scope="col" style={{ width: '18%' }}>Tác giả</th>
+                            <th scope="col" style={{ width: '10%' }}>Người đăng</th>
+                            <th scope="col" style={{ width: '15%' }}>
                                 <span>Lượt bình luận</span>
-                                <button className="btn btn-sm btn-outline-secondary button-sort-book">
-                                    <i className="fas fa-sort-down"></i>
-                                    <i className="fas fa-sort-up"></i>
-                                    <i className="fas fa-sort"></i>
-                                </button>
+                                {
+                                    sortField !== 'comment_count' ? (
+                                        <button
+                                            className="btn btn-sm btn-outline-secondary"
+                                            onClick={() => sortBook('comment_count', SORT_ASC)}
+                                        >
+                                            <FaSort />
+                                        </button>
+                                    )
+                                        : sortType === SORT_DESC ? (
+                                            <button
+                                                className="btn btn-sm btn-outline-secondary"
+                                                onClick={() => sortBook('comment_count', SORT_ASC)}
+                                            >
+                                                <FaSortDown />
+                                            </button>
+                                        )
+                                            : (
+                                                <button
+                                                    className="btn btn-sm btn-outline-secondary"
+                                                    onClick={() => sortBook('comment_count', SORT_DESC)}
+                                                >
+                                                    <FaSortUp />
+                                                </button>
+                                            )
+                                }
                             </th>
-                            <th scope="col" style={{width: '12%'}}>
+                            <th scope="col" style={{ width: '12%' }}>
                                 <span>Đánh giá</span>
-                                <button className="btn btn-sm btn-outline-secondary button-sort-book">
-                                    <i className="fas fa-sort-down"></i>
-                                    <i className="fas fa-sort-up"></i>
-                                    <i className="fas fa-sort"></i>
-                                </button>
+                                {
+                                    sortField !== 'rating' ? (
+                                        <button
+                                            className="btn btn-sm btn-outline-secondary"
+                                            onClick={() => sortBook('rating', SORT_ASC)}
+                                        >
+                                            <FaSort />
+                                        </button>
+                                    )
+                                        : sortType === SORT_DESC ? (
+                                            <button
+                                                className="btn btn-sm btn-outline-secondary"
+                                                onClick={() => sortBook('rating', SORT_ASC)}
+                                            >
+                                                <FaSortDown />
+                                            </button>
+                                        )
+                                            : (
+                                                <button
+                                                    className="btn btn-sm btn-outline-secondary"
+                                                    onClick={() => sortBook('rating', SORT_DESC)}
+                                                >
+                                                    <FaSortUp />
+                                                </button>
+                                            )
+                                }
                             </th>
                         </tr>
                     </thead>
@@ -60,4 +119,9 @@ const mapStateToProps = state => ({
     bookReducer: state.bookReducer,
 });
 
-export default connect(mapStateToProps)(BookTable);
+const mapDispatchToProps = dispatch => ({
+    getBooks: () => dispatch(bookActions.getBooks()),
+    setSort: data => dispatch(bookActions.setSort(data))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookTable);
