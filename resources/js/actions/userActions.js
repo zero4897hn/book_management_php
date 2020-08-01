@@ -1,5 +1,5 @@
 import request from '../utils/requests';
-import { GET_USERS } from '../utils/actions';
+import { GET_USERS, GET_USER } from '../utils/actions';
 
 const userActions = {};
 
@@ -25,6 +25,14 @@ userActions.getUsers = () => (dispatch, getState) => {
                 users: []
             }
         });
+    })
+}
+
+userActions.getUser = userId => dispatch => {
+    request.get(`/api/users/${userId}`, {}, response => {
+        dispatch({ type: GET_USER, payload: response.data });
+    }, () => {
+        dispatch({ type: GET_USER, payload: {} });
     })
 }
 

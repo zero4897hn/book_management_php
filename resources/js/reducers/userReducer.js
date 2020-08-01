@@ -1,10 +1,11 @@
-const { GET_USERS } = require("../utils/actions");
+const { GET_USERS, GET_USER } = require("../utils/actions");
 
 const initialState = {
     users: [],
     page: 1,
     pageSize: 10,
     totalRecord: 0,
+    user: {},
 }
 
 const userReducer = (state = initialState, action) => {
@@ -14,6 +15,12 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ...payload
+            }
+        }
+        case GET_USER: {
+            return {
+                ...state,
+                user: payload
             }
         }
         default: {

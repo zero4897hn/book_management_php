@@ -23,14 +23,14 @@ const UserForm = (props) => {
     }, [entity])
 
     return (
-        <div class="row justify-content-sm-center">
-            <div class="col-sm-6">
+        <div className="row justify-content-sm-center">
+            <div className="col-sm-6">
                 <form action="/users" method="POST" encType="multipart/form-data">
-                    <div class="form-group">
-                        <label for="field_first_name">Tên</label>
+                    <div className="form-group">
+                        <label htmlFor="field_first_name">Tên</label>
                         <input
                             type="text"
-                            class="form-control"
+                            className="form-control"
                             id="field_first_name"
                             name="first_name"
                             value={firstName}
@@ -40,11 +40,11 @@ const UserForm = (props) => {
                             {errors && errors.first_name && errors.first_name[0]}
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="field_last_name">Họ</label>
+                    <div className="form-group">
+                        <label htmlFor="field_last_name">Họ</label>
                         <input
                             type="text"
-                            class="form-control"
+                            className="form-control"
                             id="field_last_name"
                             name="last_name"
                             value={lastName}
@@ -54,11 +54,11 @@ const UserForm = (props) => {
                             {errors && errors.last_name && errors.last_name[0]}
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="field_username">Tên đăng nhập</label>
+                    <div className="form-group">
+                        <label htmlFor="field_username">Tên đăng nhập</label>
                         <input
                             type="text"
-                            class="form-control"
+                            className="form-control"
                             id="field_username"
                             name="username"
                             value={username}
@@ -68,11 +68,11 @@ const UserForm = (props) => {
                             {errors && errors.username && errors.username[0]}
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="field_password">Mật khẩu</label>
+                    <div className="form-group">
+                        <label htmlFor="field_password">Mật khẩu</label>
                         <input
                             type="password"
-                            class="form-control"
+                            className="form-control"
                             id="field_password"
                             name="password"
                             value={password}
@@ -82,11 +82,11 @@ const UserForm = (props) => {
                             {errors && errors.password && errors.password[0]}
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="field_email">Email</label>
+                    <div className="form-group">
+                        <label htmlFor="field_email">Email</label>
                         <input
                             type="text"
-                            class="form-control"
+                            className="form-control"
                             id="field_email"
                             name="email"
                             value={email}
@@ -96,10 +96,10 @@ const UserForm = (props) => {
                             {errors && errors.email && errors.email[0]}
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="field_admin">Vai trò</label>
+                    <div className="form-group">
+                        <label htmlFor="field_admin">Vai trò</label>
                         <select
-                            class="form-control"
+                            className="form-control"
                             id="field_admin"
                             name="admin"
                             value={admin}
@@ -112,14 +112,14 @@ const UserForm = (props) => {
                             {errors && errors.admin && errors.admin[0]}
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="field_avatar">Avatar</label>
-                        <input type="file" class="form-control-file" id="field_avatar" name="avatarFile" multiple ref={fileInput} />
+                    <div className="form-group">
+                        <label htmlFor="field_avatar">Avatar</label>
+                        <input type="file" className="form-control-file" id="field_avatar" name="avatarFile" multiple ref={fileInput} />
                         <div className="text-danger" role="alert">
                             {errors && errors.avatar && errors.avatar[0]}
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                    <button type="submit" className="btn btn-primary">Thêm mới</button>
                 </form>
             </div>
         </div>

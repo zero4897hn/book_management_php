@@ -38,7 +38,6 @@ class UserController extends Controller
      */
     public function create()
     {
-        return View('users.create');
     }
 
     /**
@@ -57,7 +56,7 @@ class UserController extends Controller
             'last_name' => 'max:50'
         ]);
 
-        $validator->after(function($validator) use($request) {
+        $validator->after(function ($validator) use ($request) {
             $usernameCount = DB::table('users')->where('username', '=', $request->input('username'))->count();
             if ($usernameCount > 0) {
                 $validator->errors()->add('username', 'Tên đăng nhập đã tồn tại.');
@@ -100,7 +99,12 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        return View('users.detail', compact('user'));
+        $user->books = DB::table('books')
+            ->join('users', 'users.id', '=', 'books.user_id')
+            ->select('books.id as id', 'name', 'cover', 'author', 'rating', 'comment_count', 'username')
+            ->whereNull('deleted_at')
+            ->where('user_id', '=', $id);
+        return response($user, Response::HTTP_OK);
     }
 
     /**
@@ -111,8 +115,6 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
-        return View('users.edit', compact('user'));
     }
 
     /**
@@ -133,7 +135,7 @@ class UserController extends Controller
 
         $user = User::find($id);
 
-        $validator->after(function($validator) use($request, $user) {
+        $validator->after(function ($validator) use ($request, $user) {
             $usernameCount = DB::table('users')->where('username', '=', $request->input('username'))->count();
             if ($usernameCount > 0) {
                 $validator->errors()->add('username', 'Tên đăng nhập đã tồn tại.');

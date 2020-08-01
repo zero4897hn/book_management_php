@@ -1,49 +1,54 @@
 import React from 'react';
 import Border from './Border';
+import { connect } from 'react-redux';
+import { FaEdit } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
-const UserInfo = () => {
+const UserInfo = (props) => {
+    const { userReducer } = props;
+    const { user } = userReducer;
+
     return (
         <Border>
-            <div class="col-2">
-                <img
-                    src="{{asset('files/avatars/' . $user->avatar)}}"
-                    class="img-fluid img-thumbnail"
-                    onError="this.onerror=null;this.src='{{asset('files/avatars/anonymous_avatar.png')}}';"
-                />
-                <img class="img-fluid img-thumbnail" src="{{ asset('files/avatars/anonymous_avatar.png') }}" />
-                <h3 class="text-center"></h3>
+            <div className="col-2">
+                {user.avatar ?
+                    <img className="img-fluid" src={`/files/avatars/${user.avatar}`} />
+                    :
+                    <img className="img-fluid" src="/files/avatars/anonymous_avatar.png" />
+                }
+                <h3 className="text-center">{user.username}</h3>
             </div>
-            <div class="col-10 p-0">
-                <div class="card">
-                    <div class="card-header">
+            <div className="col-10 p-0">
+                <div className="card">
+                    <div className="card-header">
                         <span>Thông tin cá nhân</span>
-                        <a
-                            class="btn btn-outline-secondary btn-sm float-right"
-                            href="/users/{{$user->id}}/edit"
+                        <Link
+                            className="btn btn-outline-secondary btn-sm float-right"
+                            to="/users/{{$user->id}}/edit"
                         >
-                            <i class="fas fa-edit"></i>
-                        </a>
+                            <FaEdit />
+                        </Link>
                     </div>
-                    <div class="card-body">
-                        <table class="table table-bordered">
-                            <tr>
-                                <td><b>Họ và tên: </b></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td><b>Email: </b></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td><b>Vai trò: </b></td>
-                                <td>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><b>Trạng thái: </b></td>
-                                <td>
-                                </td>
-                            </tr>
+                    <div className="card-body">
+                        <table className="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td><b>Họ và tên: </b></td>
+                                    <td>{user.last_name} {user.first_name}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Email: </b></td>
+                                    <td>{user.email}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Vai trò: </b></td>
+                                    <td>{user.admin ? 'Quản trị' : 'Người dùng'}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Trạng thái: </b></td>
+                                    <td>{user.banned ? 'Đang khóa' : 'Đang mở'}</td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -52,4 +57,8 @@ const UserInfo = () => {
     );
 }
 
-export default UserInfo;
+const mapStateToProps = state => ({
+    userReducer: state.userReducer
+})
+
+export default connect(mapStateToProps)(UserInfo);
