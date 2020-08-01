@@ -28,8 +28,7 @@ class UserController extends Controller
         $users = DB::table('users')
             ->select('id', 'avatar', 'username', 'email', 'admin', 'banned')
             ->paginate(5);
-        // return $users;
-        return View('users.list', compact('users'));
+        return response($users, Response::HTTP_OK);
     }
 
     /**

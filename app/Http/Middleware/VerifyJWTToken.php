@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Http\Response;
 
 class VerifyJWTToken
 {
@@ -21,11 +22,11 @@ class VerifyJWTToken
             JWTAuth::toUser($request->bearerToken());
         } catch (JWTException $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-                return response()->json(['message' => 'Token has expired']);
+                return response(['message' => 'Token has expired'], Response::HTTP_BAD_REQUEST);
             } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
-                return response()->json(['token_invalid']);
+                return response(['message' => 'token_invalid'], Response::HTTP_BAD_REQUEST);
             } else {
-                return response()->json(['error' => 'Token is required']);
+                return response(['message' => 'Token is required'], Response::HTTP_BAD_REQUEST);
             }
         }
         return $next($request);

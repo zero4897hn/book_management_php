@@ -1,6 +1,45 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { FaLock, FaLockOpen, FaEdit } from 'react-icons/fa';
 
 const UserTable = (props) => {
+    const { userReducer } = props;
+    const { users } = userReducer
+
+    const renderedUsers = users.map((user, index) => {
+        return (
+            <tr key={index}>
+                <th scope="row"></th>
+                <td>
+                    {user.avatar ?
+                        <img className="img-fluid" src={`/files/avatars/${user.avatar}`} />
+                        :
+                        <img className="img-fluid" src="/files/avatars/anonymous_avatar.png" />
+                    }
+                </td>
+                <td><Link to={`/detail-user/${user.id}`}>{user.username}</Link></td>
+                <td>{user.email}</td>
+                <td>{user.admin ? 'Quản trị' : 'Người dùng'}</td>
+                <td>{user.banned ? 'Đang khóa' : 'Đang mở'}</td>
+                <td>
+                    {user.banned ?
+                        <button className="btn btn-warning">
+                            <FaLockOpen />
+                        </button>
+                        :
+                        <button className="btn btn-warning">
+                            <FaLock />
+                        </button>
+                    }
+                    <a className="btn btn-primary" href="/users/{{$user->id}}/edit">
+                        <FaEdit />
+                    </a>
+                </td>
+            </tr>
+        )
+    })
+
     return (
         <div className="row">
             <div className="col-sm-12">
@@ -16,42 +55,15 @@ const UserTable = (props) => {
                             <th scope="col" style={{ width: '15%' }}></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row"></th>
-                            <td>
-                                <img className="img-fluid" src="{{ asset('files/avatars/' . $user->avatar) }}" />
-
-                                <img className="img-fluid" src="{{ asset('files/avatars/anonymous_avatar.png') }}" />
-                            </td>
-                            <td><a href="users/{{$user->id}}"></a></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <button
-                                    className="btn btn-warning button_unblock"
-                                >
-                                    <i className="fas fa-lock-open"></i>
-                                </button>
-                                <button
-                                    className="btn btn-warning button_block"
-                                >
-                                    <i className="fas fa-lock"></i>
-                                </button>
-                                <a
-                                    className="btn btn-primary"
-                                    href="/users/{{$user->id}}/edit"
-                                >
-                                    <i className="fas fa-edit"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
+                    <tbody>{renderedUsers}</tbody>
                 </table>
             </div>
         </div>
     );
 }
 
-export default UserTable;
+const mapStateToProps = state => ({
+    userReducer: state.userReducer
+})
+
+export default connect(mapStateToProps)(UserTable);
