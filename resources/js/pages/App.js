@@ -14,6 +14,7 @@ import UserCreatingPage from './UserCreatingPage';
 import UserDetailPage from './UserDetailPage';
 import { ToastContainer } from 'react-toastify';
 import store from '../utils/store';
+import AuthenticationModal from '../components/AuthenticationModal';
 
 const App = () => {
     return (
@@ -31,6 +32,7 @@ const App = () => {
             <BrowserRouter>
                 <div>
                     <Menu />
+                    <AuthenticationModal />
                     <Switch>
                         <Route path="/login" component={LoginPage} exact />
                         <Route path="/register" component={RegisterPage} exact />

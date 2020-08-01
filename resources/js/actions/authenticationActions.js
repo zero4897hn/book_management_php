@@ -1,5 +1,5 @@
 import request from '../utils/requests'
-import { LOGIN, LOGOUT, GET_CURRENT_USER } from '../utils/actions';
+import { LOGIN, LOGOUT, GET_CURRENT_USER, SHOW_TOKEN_EXPIRE_NOTIFICATION } from '../utils/actions';
 import { LOGIN_TOKEN_STORAGE } from '../utils/constants';
 
 const authenticationActions = {};
@@ -33,6 +33,10 @@ authenticationActions.logout = () => (dispatch) => {
     }, () => {
         dispatch({ type: LOGOUT, payload: { success: false } });
     })
+}
+
+authenticationActions.showTokenExpireNotification = () => dispatch => {
+    dispatch({ type: SHOW_TOKEN_EXPIRE_NOTIFICATION })
 }
 
 export default authenticationActions;

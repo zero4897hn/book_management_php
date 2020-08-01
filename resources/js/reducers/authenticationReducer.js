@@ -1,9 +1,10 @@
-import { LOGIN, LOGOUT, GET_CURRENT_USER } from "../utils/actions";
+import { LOGIN, LOGOUT, GET_CURRENT_USER, SHOW_TOKEN_EXPIRE_NOTIFICATION } from "../utils/actions";
 
 const initialState = {
-    loginResponse: { success: null, errors: null },
+    loginResponse: { errors: null },
     userData: null,
-    isLogin: null
+    isLogin: null,
+    tokenExpire: { show: null }
 }
 
 const authenticationReducer = (state = initialState, action) => {
@@ -30,6 +31,12 @@ const authenticationReducer = (state = initialState, action) => {
                 ...state,
                 ...initialState,
                 isLogin: !success
+            }
+        }
+        case SHOW_TOKEN_EXPIRE_NOTIFICATION: {
+            return {
+                ...state,
+                tokenExpire: { show: true }
             }
         }
         default: {

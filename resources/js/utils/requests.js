@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { LOGIN_TOKEN_STORAGE } from './constants';
+import store from './store';
+import authenticationActions from '../actions/authenticationActions';
 
 const request = {};
 
@@ -19,20 +21,29 @@ const getToken = () => {
     return localStorage.getItem(LOGIN_TOKEN_STORAGE);
 }
 
+const logError = (onError) => {
+    localStorage.removeItem(LOGIN_TOKEN_STORAGE);
+    store.dispatch(authenticationActions.showTokenExpireNotification());
+    onError();
+}
+
 const onErrorHandler = async (error, method, url, params, onSuccess, onError) => {
     const errorData = error && error.response && error.response.data;
     console.log(error && error.response);
     try {
-        if (errorData.message === 'Token has expired') {
-            await axios.post('/api/token/refresh', {}, { headers: getHeaders() });
-            request[method](url, params, onSuccess, onError);
-        } else {
-            onError();
-            localStorage.removeItem(LOGIN_TOKEN_STORAGE);
+        const { message } = errorData;
+        switch (message) {
+            case 'Token has expired': {
+                await axios.post('/api/token/refresh', {}, { headers: getHeaders() });
+                request[method](url, params, onSuccess, onError);
+            }
+            default: {
+                onError();
+            }
         }
     } catch (error) {
-        onError();
-        localStorage.removeItem(LOGIN_TOKEN_STORAGE);
+        console.log(error && error.response);
+        logError(onError);
     }
 }
 
