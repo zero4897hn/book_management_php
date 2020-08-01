@@ -103,7 +103,8 @@ class UserController extends Controller
             ->join('users', 'users.id', '=', 'books.user_id')
             ->select('books.id as id', 'name', 'cover', 'author', 'rating', 'comment_count', 'username')
             ->whereNull('deleted_at')
-            ->where('user_id', '=', $id);
+            ->where('user_id', '=', $id)
+            ->get();
         return response($user, Response::HTTP_OK);
     }
 

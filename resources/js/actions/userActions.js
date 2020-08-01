@@ -1,5 +1,5 @@
 import request from '../utils/requests';
-import { GET_USERS, GET_USER } from '../utils/actions';
+import { GET_USERS, GET_USER, DELETE_USER_BOOK } from '../utils/actions';
 
 const userActions = {};
 
@@ -33,6 +33,14 @@ userActions.getUser = userId => dispatch => {
         dispatch({ type: GET_USER, payload: response.data });
     }, () => {
         dispatch({ type: GET_USER, payload: {} });
+    })
+}
+
+userActions.deleteUserBook = bookId => dispatch => {
+    request.delete(`/api/books/${bookId}`, {}, () => {
+        dispatch({ type: DELETE_USER_BOOK, payload: { success: true, bookId } })
+    }, () => {
+        dispatch({ type: DELETE_USER_BOOK, payload: { success: false } })
     })
 }
 

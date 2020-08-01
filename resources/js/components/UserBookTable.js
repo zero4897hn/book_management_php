@@ -1,45 +1,94 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { FaTrash, FaEdit } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
+import NotificationModal from './NotificationModal';
+import userActions from '../actions/userActions';
 
 const UserBookTable = (props) => {
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [deletingBookId, setDeletingBookId] = useState(null);
+
+    const { userReducer, deleteUserBook } = props;
+    const { user, deleteUserBookResponse } = userReducer;
+    const { books } = user;
+
+    useEffect(() => {
+        const { success } = deleteUserBookResponse;
+        if (success) {
+            toast.success('Xóa thành công.')
+            setShowConfirm(false);
+        }
+    }, [deleteUserBookResponse])
+
+    const onClickDeleteBook = (event, bookId) => {
+        setDeletingBookId(bookId);
+        setShowConfirm(true);
+    }
+
+    const handleDeleteBook = () => {
+        deleteUserBook(deletingBookId);
+    }
+
+    const renderedBooks = books && books.map((book, index) => {
+        return (
+            <tr key={book.id}>
+                <th scope="row">{index + 1}</th>
+                <td><img className="img-fluid" src={`/files/covers/${book.cover}`} /></td>
+                <td><Link to={`/detail-book/${book.id}`}>{book.name}</Link></td>
+                <td>{book.author}</td>
+                <td>
+                    <span>Lượt bình luận: {book.comment_count}</span> <br />
+                    <span>Đánh giá: {book.rating}</span> <br />
+                </td>
+                <td>
+                    <Link className="btn btn-primary btn-sm" to="/books/{{$book->id}}/edit">
+                        <FaEdit />
+                    </Link>
+                    <button
+                        className="btn btn-danger btn-sm"
+                        onClick={event => onClickDeleteBook(event, book.id)}
+                    >
+                        <FaTrash />
+                    </button>
+                </td>
+            </tr>
+        )
+    })
+
     return (
-        <table className="table">
-            <thead className="thead-light">
-                <tr>
-                    <th scope="col" style="width: 5%">#</th>
-                    <th scope="col" style="width: 10%">Bìa sách</th>
-                    <th scope="col" style="width: 35%">Tên sách</th>
-                    <th scope="col" style="width: 20%">Tác giả</th>
-                    <th scope="col" style="width: 20%"></th>
-                    <th scope="col" style="width: 10%"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row"></th>
-                    <td><img className="img-fluid" src="{{ asset('files/covers/' . $book->cover) }}" /></td>
-                    <td><a href="/books/{{ $book->id }}"></a></td>
-                    <td></td>
-                    <td>
-                        <span>Lượt bình luận: </span> <br />
-                        <span>Đánh giá: </span> <br />
-                    </td>
-                    <td>
-                        <a className="btn btn-primary btn-sm" href="/books/{{$book->id}}/edit">
-                            <i className="far fa-edit"></i>
-                        </a>
-                        <button
-                            className="btn btn-danger btn-sm"
-                            data-id="{{$book->id}}"
-                            data-toggle="modal"
-                            data-target="#confirm-delete-book-modal"
-                        >
-                            <i className="far fa-trash-alt"></i>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <>
+            <table className="table">
+                <thead className="thead-light">
+                    <tr>
+                        <th scope="col" style={{ width: '5%' }}>#</th>
+                        <th scope="col" style={{ width: '10%' }}>Bìa sách</th>
+                        <th scope="col" style={{ width: '35%' }}>Tên sách</th>
+                        <th scope="col" style={{ width: '20%' }}>Tác giả</th>
+                        <th scope="col" style={{ width: '20%' }}></th>
+                        <th scope="col" style={{ width: '10%' }}></th>
+                    </tr>
+                </thead>
+                <tbody>{renderedBooks}</tbody>
+            </table>
+            <NotificationModal
+                show={showConfirm}
+                handleClose={() => setShowConfirm(false)}
+                title="Xác nhận xóa sách"
+                content="Bạn có chắc chắn muốn xóa sách này?"
+                handleConfirm={() => handleDeleteBook()}
+            />
+        </>
     )
 }
 
-export default UserBookTable;
+const mapStateToProps = state => ({
+    userReducer: state.userReducer
+});
+
+const mapDispatchToProps = dispatch => ({
+    deleteUserBook: bookId => dispatch(userActions.deleteUserBook(bookId))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserBookTable);

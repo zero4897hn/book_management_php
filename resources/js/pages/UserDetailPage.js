@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import UserInfo from '../components/UserInfo';
-import BookTable from '../components/BookTable';
 import { connect } from 'react-redux';
 import userActions from '../actions/userActions';
+import UserBookTable from '../components/UserBookTable';
 
 const UserDetailPage = (props) => {
     const { getUser } = props;
@@ -15,7 +15,7 @@ const UserDetailPage = (props) => {
     return (
         <div className="container">
             <UserInfo />
-            <BookTable />
+            <UserBookTable />
         </div>
     );
 }
