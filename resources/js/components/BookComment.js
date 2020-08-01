@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Border from './Border';
 import { connect } from 'react-redux';
 import { FaEdit, FaTrash } from 'react-icons/fa'
@@ -6,15 +6,19 @@ import { isEmpty } from 'lodash';
 import CommentEditModal from './CommentEditModal';
 import bookActions from '../actions/bookActions';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import NotificationModal from './NotificationModal';
 
 const BookComment = (props) => {
     const [showDialog, setShowDialog] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [deletingCommentId, setDeletingCommentId] = useState('');
 
-    const { bookReducer, authenticationReducer, getComment } = props
+    const { bookReducer, authenticationReducer, getComment, addComment, deleteComment } = props
 
-    const { book } = bookReducer;
+    const { book, addCommentResponse, deleteCommentResponse } = bookReducer;
     const { comments = [] } = book;
 
     const { isLogin, userData } = authenticationReducer;
@@ -23,6 +27,35 @@ const BookComment = (props) => {
         setShowDialog(true);
         getComment(commentId);
     }
+
+    const onSubmitComment = (event) => {
+        event.preventDefault();
+        addComment({ book_id: book.id, title, content });
+    }
+
+    const onClickDelete = (event, commentId) => {
+        setShowConfirm(true);
+        setDeletingCommentId(commentId);
+    }
+
+    const handleDeleteComment = () => {
+        deleteComment(deletingCommentId);
+    }
+
+    useEffect(() => {
+        const { success } = addCommentResponse;
+        if (success) {
+            toast.success('Thêm bình luận thành công.');
+        }
+    }, [addCommentResponse])
+
+    useEffect(() => {
+        const { success } = deleteCommentResponse;
+        if (success) {
+            toast.success('Xóa bình luận thành công.');
+            setShowConfirm(false);
+        }
+    }, [deleteCommentResponse])
 
     const renderedComments = comments.map((comment, index) => {
         return (
@@ -57,6 +90,7 @@ const BookComment = (props) => {
                                         </button>
                                         <button
                                             className="btn btn-outline-danger btn-sm"
+                                            onClick={event => onClickDelete(event, comment.id)}
                                         >
                                             <FaTrash />
                                         </button>
@@ -89,7 +123,7 @@ const BookComment = (props) => {
                 <div className="col-sm-12 mt-3">
                     <div className="col-12">
                         {isLogin ?
-                            <form>
+                            <form onSubmit={event => onSubmitComment(event)}>
                                 <fieldset className="form-group">
                                     <label htmlFor="field_title">Tiêu đề:</label>
                                     <input
@@ -130,6 +164,13 @@ const BookComment = (props) => {
                 show={showDialog}
                 handleClose={() => setShowDialog(false)}
             />
+            <NotificationModal
+                show={showConfirm}
+                handleClose={() => setShowConfirm(false)}
+                title="Xác nhận xóa bình luận"
+                content="Bạn có chắc chắn muốn xóa bình luận này?"
+                handleConfirm={() => handleDeleteComment()}
+            />
         </>
     );
 }
@@ -141,6 +182,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     getComment: id => dispatch(bookActions.getComment(id)),
+    addComment: data => dispatch(bookActions.addComment(data)),
+    deleteComment: commentId => dispatch(bookActions.deleteComment(commentId)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookComment);

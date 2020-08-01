@@ -11,19 +11,19 @@ const CommentEditModal = (props) => {
         bookReducer,
         editComment
     } = props;
-    const { comment, commentResponse } = bookReducer;
+    const { comment, editCommentResponse } = bookReducer;
 
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
-        const { success } = commentResponse;
+        const { success } = editCommentResponse;
         if (success) {
             toast.success('Cập nhật bình luận thành công.');
             onClickClose();
         }
-    }, [commentResponse])
+    }, [editCommentResponse])
 
     useEffect(() => {
         if (comment) {

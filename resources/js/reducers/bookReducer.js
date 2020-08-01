@@ -1,4 +1,4 @@
-import { GET_BOOKS, SET_BOOKS_PAGE, GET_BOOK, RATE_BOOK, GET_COMMENT, EDIT_COMMENT } from "../utils/actions";
+import { GET_BOOKS, SET_BOOKS_PAGE, GET_BOOK, RATE_BOOK, GET_COMMENT, EDIT_COMMENT, ADD_COMMENT, DELETE_COMMENT } from "../utils/actions";
 import { isEmpty } from "lodash";
 
 const initialState = {
@@ -8,7 +8,9 @@ const initialState = {
     totalRecord: 0,
     book: {},
     rateResponse: { success: null },
-    commentResponse: { success: null },
+    editCommentResponse: { success: null },
+    addCommentResponse: { success: null },
+    deleteCommentResponse: { success: null },
     comment: null
 }
 
@@ -51,22 +53,52 @@ const bookReducer = (state = initialState, action) => {
                 comment: payload,
             }
         }
-        case EDIT_COMMENT: {
+        case ADD_COMMENT: {
             const { success, data } = payload;
-            console.log(payload);
             if (success) {
-                const book = { ...state.book }
-                book.comments = book.comments.map(comment => comment.id === data.id? data : comment);
-                console.log(book);
+                const book = { ...state.book };
+                book.comments = [...book.comments, data];
                 return {
                     ...state,
                     book,
-                    commentResponse: { success: true }
+                    addCommentResponse: { success: true }
                 }
             }
             return {
                 ...state,
-                commentResponse: { success: false }
+                addCommentResponse: { success: false }
+            }
+        }
+        case EDIT_COMMENT: {
+            const { success, data } = payload;
+            if (success) {
+                const book = { ...state.book };
+                book.comments = book.comments.map(item => item.id === data.id? data : item);
+                return {
+                    ...state,
+                    book,
+                    editCommentResponse: { success: true }
+                }
+            }
+            return {
+                ...state,
+                editCommentResponse: { success: false }
+            }
+        }
+        case DELETE_COMMENT: {
+            const { success, commentId } = payload;
+            if (success) {
+                const book = { ...state.book };
+                book.comments = book.comments.filter(item => item.id !== commentId);
+                return {
+                    ...state,
+                    book,
+                    deleteCommentResponse: { success: true }
+                }
+            }
+            return {
+                ...state,
+                deleteCommentResponse: { success: false }
             }
         }
         default: {

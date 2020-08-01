@@ -56,7 +56,7 @@ class CommentController extends Controller
         $book->save();
 
         $comment->username = $user->username;
-        $comment->user_avatar = $user->avatar;
+        $comment->userAvatar = $user->avatar;
 
         return response($comment, Response::HTTP_OK);
     }

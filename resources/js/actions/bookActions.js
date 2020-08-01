@@ -1,5 +1,5 @@
 import request from "../utils/requests";
-import { GET_BOOKS, SET_BOOKS_PAGE, GET_BOOK, RATE_BOOK, GET_COMMENT, EDIT_COMMENT } from "../utils/actions";
+import { GET_BOOKS, SET_BOOKS_PAGE, GET_BOOK, RATE_BOOK, GET_COMMENT, EDIT_COMMENT, ADD_COMMENT, DELETE_COMMENT } from "../utils/actions";
 
 const bookActions = {};
 
@@ -56,11 +56,27 @@ bookActions.getComment = id => dispatch => {
     })
 }
 
+bookActions.addComment = data => dispatch => {
+    request.post('/api/comments', data, response => {
+        dispatch({ type: ADD_COMMENT, payload: { success: true, data: response.data } });
+    }, () => {
+        dispatch({ type: ADD_COMMENT, payload: { success: false } });
+    })
+}
+
 bookActions.editComment = data => dispatch => {
     request.put(`/api/comments/${data.id}`, data, response => {
         dispatch({ type: EDIT_COMMENT, payload: { success: true, data: response.data } });
     }, () => {
         dispatch({ type: EDIT_COMMENT, payload: { success: false } });
+    })
+}
+
+bookActions.deleteComment = commentId => dispatch => {
+    request.delete(`/api/comments/${commentId}`, {}, () => {
+        dispatch({ type: DELETE_COMMENT, payload: { success: true, commentId } })
+    }, () => {
+        dispatch({ type: DELETE_COMMENT, payload: { success: false } })
     })
 }
 

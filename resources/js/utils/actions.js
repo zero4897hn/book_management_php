@@ -9,3 +9,5 @@ export const GET_BOOK = 'GET_BOOK';
 export const RATE_BOOK = 'RATE_BOOK';
 export const GET_COMMENT = 'GET_COMMENT';
 export const EDIT_COMMENT = 'EDIT_COMMENT';
+export const ADD_COMMENT = 'ADD_COMMENT';
+export const DELETE_COMMENT = 'DELETE_COMMENT';
