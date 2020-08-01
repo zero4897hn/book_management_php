@@ -1,4 +1,4 @@
-import { GET_BOOKS, SET_BOOKS_PAGE, GET_BOOK, RATE_BOOK, GET_COMMENT, EDIT_COMMENT, ADD_COMMENT, DELETE_COMMENT } from "../utils/actions";
+import { GET_BOOKS, SET_BOOKS_PAGE, GET_BOOK, RATE_BOOK, GET_COMMENT, EDIT_COMMENT, ADD_COMMENT, DELETE_COMMENT, SET_BOOK_SORT, SET_BOOK_SEARCH_VALUE } from "../utils/actions";
 import { isEmpty } from "lodash";
 
 const initialState = {
@@ -7,6 +7,8 @@ const initialState = {
     pageSize: 10,
     totalRecord: 0,
     book: {},
+    sort: '',
+    search: { name: '', author: '' },
     rateResponse: { success: null },
     editCommentResponse: { success: null },
     addCommentResponse: { success: null },
@@ -27,6 +29,18 @@ const bookReducer = (state = initialState, action) => {
             return {
                 ...state,
                 page: payload,
+            }
+        }
+        case SET_BOOK_SORT: {
+            return {
+                ...state,
+                sort: payload
+            }
+        }
+        case SET_BOOK_SEARCH_VALUE: {
+            return {
+                ...state,
+                search: payload
             }
         }
         case GET_BOOK: {

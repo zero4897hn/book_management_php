@@ -1,13 +1,14 @@
 import request from "../utils/requests";
-import { GET_BOOKS, SET_BOOKS_PAGE, GET_BOOK, RATE_BOOK, GET_COMMENT, EDIT_COMMENT, ADD_COMMENT, DELETE_COMMENT } from "../utils/actions";
+import { GET_BOOKS, SET_BOOKS_PAGE, GET_BOOK, RATE_BOOK, GET_COMMENT, EDIT_COMMENT, ADD_COMMENT, DELETE_COMMENT, SET_BOOK_SORT, SET_BOOK_SEARCH_VALUE } from "../utils/actions";
 
 const bookActions = {};
 
 bookActions.getBooks = () => (dispatch, getState) => {
     const { bookReducer } = getState();
-    const { page, pageSize } = bookReducer;
+    const { page, pageSize, sort, search } = bookReducer;
+    const { name, author } = search
 
-    request.get('/api/books', { page, pageSize }, (response) => {
+    request.get('/api/books', { page, pageSize, sort, name, author }, (response) => {
         const { data } = response;
         dispatch({
             type: GET_BOOKS,
@@ -30,6 +31,14 @@ bookActions.getBooks = () => (dispatch, getState) => {
 
 bookActions.setPage = page => dispatch => {
     dispatch({ type: SET_BOOKS_PAGE, payload: page });
+}
+
+bookActions.setSort = data => dispatch => {
+    dispatch({ type: SET_BOOK_SORT, payload: data });
+}
+
+bookActions.setSearchValue = data => dispatch => {
+    dispatch({ type: SET_BOOK_SEARCH_VALUE, payload: data });
 }
 
 bookActions.rateBook = (data) => dispatch => {

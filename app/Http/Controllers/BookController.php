@@ -29,8 +29,8 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        $name = $request->input('name');
-        $author = $request->input('author');
+        $name = $request->name;
+        $author = $request->author;
         $sort = $request->input('sort');
 
         $books = DB::table('books')
