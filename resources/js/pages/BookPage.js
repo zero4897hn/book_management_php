@@ -15,7 +15,7 @@ const BookPage = (props) => {
     return (
         <div className="container">
             <BookSearching />
-            <BookTable data={books} page={page} pageSize={pageSize} />
+            <BookTable />
         </div>
     );
 }

@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 const BookTable = (props) => {
-    const { data = [], page = 1, pageSize = 0 } = props;
+    const { bookReducer } = props;
+    const { books, page, pageSize } = bookReducer;
 
-    const renderedBooks = data.map((book, index) => {
+    const renderedBooks = books.map((book, index) => {
         return (
             <tr key={book.id}>
                 <th scope="row">{(page - 1) * pageSize + index + 1}</th>
@@ -54,4 +56,8 @@ const BookTable = (props) => {
     );
 }
 
-export default BookTable;
+const mapStateToProps = state => ({
+    bookReducer: state.bookReducer,
+});
+
+export default connect(mapStateToProps)(BookTable);
