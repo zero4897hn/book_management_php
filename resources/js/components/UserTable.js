@@ -5,12 +5,12 @@ import { FaLock, FaLockOpen, FaEdit } from 'react-icons/fa';
 
 const UserTable = (props) => {
     const { userReducer } = props;
-    const { users } = userReducer
+    const { users, page, pageSize } = userReducer
 
     const renderedUsers = users.map((user, index) => {
         return (
             <tr key={index}>
-                <th scope="row"></th>
+                <th scope="row">{(page - 1) * pageSize + index + 1}</th>
                 <td>
                     {user.avatar ?
                         <img className="img-fluid" src={`/files/avatars/${user.avatar}`} />
