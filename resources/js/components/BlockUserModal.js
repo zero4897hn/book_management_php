@@ -17,11 +17,11 @@ const BlockUserModal = props => {
             </Modal.Header>
             <Modal.Body>
                 <FormGroup>
-                    <FormLabel for="field_ban_expired_at">Ngày mở khóa:</FormLabel>
+                    <FormLabel htmlFor="field_ban_expired_at">Ngày mở khóa:</FormLabel>
                     <input
                         id="field_ban_expired_at"
                         type="date"
-                        class="form-control"
+                        className="form-control"
                         placeholder="Nhập ngày mở khóa"
                         name="ban_expired_at"
                         value={banExpiredAt}
