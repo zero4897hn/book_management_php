@@ -26,8 +26,8 @@ const UserForm = (props) => {
     const onSubmitForm = (event) => {
         event.preventDefault();
         const formData = new FormData();
-        formData.append('firstName', firstName);
-        formData.append('lastName', lastName);
+        formData.append('first_name', firstName);
+        formData.append('last_name', lastName);
         formData.append('username', username);
         formData.append('email', email);
         formData.append('admin', admin);
