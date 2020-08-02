@@ -1,11 +1,54 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { FaLock, FaLockOpen, FaEdit } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import userActions from '../actions/userActions';
+import BlockUserModal from './BlockUserModal';
+import NotificationModal from './NotificationModal';
 
 const UserTable = (props) => {
-    const { userReducer } = props;
-    const { users, page, pageSize } = userReducer
+    const { userReducer, blockUser, unblockUser } = props;
+    const { users, page, pageSize, blockResponse, unblockResponse } = userReducer;
+
+    const [showConfirmBlock, setShowConfirmBlock] = useState(false);
+    const [showConfirmUnblock, setShowConfirmUnblock] = useState(false);
+    const [pendingUserId, setPendingUserId] = useState('');
+    const [banExpiredAt, setBanExpiredAt] = useState('');
+
+    useEffect(() => {
+        const { success } = blockResponse;
+        if (success) {
+            toast.success('Khóa tài khoản thành công.');
+            setShowConfirmBlock(false);
+        }
+    }, [blockResponse])
+
+    useEffect(() => {
+        const { success } = unblockResponse;
+        if (success) {
+            toast.success('Mở khóa tài khoản thành công.');
+            setShowConfirmUnblock(false);
+        }
+    }, [unblockResponse])
+
+    const onClickBlock = (event, userId) => {
+        setPendingUserId(userId);
+        setShowConfirmBlock(true);
+    }
+
+    const onClickUnblock = (event, userId) => {
+        setPendingUserId(userId);
+        setShowConfirmUnblock(true);
+    }
+
+    const handleBlockUser = () => {
+        blockUser(pendingUserId, banExpiredAt);
+    }
+
+    const handleUnblockUser = () => {
+        unblockUser(pendingUserId);
+    }
 
     const renderedUsers = users.map((user, index) => {
         return (
@@ -24,11 +67,11 @@ const UserTable = (props) => {
                 <td>{user.banned ? 'Đang khóa' : 'Đang mở'}</td>
                 <td>
                     {user.banned ?
-                        <button className="btn btn-warning">
+                        <button className="btn btn-warning" onClick={event => onClickUnblock(event, user.id)}>
                             <FaLockOpen />
                         </button>
                         :
-                        <button className="btn btn-warning">
+                        <button className="btn btn-warning" onClick={event => onClickBlock(event, user.id)}>
                             <FaLock />
                         </button>
                     }
@@ -58,12 +101,31 @@ const UserTable = (props) => {
                     <tbody>{renderedUsers}</tbody>
                 </table>
             </div>
+            <BlockUserModal
+                show={showConfirmBlock}
+                handleClose={() => setShowConfirmBlock(false)}
+                handleConfirm={() => handleBlockUser()}
+                setBanExpiredAt={setBanExpiredAt}
+                banExpiredAt={banExpiredAt}
+            />
+            <NotificationModal
+                show={showConfirmUnblock}
+                handleClose={() => setShowConfirmUnblock(false)}
+                title="Xác nhận mở khóa tài khoản"
+                content="Bạn có chắc chắn muốn mở khóa tài khoản này?"
+                handleConfirm={() => handleUnblockUser()}
+            />
         </div>
     );
 }
 
 const mapStateToProps = state => ({
     userReducer: state.userReducer
+});
+
+const mapDispatchToProps = dispatch => ({
+    blockUser: (userId, banExpiredAt) => dispatch(userActions.blockUser(userId, banExpiredAt)),
+    unblockUser: userId => dispatch(userActions.unblockUser(userId))
 })
 
-export default connect(mapStateToProps)(UserTable);
+export default connect(mapStateToProps, mapDispatchToProps)(UserTable);
