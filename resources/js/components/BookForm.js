@@ -7,27 +7,45 @@ const BookForm = (props) => {
     const [publisher, setPublisher] = useState('');
     const [editor, setEditor] = useState('');
     const [description, setDescription] = useState('');
-    const [coverFile, setCoverFile] = useState(null);
-    const [errors, setErrors] = useState(null);
+    const [cover, setCover] = useState(null);
 
     const fileInput = useRef(null);
 
-    const { entity = {} } = props
+    const { entity, handleSubmitForm = () => { }, errors = {} } = props;
 
     useEffect(() => {
-        const { name, isbn, author, publisher, editor, description } = entity
-        setName(name);
-        setIsbn(isbn);
-        setAuthor(author);
-        setPublisher(publisher);
-        setEditor(editor);
-        setDescription(description);
+        if (entity) {
+            const { name = '', isbn = '', author = '', publisher = '', editor = '', description = '', cover = '' } = { ...entity }
+            setName(name);
+            setIsbn(isbn);
+            setAuthor(author);
+            setPublisher(publisher);
+            setEditor(editor);
+            setDescription(description);
+            setCover(cover);
+        }
     }, [entity])
+
+    const onSubmitForm = (event) => {
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('isbn', isbn);
+        formData.append('author', author);
+        formData.append('publisher', publisher);
+        formData.append('editor', editor);
+        formData.append('description', description);
+        formData.append('cover', cover);
+        if (fileInput.current.files.length) {
+            formData.append('coverFile', fileInput.current.files[0]);
+        }
+        handleSubmitForm(event, formData);
+    }
 
     return (
         <div className="row justify-content-sm-center">
             <div className="col-sm-10">
-                <form>
+                <form onSubmit={event => onSubmitForm(event)}>
                     <div className="form-group">
                         <label htmlFor="field_name">Tên cuốn sách</label>
                         <input
@@ -119,7 +137,13 @@ const BookForm = (props) => {
                     </div>
                     <div className="form-group">
                         <label htmlFor="field_cover">Bìa sách</label>
-                        <input type="file" className="form-control-file" id="field_cover" name="coverFile" multiple ref={fileInput} />
+                        <input
+                            type="file"
+                            className="form-control-file"
+                            id="field_cover"
+                            name="coverFile"
+                            ref={fileInput}
+                        />
                         <div className="text-danger" role="alert">
                             {errors && errors.cover && errors.cover[0]}
                         </div>

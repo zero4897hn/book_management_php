@@ -15,6 +15,8 @@ import UserDetailPage from './UserDetailPage';
 import { ToastContainer } from 'react-toastify';
 import store from '../utils/store';
 import AuthenticationModal from '../components/AuthenticationModal';
+import BookEditingPage from './BookEditingPage';
+import UserEditingPage from './UserEditingPage';
 
 const App = () => {
     return (
@@ -38,9 +40,11 @@ const App = () => {
                         <Route path="/register" component={RegisterPage} exact />
                         <Route path="/books" component={BookPage} exact />
                         <Route path="/create-book" component={BookCreatingPage} exact />
+                        <Route path="/edit-book/:id" component={BookEditingPage} exact />
                         <Route path="/detail-book/:id" component={BookDetailPage} exact />
                         <Route path="/users" component={UserPage} exact />
                         <Route path="/create-user" component={UserCreatingPage} exact />
+                        <Route path="/edit-user/:id" component={UserEditingPage} exact />
                         <Route path="/detail-user/:id" component={UserDetailPage} exact />
                     </Switch>
                 </div>

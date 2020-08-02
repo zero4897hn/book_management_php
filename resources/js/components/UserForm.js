@@ -7,25 +7,40 @@ const UserForm = (props) => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [admin, setAdmin] = useState('0');
-    const [errors, setErrors] = useState(null);
 
-    const { entity = {} } = props
+    const { entity, handleSubmitForm = () => { }, errors = {} } = props
 
     const fileInput = useRef(null);
 
     useEffect(() => {
-        const { firstName, lastName, username, email, admin } = entity;
-        setFirstName(firstName);
-        setLastName(lastName);
-        setUsername(username);
-        setEmail(email);
-        setAdmin(admin);
+        if (entity) {
+            const { firstName = '', lastName = '', username = '', email = '', admin = '' } = { ...entity };
+            setFirstName(firstName);
+            setLastName(lastName);
+            setUsername(username);
+            setEmail(email);
+            setAdmin(admin);
+        }
     }, [entity])
+
+    const onSubmitForm = (event) => {
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append('firstName', firstName);
+        formData.append('lastName', lastName);
+        formData.append('username', username);
+        formData.append('email', email);
+        formData.append('admin', admin);
+        if (fileInput.current.files.length) {
+            formData.append('avatarFile', fileInput.current.files[0]);
+        }
+        handleSubmitForm(event, formData);
+    }
 
     return (
         <div className="row justify-content-sm-center">
             <div className="col-sm-6">
-                <form action="/users" method="POST" encType="multipart/form-data">
+                <form onSubmit={event => onSubmitForm(event)}>
                     <div className="form-group">
                         <label htmlFor="field_first_name">Tên</label>
                         <input
@@ -69,20 +84,6 @@ const UserForm = (props) => {
                         </div>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="field_password">Mật khẩu</label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            id="field_password"
-                            name="password"
-                            value={password}
-                            onChange={event => setPassword(event.target.value)}
-                        />
-                        <div className="text-danger" role="alert">
-                            {errors && errors.password && errors.password[0]}
-                        </div>
-                    </div>
-                    <div className="form-group">
                         <label htmlFor="field_email">Email</label>
                         <input
                             type="text"
@@ -106,7 +107,7 @@ const UserForm = (props) => {
                             onChange={event => setAdmin(event.target.value)}
                         >
                             <option value="1">Quản trị</option>
-                            <option value="0" selected>Người dùng</option>
+                            <option value="0">Người dùng</option>
                         </select>
                         <div className="text-danger" role="alert">
                             {errors && errors.admin && errors.admin[0]}
@@ -114,7 +115,13 @@ const UserForm = (props) => {
                     </div>
                     <div className="form-group">
                         <label htmlFor="field_avatar">Avatar</label>
-                        <input type="file" className="form-control-file" id="field_avatar" name="avatarFile" multiple ref={fileInput} />
+                        <input
+                            type="file"
+                            className="form-control-file"
+                            id="field_avatar"
+                            name="avatarFile"
+                            ref={fileInput}
+                        />
                         <div className="text-danger" role="alert">
                             {errors && errors.avatar && errors.avatar[0]}
                         </div>

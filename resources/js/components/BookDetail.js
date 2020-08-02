@@ -2,6 +2,7 @@ import React from 'react';
 import Border from './Border';
 import { connect } from 'react-redux';
 import { FaEdit } from 'react-icons/fa'
+import { Link } from 'react-router-dom';
 
 const BookDetail = (props) => {
     const { bookReducer } = props;
@@ -27,12 +28,12 @@ const BookDetail = (props) => {
                 <div className="card">
                     <div className="card-header">
                         <span>{book.name}</span>
-                        <a
+                        <Link
                             className="btn btn-outline-secondary btn-sm float-right edit-comment"
-                            href="/books/{{$book->id}}/edit"
+                            to={`/edit-book/${book.id}`}
                         >
                             <FaEdit />
-                        </a>
+                        </Link>
                     </div>
                     <div className="card-body">
                         <div style={{ width: '100%', display: 'flex' }}>

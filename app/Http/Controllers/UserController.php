@@ -50,7 +50,6 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'username' => 'required|max:50',
-            'password' => 'required|max:50',
             'email' => 'required|max:50|email',
             'first_name' => 'max:50',
             'last_name' => 'max:50'
@@ -78,7 +77,7 @@ class UserController extends Controller
         $user->username = $request->input('username');
         $user->email = $request->input('email');
         $user->admin = $request->input('admin');
-        $user->password = $request->input('password');
+        $user->password = bcrypt('123456aA@');
 
         if ($avatarFile = $request->file('avatarFile')) {
             $avatarFileName = $avatarFile->getClientOriginalName();

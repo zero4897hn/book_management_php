@@ -86,9 +86,9 @@ const UserTable = (props) => {
                             <FaLock />
                         </button>
                     }
-                    <a className="btn btn-primary" href="/users/{{$user->id}}/edit">
+                    <Link className="btn btn-primary" to={`/edit-user/${user.id}`}>
                         <FaEdit />
-                    </a>
+                    </Link>
                 </td>
             </tr>
         )

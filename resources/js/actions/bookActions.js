@@ -29,6 +29,10 @@ bookActions.getBooks = () => (dispatch, getState) => {
     })
 }
 
+bookActions.addBook = formData => () => {
+    return request.postApi('/api/books', formData);
+}
+
 bookActions.setPage = page => dispatch => {
     dispatch({ type: SET_BOOKS_PAGE, payload: page });
 }

@@ -49,7 +49,7 @@ const UserBookTable = (props) => {
                     <span>Đánh giá: {book.rating}</span> <br />
                 </td>
                 <td>
-                    <Link className="btn btn-primary btn-sm" to="/books/{{$book->id}}/edit">
+                    <Link className="btn btn-primary btn-sm" to={`/edit-book/${book.id}`}>
                         <FaEdit />
                     </Link>
                     <button

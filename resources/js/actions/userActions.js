@@ -36,6 +36,10 @@ userActions.getUser = userId => dispatch => {
     })
 }
 
+userActions.addUser = formData => () => {
+    return request.postApi('/api/users', formData);
+}
+
 userActions.deleteUserBook = bookId => dispatch => {
     request.delete(`/api/books/${bookId}`, {}, () => {
         dispatch({ type: DELETE_USER_BOOK, payload: { success: true, bookId } })

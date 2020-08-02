@@ -24,7 +24,7 @@ const UserInfo = (props) => {
                         <span>Thông tin cá nhân</span>
                         <Link
                             className="btn btn-outline-secondary btn-sm float-right"
-                            to="/users/{{$user->id}}/edit"
+                            to={`/edit-user/${user.id}`}
                         >
                             <FaEdit />
                         </Link>
