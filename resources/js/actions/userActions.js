@@ -1,5 +1,5 @@
 import request from '../utils/requests';
-import { GET_USERS, GET_USER, DELETE_USER_BOOK, BLOCK_USER, UNBLOCK_USER } from '../utils/actions';
+import { GET_USERS, GET_USER, DELETE_USER_BOOK, BLOCK_USER, UNBLOCK_USER, SET_USERS_PAGE } from '../utils/actions';
 
 const userActions = {};
 
@@ -7,7 +7,7 @@ userActions.getUsers = () => (dispatch, getState) => {
     const { userReducer } = getState();
     const { page, pageSize } = userReducer;
 
-    request.get('/api/users', {}, response => {
+    request.get('/api/users', { page, pageSize }, response => {
         const { data } = response;
         dispatch({
             type: GET_USERS,
@@ -58,6 +58,10 @@ userActions.unblockUser = userId => dispatch => {
     }, () => {
         dispatch({ type: UNBLOCK_USER, payload: { success: false } });
     })
+}
+
+userActions.setPage = page => dispatch => {
+    dispatch({ type: SET_USERS_PAGE, payload: page });
 }
 
 export default userActions;

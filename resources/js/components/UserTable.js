@@ -15,8 +15,14 @@ const UserTable = (props) => {
     const [showConfirmUnblock, setShowConfirmUnblock] = useState(false);
     const [pendingUserId, setPendingUserId] = useState('');
     const [banExpiredAt, setBanExpiredAt] = useState('');
+    const [isFirstRun, setFirstRun] = useState(true);
 
     useEffect(() => {
+        if (isFirstRun) {
+            setFirstRun(false);
+            return;
+        }
+
         const { success } = blockResponse;
         if (success) {
             toast.success('Khóa tài khoản thành công.');
@@ -25,6 +31,11 @@ const UserTable = (props) => {
     }, [blockResponse])
 
     useEffect(() => {
+        if (isFirstRun) {
+            setFirstRun(false);
+            return;
+        }
+
         const { success } = unblockResponse;
         if (success) {
             toast.success('Mở khóa tài khoản thành công.');

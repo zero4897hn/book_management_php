@@ -7,7 +7,7 @@ const LoginPage = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState(null);
-    const [isLogingIn, setIsLogingIn] = useState(false);
+    const [isLogingIn, setLogingIn] = useState(false);
 
     const { authenticationReducer, login, getUserData } = props;
     const { loginResponse, isLogin, userData } = authenticationReducer;
@@ -20,19 +20,19 @@ const LoginPage = (props) => {
             if (!userData) getUserData();
         } else if (isLogin === false) {
             setErrors(errors);
-            setIsLogingIn(false);
+            setLogingIn(false);
         }
     }, [loginResponse])
 
     useEffect(() => {
         if (userData) {
-            setIsLogingIn(false);
+            setLogingIn(false);
             history.goBack();
         }
     }, [userData])
 
     const onSubmitLogin = (event) => {
-        setIsLogingIn(true);
+        setLogingIn(true);
         event.preventDefault();
         setErrors(null);
         login({ username, password });

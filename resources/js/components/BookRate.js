@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Border from './Border';
-import { isEmpty } from 'lodash';
 import Rating from 'react-rating';
 import bookActions from '../actions/bookActions';
 import { connect } from 'react-redux';
@@ -12,6 +11,7 @@ const BookRate = (props) => {
     const { bookReducer, authenticationReducer, rateBook } = props;
     const { book, rateResponse } = bookReducer;
     const { isLogin } = authenticationReducer;
+    const [isFirstRun, setFirstRun] = useState(true);
 
     useEffect(() => {
         if (book && book.current_rate && book.current_rate.rating) {
@@ -22,6 +22,11 @@ const BookRate = (props) => {
     }, [book])
 
     useEffect(() => {
+        if (isFirstRun) {
+            setFirstRun(false);
+            return;
+        }
+
         const { success } = rateResponse;
         if (success) {
             toast.success('Đánh giá thành công');

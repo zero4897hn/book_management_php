@@ -15,6 +15,7 @@ const BookComment = (props) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [deletingCommentId, setDeletingCommentId] = useState('');
+    const [isFirstRun, setFirstRun] = useState(true);
 
     const { bookReducer, authenticationReducer, getComment, addComment, deleteComment } = props
 
@@ -43,13 +44,25 @@ const BookComment = (props) => {
     }
 
     useEffect(() => {
+        if (isFirstRun) {
+            setFirstRun(false);
+            return;
+        }
+
         const { success } = addCommentResponse;
         if (success) {
             toast.success('Thêm bình luận thành công.');
+            setTitle('');
+            setContent('');
         }
     }, [addCommentResponse])
 
     useEffect(() => {
+        if (isFirstRun) {
+            setFirstRun(false);
+            return;
+        }
+
         const { success } = deleteCommentResponse;
         if (success) {
             toast.success('Xóa bình luận thành công.');

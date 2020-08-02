@@ -15,9 +15,15 @@ const CommentEditModal = (props) => {
 
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing, setEditing] = useState(false);
+    const [isFirstRun, setFirstRun] = useState(true);
 
     useEffect(() => {
+        if (isFirstRun) {
+            setFirstRun(false);
+            return;
+        }
+
         const { success } = editCommentResponse;
         if (success) {
             toast.success('Cập nhật bình luận thành công.');
@@ -29,9 +35,9 @@ const CommentEditModal = (props) => {
         if (comment) {
             setTitle(comment.title);
             setContent(comment.content);
-            setIsEditing(false);
+            setEditing(false);
         } else {
-            setIsEditing(true);
+            setEditing(true);
         }
     }, [comment])
 

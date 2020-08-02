@@ -11,7 +11,7 @@ const RegisterPage = (props) => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
     const [errors, setErrors] = useState(null);
-    const [isSaving, setIsSaving] = useState(false);
+    const [isSaving, setSaving] = useState(false);
 
     const { authenticationReducer, register } = props;
     const { isLogin } = authenticationReducer
@@ -25,7 +25,7 @@ const RegisterPage = (props) => {
     }, [isLogin])
 
     const onSubmitRegister = async (event) => {
-        setIsSaving(true);
+        setSaving(true);
         event.preventDefault();
         setErrors(null);
         try {
@@ -36,7 +36,7 @@ const RegisterPage = (props) => {
             const errorFields = error && error.response && error.response.data && error.response.data.errors;
             setErrors(errorFields);
         } finally {
-            setIsSaving(false);
+            setSaving(false);
         }
     }
 

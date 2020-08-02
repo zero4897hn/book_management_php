@@ -1,4 +1,4 @@
-const { GET_USERS, GET_USER, DELETE_USER_BOOK, BLOCK_USER, UNBLOCK_USER } = require("../utils/actions");
+const { GET_USERS, GET_USER, DELETE_USER_BOOK, BLOCK_USER, UNBLOCK_USER, SET_USERS_PAGE } = require("../utils/actions");
 
 const initialState = {
     users: [],
@@ -69,6 +69,12 @@ const userReducer = (state = initialState, action) => {
                 }
             }
             return { ...state, unblockResponse: { success: false }, };
+        }
+        case SET_USERS_PAGE: {
+            return {
+                ...state,
+                page: payload
+            }
         }
         default: {
             return state;

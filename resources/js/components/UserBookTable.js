@@ -9,12 +9,18 @@ import userActions from '../actions/userActions';
 const UserBookTable = (props) => {
     const [showConfirm, setShowConfirm] = useState(false);
     const [deletingBookId, setDeletingBookId] = useState(null);
+    const [isFirstRun, setFirstRun] = useState(true);
 
     const { userReducer, deleteUserBook } = props;
     const { user, deleteUserBookResponse } = userReducer;
     const { books } = user;
 
     useEffect(() => {
+        if (isFirstRun) {
+            setFirstRun(false);
+            return;
+        }
+
         const { success } = deleteUserBookResponse;
         if (success) {
             toast.success('Xóa thành công.')

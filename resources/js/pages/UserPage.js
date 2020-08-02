@@ -4,14 +4,21 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import userActions from '../actions/userActions';
 import AdminRequireNotification from '../components/AdminRequireNotification';
+import DataPagination from '../components/DataPagination';
 
 const UserPage = (props) => {
-    const { authenticationReducer, getUsers } = props;
+    const { authenticationReducer, userReducer, getUsers, setPage } = props;
     const { isLogin, userData } = authenticationReducer;
+    const { page, pageSize, totalRecord } = userReducer;
 
     useEffect(() => {
         if (isLogin && userData && userData.admin) getUsers();
     }, [isLogin, userData])
+
+    const onChangePage = (event, index) => {
+        setPage(index);
+        getUsers();
+    }
 
     return (
         <div className="container">
@@ -23,6 +30,7 @@ const UserPage = (props) => {
                         </div>
                     </div>
                     <UserTable />
+                    <DataPagination page={page} pageSize={pageSize} totalRecord={totalRecord} onChangePage={onChangePage} />
                 </>
             :
                 <AdminRequireNotification />
@@ -32,11 +40,13 @@ const UserPage = (props) => {
 }
 
 const mapStateToProps = state => ({
-    authenticationReducer: state.authenticationReducer
+    authenticationReducer: state.authenticationReducer,
+    userReducer: state.userReducer
 })
 
 const mapDispatchToProps = dispatch => ({
-    getUsers: () => dispatch(userActions.getUsers())
+    getUsers: () => dispatch(userActions.getUsers()),
+    setPage: page => dispatch(userActions.setPage(page))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserPage);
