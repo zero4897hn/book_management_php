@@ -124,7 +124,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateUser(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             'username' => 'required|max:50',
@@ -135,13 +135,17 @@ class UserController extends Controller
 
         $user = User::find($id);
 
-        $validator->after(function ($validator) use ($request, $user) {
-            $usernameCount = DB::table('users')->where('username', '=', $request->input('username'))->count();
+        $validator->after(function ($validator) use ($request, $user, $id) {
+            $usernameCount = DB::table('users')
+                ->where('username', '=', $request->input('username'))
+                ->where('id', '<>', $id)->count();
             if ($usernameCount > 0) {
                 $validator->errors()->add('username', 'Tên đăng nhập đã tồn tại.');
             }
 
-            $emailCount = DB::table('users')->where('email', '=', $request->input('email'))->count();
+            $emailCount = DB::table('users')
+                ->where('email', '=', $request->input('email'))
+                ->where('id', '<>', $id)->count();
             if ($emailCount > 0) {
                 $validator->errors()->add('email', 'Email đã tồn tại.');
             }

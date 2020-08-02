@@ -29,6 +29,8 @@ Route::post('api/books/update/{id}', 'BookController@updateBook');
 
 Route::resource('api/users', 'UserController');
 
+Route::post('api/users/update/{id}', 'UserController@updateUser');
+
 Route::post('api/users/block', 'UserController@block');
 
 Route::post('api/users/unblock', 'UserController@unblock');

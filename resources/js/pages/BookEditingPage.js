@@ -6,11 +6,11 @@ import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 
 const BookEditingPage = (props) => {
-    const { getBookPromise, editBook, match } = props
+    const { getBookPromise, editBook, match } = props;
     const { params } = match;
 
     const [book, setBook] = useState(undefined);
-    const [errors, setErrors] = useState([]);
+    const [errors, setErrors] = useState({});
     const [isSaving, setSaving] = useState(false);
 
     const history = useHistory();
@@ -33,7 +33,7 @@ const BookEditingPage = (props) => {
 
     const handleSubmitForm = async (event, formData) => {
         try {
-            setErrors([]);
+            setErrors({});
             setSaving(true);
             const response = await editBook(params.id, formData);
             const book = response.data;
@@ -42,7 +42,7 @@ const BookEditingPage = (props) => {
         } catch (error) {
             toast.warning('Cập nhật sách thất bại.');
             const errorFields = error && error.response && error.response.data && error.response.data.errors;
-            setErrors(errorFields || []);
+            setErrors(errorFields || {});
         } finally {
             setSaving(false);
         }

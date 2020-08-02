@@ -40,6 +40,14 @@ userActions.addUser = formData => () => {
     return request.postApi('/api/users', formData);
 }
 
+userActions.getUserPromise = id => () => {
+    return request.getApi(`/api/users/${id}`);
+}
+
+userActions.editUser = (id, formData) => () => {
+    return request.postApi(`/api/users/update/${id}`, formData);
+}
+
 userActions.deleteUserBook = bookId => dispatch => {
     request.delete(`/api/books/${bookId}`, {}, () => {
         dispatch({ type: DELETE_USER_BOOK, payload: { success: true, bookId } })

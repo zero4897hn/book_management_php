@@ -13,12 +13,12 @@ const UserForm = (props) => {
 
     useEffect(() => {
         if (entity) {
-            const { firstName = '', lastName = '', username = '', email = '', admin = '' } = { ...entity };
-            setFirstName(firstName);
-            setLastName(lastName);
-            setUsername(username);
-            setEmail(email);
-            setAdmin(admin);
+            const { first_name, last_name, username, email, admin } = { ...entity };
+            setFirstName(first_name || '');
+            setLastName(last_name || '');
+            setUsername(username || '');
+            setEmail(email || '');
+            setAdmin(admin || '0');
         }
     }, [entity])
 
