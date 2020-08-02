@@ -8,7 +8,7 @@ const UserForm = (props) => {
     const [email, setEmail] = useState('');
     const [admin, setAdmin] = useState('0');
 
-    const { entity, handleSubmitForm = () => { }, errors = {} } = props
+    const { entity, handleSubmitForm = () => { }, errors = {}, disabledSubmit = false } = props
 
     const fileInput = useRef(null);
 
@@ -126,7 +126,7 @@ const UserForm = (props) => {
                             {errors && errors.avatar && errors.avatar[0]}
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-primary">Thêm mới</button>
+                    <button type="submit" className="btn btn-primary" disabled={disabledSubmit}>Thêm mới</button>
                 </form>
             </div>
         </div>

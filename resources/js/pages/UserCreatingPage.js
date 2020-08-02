@@ -9,11 +9,13 @@ const UserCreatingPage = props => {
     const { addUser } = props;
 
     const [errors, setErrors] = useState([]);
+    const [isSaving, setSaving] = useState(false);
 
     const history = useHistory();
 
     const handleSubmitForm = async (event, formData) => {
         try {
+            setSaving(true);
             setErrors([]);
             const response = await addUser(formData);
             const user = response.data;
@@ -23,12 +25,14 @@ const UserCreatingPage = props => {
             toast.warning('Thêm mới người dùng thất bại.');
             const errorFields = error && error.response && error.response.data && error.response.data.errors;
             setErrors(errorFields || [])
+        } finally {
+            setSaving(false);
         }
     }
 
     return (
         <div className="container">
-            <UserForm handleSubmitForm={handleSubmitForm} errors={errors} />
+            <UserForm handleSubmitForm={handleSubmitForm} errors={errors} disabledSubmit={isSaving} />
         </div>
     );
 }

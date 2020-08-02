@@ -11,7 +11,7 @@ const BookForm = (props) => {
 
     const fileInput = useRef(null);
 
-    const { entity, handleSubmitForm = () => { }, errors = {} } = props;
+    const { entity, handleSubmitForm = () => { }, errors = {}, disabledSubmit = false } = props;
 
     useEffect(() => {
         if (entity) {
@@ -148,7 +148,7 @@ const BookForm = (props) => {
                             {errors && errors.cover && errors.cover[0]}
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-primary">Giới thiệu</button>
+                    <button type="submit" className="btn btn-primary" disabled={disabledSubmit}>Giới thiệu</button>
                 </form>
             </div>
         </div>
