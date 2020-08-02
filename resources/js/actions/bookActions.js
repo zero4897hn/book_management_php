@@ -33,6 +33,14 @@ bookActions.addBook = formData => () => {
     return request.postApi('/api/books', formData);
 }
 
+bookActions.getBookPromise = (id) => () => {
+    return request.getApi(`/api/books/${id}`);
+}
+
+bookActions.editBook = (id, formData) => () => {
+    return request.postApi(`/api/books/update/${id}`, formData);
+}
+
 bookActions.setPage = page => dispatch => {
     dispatch({ type: SET_BOOKS_PAGE, payload: page });
 }

@@ -25,6 +25,8 @@ Route::get('api/auth', 'AuthController@user');
 
 Route::resource('api/books', 'BookController');
 
+Route::post('api/books/update/{id}', 'BookController@updateBook');
+
 Route::resource('api/users', 'UserController');
 
 Route::post('api/users/block', 'UserController@block');

@@ -15,14 +15,14 @@ const BookForm = (props) => {
 
     useEffect(() => {
         if (entity) {
-            const { name = '', isbn = '', author = '', publisher = '', editor = '', description = '', cover = '' } = { ...entity }
-            setName(name);
-            setIsbn(isbn);
-            setAuthor(author);
-            setPublisher(publisher);
-            setEditor(editor);
-            setDescription(description);
-            setCover(cover);
+            const { name, isbn, author, publisher, editor, description, cover } = { ...entity }
+            setName(name || '');
+            setIsbn(isbn || '');
+            setAuthor(author || '');
+            setPublisher(publisher || '');
+            setEditor(editor || '');
+            setDescription(description || '');
+            setCover(cover || '');
         }
     }, [entity])
 
@@ -137,6 +137,8 @@ const BookForm = (props) => {
                     </div>
                     <div className="form-group">
                         <label htmlFor="field_cover">Bìa sách</label>
+                        {cover
+                            && <img className="img-fluid" style={{ maxWidth: '200px' }} src={`/files/covers/${cover}`} />}
                         <input
                             type="file"
                             className="form-control-file"

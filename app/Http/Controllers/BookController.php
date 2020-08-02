@@ -164,7 +164,7 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateBook(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:50',
