@@ -30,7 +30,7 @@ const BookDetail = (props) => {
                 <div className="card">
                     <div className="card-header">
                         <span>{book.name}</span>
-                        {!comments.length && userData && userData.id === book.user_id &&
+                        {comments && !comments.length && userData && userData.id === book.user_id &&
                             <Link
                                 className="btn btn-outline-secondary btn-sm float-right"
                                 to={`/edit-book/${book.id}`}
