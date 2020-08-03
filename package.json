@@ -1,4 +1,10 @@
 {
+    "name": "book-review-kobayashi",
+    "description": "Book review",
+    "version": "1.0.0",
+    "engines": {
+        "node": "12.x"
+    },
     "private": true,
     "scripts": {
         "postinstall": "npm run prod",
