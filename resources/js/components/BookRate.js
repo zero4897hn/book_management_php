@@ -53,26 +53,26 @@ const BookRate = (props) => {
                 <h2>Đánh giá</h2>
             </div>
             <div className="col-sm-12">
-                <div className="row">
-                    <div className="col-md-2">Bản thân:</div>
-                    <div className="col-md-10">
-                        <Rating
-                            start={0}
-                            stop={5}
-                            step={1}
-                            initialRating={starValue}
-                            onChange={(value) => setStarValue(value)}
-                        // emptySymbol={() => <FaStarAndCrescent />}
-                        // fullSymbol={() => <FaStar />}
-                        />
-                        {isLogin &&
+                {isLogin &&
+                    <div className="row">
+                        <div className="col-md-2">Bản thân:</div>
+                        <div className="col-md-10">
+                            <Rating
+                                start={0}
+                                stop={5}
+                                step={1}
+                                initialRating={starValue}
+                                onChange={(value) => setStarValue(value)}
+                            // emptySymbol={() => <FaStarAndCrescent />}
+                            // fullSymbol={() => <FaStar />}
+                            />
                             <button
                                 className="btn btn-primary"
                                 onClick={(event) => onClickRating(event)}
                             >Đánh giá</button>
-                        }
+                        </div>
                     </div>
-                </div>
+                }
                 <div className="row">
                     <div className="col-md-2">Tổng đánh giá:</div>
                     <div className="col-md-10">{book.rating}</div>

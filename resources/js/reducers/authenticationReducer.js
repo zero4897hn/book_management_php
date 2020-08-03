@@ -26,6 +26,7 @@ const authenticationReducer = (state = initialState, action) => {
             }
         }
         case LOGOUT: {
+            const { success } = payload;
             window.location.href = '/login';
             return {
                 ...state,

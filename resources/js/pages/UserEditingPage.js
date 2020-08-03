@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import userActions from '../actions/userActions';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import AdminRequireNotification from '../components/AdminRequireNotification';
 
 const UserEditingPage = props => {
-    const { getUserPromise, editUser, match } = props;
+    const { authenticationReducer, getUserPromise, editUser, match } = props;
+    const { isLogin, userData } = authenticationReducer;
     const { params } = match;
 
     const [user, setUser] = useState(undefined);
@@ -16,8 +18,8 @@ const UserEditingPage = props => {
     const history = useHistory();
 
     useEffect(() => {
-        fetchData();
-    }, [])
+        if (isLogin && userData && userData.admin) fetchData();
+    }, [isLogin, userData])
 
     const fetchData = async () => {
         setSaving(true);
@@ -50,14 +52,22 @@ const UserEditingPage = props => {
 
     return (
         <div className="container">
-            <UserForm entity={user} errors={errors} disabledSubmit={isSaving} handleSubmitForm={handleSubmitForm} />
+            {isLogin && userData && userData.admin ?
+                <UserForm entity={user} errors={errors} disabledSubmit={isSaving} handleSubmitForm={handleSubmitForm} />
+                :
+                <AdminRequireNotification />
+            }
         </div>
     );
 }
+
+const mapStateToProps = state => ({
+    authenticationReducer: state.authenticationReducer,
+})
 
 const mapDispatchToProps = dispatch => ({
     getUserPromise: id => dispatch(userActions.getUserPromise(id)),
     editUser: (id, formData) => dispatch(userActions.editUser(id, formData))
 })
 
-export default connect(null, mapDispatchToProps)(UserEditingPage);
+export default connect(mapStateToProps, mapDispatchToProps)(UserEditingPage);

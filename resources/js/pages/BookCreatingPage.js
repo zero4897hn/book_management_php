@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import bookActions from '../actions/bookActions';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import LoginRequireNotification from '../components/LoginRequireNotification';
 
 const BookFormPage = (props) => {
-    const { addBook } = props;
+    const { addBook, authenticationReducer } = props;
+    const { isLogin } = authenticationReducer;
 
     const [errors, setErrors] = useState([]);
     const [isSaving, setSaving] = useState(false);
@@ -32,13 +34,21 @@ const BookFormPage = (props) => {
 
     return (
         <div className="container">
-            <BookForm handleSubmitForm={handleSubmitForm} errors={errors} disabledSubmit={isSaving} />
+            {isLogin ?
+                <BookForm handleSubmitForm={handleSubmitForm} errors={errors} disabledSubmit={isSaving} />
+                :
+                <LoginRequireNotification />
+            }
         </div>
     );
 }
+
+const mapStateToProps = state => ({
+    authenticationReducer: state.authenticationReducer,
+})
 
 const mapDispatchToProps = dispatch => ({
     addBook: formData => dispatch(bookActions.addBook(formData))
 })
 
-export default connect(null, mapDispatchToProps)(BookFormPage);
+export default connect(mapStateToProps, mapDispatchToProps)(BookFormPage);

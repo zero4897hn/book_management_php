@@ -71,6 +71,8 @@ const BookComment = (props) => {
     }, [deleteCommentResponse])
 
     const renderedComments = comments.map((comment, index) => {
+        const isOwnerComment = userData && userData.id === comment.user_id;
+        const isAdmin = userData && userData.admin === 1;
         return (
             <div className="row" key={index}>
                 <div className="col-sm-2">
@@ -93,7 +95,7 @@ const BookComment = (props) => {
                             <span>{comment.title}</span>
                             <div className="float-right">
                                 {
-                                    userData && userData.id === comment.user_id &&
+                                    isOwnerComment &&
                                     <>
                                         <button
                                             className="btn btn-outline-secondary btn-sm"
@@ -101,13 +103,16 @@ const BookComment = (props) => {
                                         >
                                             <FaEdit />
                                         </button>
-                                        <button
-                                            className="btn btn-outline-danger btn-sm"
-                                            onClick={event => onClickDelete(event, comment.id)}
-                                        >
-                                            <FaTrash />
-                                        </button>
                                     </>
+                                }
+                                {
+                                    (isOwnerComment || isAdmin) &&
+                                    <button
+                                        className="btn btn-outline-danger btn-sm"
+                                        onClick={event => onClickDelete(event, comment.id)}
+                                    >
+                                        <FaTrash />
+                                    </button>
                                 }
                             </div>
                         </div>
@@ -126,16 +131,21 @@ const BookComment = (props) => {
                 </div>
                 <div id="field_comment" className="col-sm-12">
                     {isEmpty(comments) ? (
-                        <div className="row custom-comment no-one-comment">
+                        <div className="row">
                             <div className="col-12">
-                                <h4 className="text-center no-one-comment">Hiện tại chưa có bình luận</h4>
+                                <h4 className="text-center">Hiện tại chưa có bình luận</h4>
                             </div>
                         </div>
                     ) : renderedComments}
                 </div>
                 <div className="col-sm-12 mt-3">
                     <div className="col-12">
-                        {isLogin ?
+                        {!userData ?
+                            <h6>
+                                Vui lòng <Link style={{ textDecoration: 'none' }} to="/login">đăng nhập</Link> để bình luận sách.
+                            </h6>
+                            :
+                            userData.id !== book.id &&
                             <form onSubmit={event => onSubmitComment(event)}>
                                 <fieldset className="form-group">
                                     <label htmlFor="field_title">Tiêu đề:</label>
@@ -165,10 +175,6 @@ const BookComment = (props) => {
                                 </fieldset>
                                 <button type="submit" className="btn btn-primary float-right">Bình luận</button>
                             </form>
-                            :
-                            <h6>
-                                Vui lòng <Link style={{ textDecoration: 'none' }} to="/login">đăng nhập</Link> để bình luận sách.
-                            </h6>
                         }
                     </div>
                 </div>

@@ -5,13 +5,15 @@ import { FaEdit } from 'react-icons/fa'
 import { Link } from 'react-router-dom';
 
 const BookDetail = (props) => {
-    const { bookReducer } = props;
+    const { bookReducer, authenticationReducer } = props;
+    const { userData } = authenticationReducer;
     const { book } = bookReducer;
+    const { comments = [] } = book;
 
     return (
         <Border>
             <div className="col-2">
-                {book.user && book.user.avatar?
+                {book.user && book.user.avatar ?
                     <img
                         src={`/files/avatars/${book.user.avatar}`}
                         className="img-fluid img-thumbnail"
@@ -28,12 +30,14 @@ const BookDetail = (props) => {
                 <div className="card">
                     <div className="card-header">
                         <span>{book.name}</span>
-                        <Link
-                            className="btn btn-outline-secondary btn-sm float-right edit-comment"
-                            to={`/edit-book/${book.id}`}
-                        >
-                            <FaEdit />
-                        </Link>
+                        {!comments.length && userData && userData.id === book.user_id &&
+                            <Link
+                                className="btn btn-outline-secondary btn-sm float-right"
+                                to={`/edit-book/${book.id}`}
+                            >
+                                <FaEdit />
+                            </Link>
+                        }
                     </div>
                     <div className="card-body">
                         <div style={{ width: '100%', display: 'flex' }}>
@@ -52,7 +56,8 @@ const BookDetail = (props) => {
 }
 
 const mapStateToProps = state => ({
-    bookReducer: state.bookReducer
+    bookReducer: state.bookReducer,
+    authenticationReducer: state.authenticationReducer,
 })
 
 export default connect(mapStateToProps)(BookDetail);

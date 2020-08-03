@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import bookActions from '../actions/bookActions';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
+import LoginRequireNotification from '../components/LoginRequireNotification';
 
 const BookEditingPage = (props) => {
-    const { getBookPromise, editBook, match } = props;
+    const { getBookPromise, editBook, match, authenticationReducer } = props;
+    const { isLogin } = authenticationReducer;
     const { params } = match;
 
     const [book, setBook] = useState(undefined);
@@ -16,8 +18,8 @@ const BookEditingPage = (props) => {
     const history = useHistory();
 
     useEffect(() => {
-        fetchData();
-    }, [])
+        if (isLogin) fetchData();
+    }, [isLogin])
 
     const fetchData = async () => {
         setSaving(true);
@@ -50,14 +52,22 @@ const BookEditingPage = (props) => {
 
     return (
         <div className="container">
-            <BookForm entity={book} errors={errors} disabledSubmit={isSaving} handleSubmitForm={handleSubmitForm} />
+            {isLogin ?
+                <BookForm entity={book} errors={errors} disabledSubmit={isSaving} handleSubmitForm={handleSubmitForm} />
+                :
+                <LoginRequireNotification />
+            }
         </div>
     );
 }
+
+const mapStateToProps = state => ({
+    authenticationReducer: state.authenticationReducer,
+})
 
 const mapDispatchToProps = dispatch => ({
     getBookPromise: id => dispatch(bookActions.getBookPromise(id)),
     editBook: (id, formData) => dispatch(bookActions.editBook(id, formData))
 })
 
-export default connect(null, mapDispatchToProps)(BookEditingPage);
+export default connect(mapStateToProps, mapDispatchToProps)(BookEditingPage);

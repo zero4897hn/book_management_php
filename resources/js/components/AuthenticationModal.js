@@ -12,7 +12,6 @@ const AuthenticationModal = (props) => {
     const history = useHistory();
 
     useEffect(() => {
-        console.log(tokenExpire);
         if (tokenExpire && tokenExpire.show) {
             setShow(true);
         }

@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import userActions from '../actions/userActions';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
+import AdminRequireNotification from '../components/AdminRequireNotification';
 
 const UserCreatingPage = props => {
-    const { addUser } = props;
+    const { authenticationReducer, addUser } = props;
+    const { isLogin, userData } = authenticationReducer;
 
     const [errors, setErrors] = useState([]);
     const [isSaving, setSaving] = useState(false);
@@ -32,13 +34,21 @@ const UserCreatingPage = props => {
 
     return (
         <div className="container">
-            <UserForm handleSubmitForm={handleSubmitForm} errors={errors} disabledSubmit={isSaving} />
+            {isLogin && userData && userData.admin?
+                <UserForm handleSubmitForm={handleSubmitForm} errors={errors} disabledSubmit={isSaving} />
+                :
+                <AdminRequireNotification />
+            }
         </div>
     );
 }
+
+const mapStateToProps = state => ({
+    authenticationReducer: state.authenticationReducer,
+})
 
 const mapDispatchToProps = dispatch => ({
     addUser: formData => dispatch(userActions.addUser(formData))
 })
 
-export default connect(null, mapDispatchToProps)(UserCreatingPage);
+export default connect(mapStateToProps, mapDispatchToProps)(UserCreatingPage);
