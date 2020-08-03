@@ -4,6 +4,7 @@ import Rating from 'react-rating';
 import bookActions from '../actions/bookActions';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
+import { FaStar, FaRegStar } from 'react-icons/fa'
 
 const BookRate = (props) => {
     const [starValue, setStarValue] = useState(0);
@@ -55,7 +56,7 @@ const BookRate = (props) => {
             <div className="col-sm-12">
                 {isLogin &&
                     <div className="row">
-                        <div className="col-md-2">Bản thân:</div>
+                        <label className="col-md-2 col-form-label">Bản thân:</label>
                         <div className="col-md-10">
                             <Rating
                                 start={0}
@@ -63,9 +64,10 @@ const BookRate = (props) => {
                                 step={1}
                                 initialRating={starValue}
                                 onChange={(value) => setStarValue(value)}
-                            // emptySymbol={() => <FaStarAndCrescent />}
-                            // fullSymbol={() => <FaStar />}
+                                emptySymbol={<FaRegStar />}
+                                fullSymbol={<FaStar />}
                             />
+                            &nbsp;
                             <button
                                 className="btn btn-primary"
                                 onClick={(event) => onClickRating(event)}
